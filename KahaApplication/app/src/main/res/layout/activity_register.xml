@@ -136,7 +136,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editTextTextPersonName4"
+                android:id="@+id/et_reg_first"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -145,7 +145,7 @@
                 android:text="First Name" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName5"
+                android:id="@+id/et_reg_last"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -154,32 +154,39 @@
                 android:text="Last Name" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_reg_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/et_reg_conpass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+        </LinearLayout>
+
         <EditText
-            android:id="@+id/editTextTextPassword"
+            android:id="@+id/et_reg_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword"
-            android:text="Password" />
+            android:inputType="textEmailAddress"
+            android:text="E-mail" />
 
         <EditText
-            android:id="@+id/editTextTextPassword2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:text="Password" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Email" />
-
-        <EditText
-            android:id="@+id/editTextPhone"
+            android:id="@+id/et_reg_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -187,7 +194,7 @@
             android:text="Phone" />
 
         <EditText
-            android:id="@+id/editTextDate2"
+            android:id="@+id/et_reg_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
