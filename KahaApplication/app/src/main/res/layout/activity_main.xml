@@ -25,7 +25,7 @@
         android:layout_marginTop="116dp"
         app:layout_constraintStart_toStartOf="@+id/gd_left"
         app:layout_constraintTop_toTopOf="@+id/gd_top"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/branding_logo" />
 
     <TextView
         android:id="@+id/tv_intro"
