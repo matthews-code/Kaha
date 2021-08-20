@@ -121,19 +121,42 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_login"
         android:layout_width="284dp"
-        android:layout_height="47dp"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/gradient"
+        android:fontFamily="sans-serif-light"
         android:text="Login"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textSize="14sp"
+        android:textSize="18sp"
         android:textStyle="normal"
         app:layout_constraintEnd_toStartOf="@+id/gd_right"
         app:layout_constraintHorizontal_bias="0.472"
         app:layout_constraintStart_toStartOf="@+id/gd_left"
         app:layout_constraintTop_toBottomOf="@+id/et_password" />
+
+    <TextView
+        android:id="@+id/tv_register_prompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="Don't have an account? Register"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/gd_right"
+        app:layout_constraintHorizontal_bias="0.38"
+        app:layout_constraintStart_toStartOf="@+id/gd_left"
+        app:layout_constraintTop_toTopOf="@+id/gd_bottom" />
+
+    <TextView
+        android:id="@+id/tv_register_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="here!"
+        android:textColor="@color/tealgreen"
+        app:layout_constraintStart_toEndOf="@+id/tv_register_prompt"
+        app:layout_constraintTop_toTopOf="@+id/gd_bottom" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
