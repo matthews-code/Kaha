@@ -1,6 +1,5 @@
 package com.example.kahaapplication;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loginButton = findViewById(R.id.btn_login);
+        loginButton = findViewById(R.id.btn_register);
         registerText = findViewById(R.id.tv_register_link);
 
         registerText.setOnClickListener(new View.OnClickListener() {

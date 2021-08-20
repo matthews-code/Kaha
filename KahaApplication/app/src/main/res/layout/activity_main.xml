@@ -119,7 +119,7 @@
         app:layout_constraintStart_toStartOf="@+id/gd_left" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_register"
         android:layout_width="284dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
