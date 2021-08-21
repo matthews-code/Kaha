@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KahaApplication</string>
+    <string name="search">Search Listing</string>
 </resources>
