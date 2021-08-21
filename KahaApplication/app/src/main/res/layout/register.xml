@@ -7,6 +7,19 @@
     android:layout_gravity="center"
     tools:context=".RegisterActivity">
 
+    <ImageButton
+        android:id="@+id/ib_back"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="16dp"
+        android:background="#00FFFFFF"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/gd_top2"
+        app:layout_constraintStart_toStartOf="@+id/gd_left2"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
+        app:tint="@color/kahablue"
+        tools:ignore="SpeakableTextPresentCheck" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gd_left2"
         android:layout_width="wrap_content"
@@ -26,10 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="75dp" />
+        app:layout_constraintGuide_begin="70dp" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/sdasd"
         android:layout_width="147dp"
         android:layout_height="59dp"
         app:layout_constraintStart_toStartOf="@+id/gd_left2"
@@ -45,7 +58,7 @@
         android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="@+id/gd_left2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/sdasd" />
 
     <TextView
         android:id="@+id/tv_registration"
@@ -58,69 +71,15 @@
         app:layout_constraintStart_toStartOf="@+id/gd_left2"
         app:layout_constraintTop_toBottomOf="@+id/tv_start" />
 
-    <ImageButton
-        android:id="@+id/ib_back"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginBottom="8dp"
-        android:background="#00FFFFFF"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/gd_top2"
-        app:layout_constraintStart_toStartOf="@+id/gd_left2"
-        app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24"
-        app:tint="@color/kahablue"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <RadioGroup
-        android:id="@+id/toggle"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/toggle_widget_unselected"
-        android:checkedButton="@+id/tg_hoster"
-        android:elevation="2dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/gd_right2"
-        app:layout_constraintStart_toStartOf="@+id/gd_left2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_registration">
-
-        <RadioButton
-            android:id="@+id/tg_finder"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="@drawable/toggle_widget_background"
-            android:button="@null"
-            android:gravity="center"
-            android:text="Finder"
-            android:textColor="#5E5E5E" />
-
-        <RadioButton
-            android:id="@+id/tg_hoster"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginTop="1dp"
-            android:layout_marginRight="1dp"
-            android:layout_marginBottom="1dp"
-            android:layout_weight="1"
-            android:background="@drawable/toggle_widget_background"
-            android:button="@null"
-            android:gravity="center"
-            android:text="Hoster"
-            android:textColor="@color/white" />
-    </RadioGroup>
-
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gd_right2"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="@+id/gd_left2"
-        app:layout_constraintTop_toBottomOf="@+id/toggle">
+        app:layout_constraintTop_toBottomOf="@+id/tv_registration">
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -128,6 +87,56 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/toggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginRight="356dp"
+                    android:background="@drawable/toggle_widget_unselected"
+                    android:checkedButton="@+id/tg_hoster"
+                    android:elevation="2dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/tg_finder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/toggle_widget_background"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="Finder"
+                        android:textColor="#5E5E5E" />
+
+                    <RadioButton
+                        android:id="@+id/tg_hoster"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginRight="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/toggle_widget_background"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:text="Hoster"
+                        android:textColor="@color/white" />
+                </RadioGroup>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -216,7 +225,7 @@
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="30dp"
                 android:background="@drawable/gradient"
                 android:fontFamily="sans-serif-light"
                 android:text="Register"
