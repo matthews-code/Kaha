@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KahaApplication">
         <activity
+            android:name=".FinderHomeActivity"
+            android:exported="true" />
+        <activity
             android:name=".RegisterActivity"
             android:exported="true" />
         <activity
