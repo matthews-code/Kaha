@@ -13,12 +13,12 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
+        app:layout_constraintStart_toEndOf="@+id/ib_navbar_back"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/branding_logo" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/ib_navbar_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

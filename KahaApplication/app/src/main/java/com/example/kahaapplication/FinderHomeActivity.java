@@ -6,7 +6,10 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.media.Image;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -16,6 +19,7 @@ public class FinderHomeActivity extends AppCompatActivity {
 
     private ArrayList<SpaceModel> data;
 
+    private ImageButton ibBack;
     private NestedScrollView nsvFinderHome;
 
     private RecyclerView recyclerView;
@@ -27,10 +31,20 @@ public class FinderHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_finder_home);
 
         this.data = new DataHelper().initData();
+
         this.recyclerView = findViewById(R.id.rv_listings);
         this.nsvFinderHome = findViewById(R.id.nsv_finder_home);
+        this.ibBack = findViewById(R.id.ib_navbar_back);
+
         this.adapter = new FinderHomeAdapter(data);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     @Override
