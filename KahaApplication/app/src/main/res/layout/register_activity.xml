@@ -211,15 +211,32 @@
                 android:inputType="phone"
                 android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/et_reg_date"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_marginBottom="20dp"
-                android:ems="10"
-                android:hint="Birthday"
-                android:inputType="date"
-                android:minHeight="48dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_reg_date_intro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:hint="Birthday:"
+                    android:minHeight="48dp"
+                    android:padding="4dp"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_reg_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="DD/MM/YYYY"
+                    android:minHeight="48dp"
+                    android:padding="4dp"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_register"
