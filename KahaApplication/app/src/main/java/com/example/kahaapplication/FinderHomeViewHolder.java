@@ -6,12 +6,13 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FinderHomeViewHolder extends RecyclerView.ViewHolder {
+public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     private ImageView ivSpace;
     private TextView tvSize, tvType, tvLocation, tvHost, tvPrice;
+    FinderHomeAdapter.OnSpaceListener onSpaceListener;
 
-    public FinderHomeViewHolder(View itemView) {
+    public FinderHomeViewHolder(View itemView, FinderHomeAdapter.OnSpaceListener onSpaceListener) {
         super(itemView);
 
         this.ivSpace = itemView.findViewById(R.id.iv_space_thumb);
@@ -20,6 +21,9 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder {
         this.tvLocation = itemView.findViewById(R.id.tv_space_location);
         this.tvHost = itemView.findViewById(R.id.tv_space_hoster);
         this.tvPrice = itemView.findViewById(R.id.tv_space_price);
+        this.onSpaceListener = onSpaceListener;
+
+        itemView.setOnClickListener(this);
     }
 
     public void BindData(SpaceModel space) {
@@ -32,5 +36,10 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder {
         this.tvLocation.setText(space.getLocation());
         this.tvHost.setText(space.getHost());
         this.tvPrice.setText(price);
+    }
+
+    @Override
+    public void onClick(View view) {
+        onSpaceListener.onSpaceClick(getAdapterPosition());
     }
 }

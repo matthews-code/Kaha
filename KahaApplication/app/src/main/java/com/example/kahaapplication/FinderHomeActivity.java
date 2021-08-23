@@ -1,13 +1,17 @@
 package com.example.kahaapplication;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -15,7 +19,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-public class FinderHomeActivity extends AppCompatActivity {
+public class FinderHomeActivity extends AppCompatActivity implements FinderHomeAdapter.OnSpaceListener{
 
     private ArrayList<SpaceModel> data;
 
@@ -36,7 +40,7 @@ public class FinderHomeActivity extends AppCompatActivity {
         this.nsvFinderHome = findViewById(R.id.nsv_finder_home);
         this.ibBack = findViewById(R.id.ib_navbar_back);
 
-        this.adapter = new FinderHomeAdapter(data);
+        this.adapter = new FinderHomeAdapter(data, this);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         ibBack.setOnClickListener(new View.OnClickListener() {
@@ -57,5 +61,12 @@ public class FinderHomeActivity extends AppCompatActivity {
         this.nsvFinderHome.scrollTo(0,300);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         this.recyclerView.setAdapter(this.adapter);
+    }
+
+    @Override
+    public void onSpaceClick(int position) {
+        Log.d(TAG, "onSpaceClick: clicked");
+        Intent intent = new Intent(this, SpaceViewActivity.class);
+        startActivity(intent);
     }
 }
