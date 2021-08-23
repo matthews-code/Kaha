@@ -96,10 +96,10 @@
         app:layout_constraintTop_toBottomOf="@+id/et_username" />
 
     <TextView
-        android:id="@+id/tv_username"
+        android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username"
+        android:text="Email"
         app:layout_constraintBottom_toTopOf="@+id/et_username"
         app:layout_constraintStart_toStartOf="@+id/gd_left" />
 
@@ -134,24 +134,23 @@
         android:id="@+id/tv_register_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
         android:fontFamily="sans-serif-light"
         android:text="Don't have an account? Register"
         android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gd_right"
         app:layout_constraintHorizontal_bias="0.38"
-        app:layout_constraintStart_toStartOf="@+id/gd_left"
-        app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+        app:layout_constraintStart_toStartOf="@+id/gd_left" />
 
     <TextView
         android:id="@+id/tv_register_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
         android:text="here!"
         android:textColor="@color/tealgreen"
-        app:layout_constraintStart_toEndOf="@+id/tv_register_prompt"
-        app:layout_constraintTop_toBottomOf="@+id/btn_register" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_register_prompt"
+        app:layout_constraintStart_toEndOf="@+id/tv_register_prompt" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
