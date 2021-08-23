@@ -1,16 +1,22 @@
 package com.example.kahaapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
 import java.security.Key;
 
-public class SpaceViewActivity extends AppCompatActivity {
+public class SpaceViewActivity extends AppCompatActivity{
     private ImageView ivThumbnail;
 
     private TextView tvSize;
@@ -18,6 +24,7 @@ public class SpaceViewActivity extends AppCompatActivity {
     private TextView tvHost;
     private TextView tvType;
     private TextView tvTitle;
+    private MapView mapView;
 
     private AppCompatButton btnContact;
 
@@ -33,8 +40,15 @@ public class SpaceViewActivity extends AppCompatActivity {
         this.tvType = findViewById(R.id.tv_show_type);
         this.tvTitle = findViewById(R.id.tv_title);
 
+        this.mapView = findViewById(R.id.mv_show_location);
+
         this.btnContact = findViewById(R.id.btn_contact);
 
+        retrieveData();
+
+    }
+
+    private void retrieveData() {
         Intent i = getIntent();
         int iThumbnail = i.getIntExtra(Keys.KEY_SPACE_THUMBNAIL.name(), 0);
         this.ivThumbnail.setImageResource(iThumbnail);
