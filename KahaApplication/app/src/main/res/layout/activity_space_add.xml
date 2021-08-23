@@ -42,8 +42,15 @@
             android:textSize="44sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/tv_dropdown_intro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Type of Storage"
+            android:textColor="@color/black" />
+
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/space_type_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:drawable/btn_dropdown"
@@ -108,10 +115,16 @@
             android:inputType="text" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/iv_thumb_create"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             tools:src="@tools:sample/backgrounds/scenic" />
+
+        <ProgressBar
+            android:id="@+id/pb_upload_status"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btn_upload"
@@ -122,8 +135,8 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_create"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:background="@drawable/gradient"
             android:fontFamily="sans-serif"
             android:text="Create Space"
