@@ -7,6 +7,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +28,8 @@ public class SpaceViewActivity extends AppCompatActivity implements OnMapReadyCa
     private TextView tvTitle;
     private MapView mapView;
 
+    private ImageButton ibBack;
+
     private AppCompatButton btnContact;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
@@ -41,10 +45,18 @@ public class SpaceViewActivity extends AppCompatActivity implements OnMapReadyCa
         this.tvHost = findViewById(R.id.tv_show_hoster_name);
         this.tvType = findViewById(R.id.tv_show_type);
         this.tvTitle = findViewById(R.id.tv_title);
+        this.ibBack = findViewById(R.id.ib_navbar_back);
 
         this.mapView = findViewById(R.id.mv_show_location);
 
         this.btnContact = findViewById(R.id.btn_contact);
+
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         initMap(savedInstanceState);
         retrieveData();
