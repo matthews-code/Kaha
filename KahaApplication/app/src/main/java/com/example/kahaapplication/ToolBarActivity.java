@@ -1,0 +1,58 @@
+package com.example.kahaapplication;
+
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class ToolBarActivity extends AppCompatActivity {
+    private ImageButton ibBack;
+    private ImageButton ibMenu;
+
+
+    public void initToolbar(){
+        this.ibBack = findViewById(R.id.ib_navbar_back);
+        this.ibMenu = findViewById(R.id.ib_navbar_menu);
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        ibMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(ToolBarActivity.this, view);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        switch(menuItem.getItemId()){
+                            case R.id.item_logout:
+                                Toast.makeText(ToolBarActivity.this, "Logout Clicked", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.item_settings:
+                                Toast.makeText(ToolBarActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.item_profile:
+                                Toast.makeText(ToolBarActivity.this, "Profile Clicked", Toast.LENGTH_SHORT).show();
+                                return true;
+                            default:
+                                return false;
+
+                        }
+                    }
+                });
+                popupMenu.inflate(R.menu.navbar);
+                popupMenu.show();
+            }
+        });
+
+
+    }
+
+
+}

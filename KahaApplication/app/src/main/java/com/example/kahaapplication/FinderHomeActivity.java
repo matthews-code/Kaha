@@ -21,27 +21,29 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-public class FinderHomeActivity extends AppCompatActivity implements FinderHomeAdapter.OnSpaceListener{
+public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener{
     private ArrayList<SpaceModel> data;
 
-    private ImageButton ibBack;
+
     private NestedScrollView nsvFinderHome;
 
     private RecyclerView recyclerView;
     private FinderHomeAdapter adapter;
 
     private FloatingActionButton fabAddSpace;
+    //private ToolBarActivity toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finder_home);
 
+        initToolbar();
         this.data = new DataHelper().initData();
 
         this.recyclerView = findViewById(R.id.rv_listings);
         this.nsvFinderHome = findViewById(R.id.nsv_finder_home);
-        this.ibBack = findViewById(R.id.ib_navbar_back);
+       // this.ibBack = findViewById(R.id.ib_navbar_back);
 
         this.adapter = new FinderHomeAdapter(data, this);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -49,12 +51,12 @@ public class FinderHomeActivity extends AppCompatActivity implements FinderHomeA
         this.fabAddSpace = findViewById(R.id.fab_add_space);
         this.fabAddSpace.setImageResource(R.drawable.ic_baseline_add_business_24);
 
-        ibBack.setOnClickListener(new View.OnClickListener() {
+        /*ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
-        });
+        });*/
 
         fabAddSpace.setOnClickListener(new View.OnClickListener() {
             @Override
