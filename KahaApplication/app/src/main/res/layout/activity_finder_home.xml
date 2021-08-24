@@ -42,7 +42,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tv_listing_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
