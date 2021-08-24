@@ -1,5 +1,6 @@
 package com.example.kahaapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +39,12 @@ public class ToolBarActivity extends AppCompatActivity {
                                 Toast.makeText(ToolBarActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.item_profile:
-                                Toast.makeText(ToolBarActivity.this, "Profile Clicked", Toast.LENGTH_SHORT).show();
-                                return true;
+                                if(!getClass().getName().equals("com.example.kahaapplication.PrivateUserActivity")  ){
+                                    Intent intent = new Intent(ToolBarActivity.this, PrivateUserActivity.class);
+                                    startActivity(intent);
+                                    return true;
+                                } else {return false;}
+
                             default:
                                 return false;
 
