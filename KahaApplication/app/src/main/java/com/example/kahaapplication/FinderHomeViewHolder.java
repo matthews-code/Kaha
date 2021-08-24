@@ -28,7 +28,7 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
 
     public void BindData(SpaceModel space) {
         String size = new String(space.getLength() + " x " + space.getWidth() + " x " + space.getHeight());
-        String price = new String("P" + String.valueOf(space.getPrice()) + " / month");
+        String price = new String("₱" + String.valueOf(space.getPrice()) + " / month");
 
         this.ivSpace.setImageResource(space.getSpaceImage());
         this.tvSize.setText(size);

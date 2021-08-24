@@ -29,6 +29,7 @@ public class SpaceViewActivity extends AppCompatActivity {
         this.ivThumbnail = findViewById(R.id.iv_thumb);
 
         this.tvSize = findViewById(R.id.tv_show_size);
+        this.tvPrice = findViewById(R.id.tv_show_price);
         this.tvHost = findViewById(R.id.tv_show_hoster_name);
         this.tvType = findViewById(R.id.tv_show_type);
         this.tvTitle = findViewById(R.id.tv_title);
@@ -44,6 +45,9 @@ public class SpaceViewActivity extends AppCompatActivity {
         float sHeight = i.getFloatExtra(Keys.KEY_SPACE_HEIGHT.name(), 0);
 
         this.tvSize.setText(sLength + " x " + sWidth + " x " + sHeight);
+
+        float sPrice = i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0);
+        this.tvPrice.setText("₱" + sPrice);
 
         String sHost = i.getStringExtra(Keys.KEY_SPACE_HOST.name());
         this.tvHost.setText(sHost);
