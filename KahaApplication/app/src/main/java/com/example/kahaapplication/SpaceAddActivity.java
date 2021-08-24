@@ -68,6 +68,8 @@ public class SpaceAddActivity extends AppCompatActivity {
 
             }
         });
+
+        ivThumb.setImageResource(R.drawable.no_image);
     }
 
     private void openFileChooser() {
