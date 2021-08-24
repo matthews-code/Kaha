@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 public class FinderHomeActivity extends AppCompatActivity implements FinderHomeAdapter.OnSpaceListener{
@@ -27,6 +29,8 @@ public class FinderHomeActivity extends AppCompatActivity implements FinderHomeA
 
     private RecyclerView recyclerView;
     private FinderHomeAdapter adapter;
+
+    private FloatingActionButton fabAddSpace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +46,21 @@ public class FinderHomeActivity extends AppCompatActivity implements FinderHomeA
         this.adapter = new FinderHomeAdapter(data, this);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        this.fabAddSpace = findViewById(R.id.fab_add_space);
+        this.fabAddSpace.setImageResource(R.drawable.ic_baseline_add_business_24);
+
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        fabAddSpace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FinderHomeActivity.this, SpaceAddActivity.class);
+                startActivity(intent);
             }
         });
     }
