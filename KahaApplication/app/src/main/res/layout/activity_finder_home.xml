@@ -63,14 +63,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/editTextTextPersonName"
-                    android:layout_width="331dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:ems="10"
                     android:hint="@string/search"
                     android:inputType="textPersonName"
@@ -83,14 +84,13 @@
                     android:layout_height="match_parent"
                     android:backgroundTint="#00FFFFFF"
                     app:srcCompat="@drawable/search" />
-            </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:srcCompat="@drawable/filter_button" />
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/filter_button" />
+            </LinearLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
