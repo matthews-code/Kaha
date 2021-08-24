@@ -14,8 +14,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView tvDate;
 
     private DatePickerDialog.OnDateSetListener setListener;
+
+    private RadioButton tgFinder;
 
     private ImageButton ibBack;
     private Button btnRegister;
@@ -71,6 +75,8 @@ public class RegisterActivity extends AppCompatActivity {
         this.etEmail = findViewById(R.id.et_reg_email);
         this.etPhone = findViewById(R.id.et_reg_phone);
 
+        this.tgFinder = findViewById(R.id.tg_finder);
+
         this.pbRegister = findViewById(R.id.pb_register);
 
         this.btnRegister = findViewById(R.id.btn_register);
@@ -80,6 +86,8 @@ public class RegisterActivity extends AppCompatActivity {
         this.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean isFinder;
+
                 String firstName = etFirstName.getText().toString().trim();
                 String lastName = etLastName.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
@@ -88,8 +96,14 @@ public class RegisterActivity extends AppCompatActivity {
                 String phone = etPhone.getText().toString().trim();
                 String bday = tvDate.getText().toString().trim();
 
+                if(tgFinder.isChecked()) {
+                    isFinder = true;
+                } else {
+                    isFinder = false;
+                }
+
                 if(!checkEmpty(firstName, lastName, password, confpassword, email, phone, bday)) {
-                    User user = new User(firstName, lastName, email, password, phone, bday);
+                    User user = new User(firstName, lastName, email, password, phone, bday, isFinder);
 
                     storeUser(user);
                 } else {
