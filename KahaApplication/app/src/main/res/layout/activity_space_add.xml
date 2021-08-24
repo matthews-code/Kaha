@@ -14,126 +14,213 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_create_space"
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:padding="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
 
-        <TextView
-            android:id="@+id/tv_create_space_intro"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Create a"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tv_create_space_intro2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Space"
-            android:textColor="@color/black"
-            android:textSize="44sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"
-            />
-
         <LinearLayout
+            android:id="@+id/ll_create_space"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <TextView
+                android:id="@+id/tv_create_space_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create a"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_create_space_intro2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8sp"
+                android:text="Space"
+                android:textColor="@color/black"
+                android:textSize="44sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_dropdown_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="8sp"
+                android:text="Type of Storage"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <Spinner
+                android:id="@+id/space_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:dropDownWidth="match_parent"
+                android:spinnerMode="dialog" />
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dimensions" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Length"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Width"
+                    android:inputType="textPersonName" />
+
+                <EditText
+                    android:id="@+id/editTextTextPersonName4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Height"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Location" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
-                android:layout_width="wrap_content"
+                android:id="@+id/editTextTextPersonName5"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
-                android:hint="Length"
-                android:inputType="textPersonName" />
+                android:hint="Manila"
+                android:inputType="textPersonName"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Monthly Price" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="₱"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/editTextNumberDecimal2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="15000"
+                    android:inputType="numberDecimal"
+                    android:minHeight="48dp" />
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="/ month"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName3"
-                android:layout_width="wrap_content"
+                android:id="@+id/editTextTextPersonName6"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
-                android:hint="Width"
-                android:inputType="textPersonName" />
+                android:hint="A modest affordable garage for your cars."
+                android:inputType="text"
+                android:minHeight="48dp" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName4"
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/iv_thumb_create"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <ProgressBar
+                android:id="@+id/pb_upload_status"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_upload"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="Height"
-                android:inputType="textPersonName" />
+                android:layout_marginBottom="8sp"
+                android:background="@drawable/gradient_green"
+                android:fontFamily="sans-serif"
+                android:text="Add Image"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="normal|bold" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient"
+                android:fontFamily="sans-serif"
+                android:text="Create Space"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="normal|bold" />
+
         </LinearLayout>
+    </ScrollView>
 
-        <EditText
-            android:id="@+id/editTextTextPersonName5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Location"
-            android:inputType="textPersonName" />
-
-        <EditText
-            android:id="@+id/editTextNumberDecimal2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Monthly Price (PHP)"
-            android:inputType="numberDecimal" />
-
-        <EditText
-            android:id="@+id/editTextTextPersonName6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Description"
-            android:inputType="text" />
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            tools:src="@tools:sample/backgrounds/scenic" />
-
-        <Button
-            android:id="@+id/btn_upload"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Upload Image" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_create"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/gradient"
-            android:fontFamily="sans-serif"
-            android:text="Create Space"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="normal|bold"
-            app:layout_constraintEnd_toStartOf="@+id/gd_right"
-            app:layout_constraintHorizontal_bias="0.472"
-            app:layout_constraintStart_toStartOf="@+id/gd_left"
-            app:layout_constraintTop_toBottomOf="@+id/et_password" />
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
