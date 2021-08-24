@@ -81,6 +81,7 @@
                         android:layout_weight="0.5"
                         android:gravity="right"
                         android:text="Warehouse"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -113,8 +114,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
+                        android:background="#FFFFFF"
                         android:gravity="right"
                         android:text="10m x 10m x 20m"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -156,7 +159,7 @@
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/mv_show_location"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="450dp"
                     android:layout_marginBottom="20dp" />
 
                 <TextView
