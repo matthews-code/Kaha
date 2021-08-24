@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    tools:visibility="visible">
 
     <ImageButton
         android:id="@+id/ib_back"
@@ -26,6 +27,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="30dp" />
+
+    <ProgressBar
+        android:id="@+id/pb_register"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/toggle"
+        app:layout_constraintEnd_toStartOf="@+id/gd_right2"
+        app:layout_constraintStart_toEndOf="@+id/tv_registration" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gd_right2"
@@ -110,6 +122,7 @@
             android:gravity="center"
             android:text="Hoster"
             android:textColor="@color/white" />
+
     </RadioGroup>
 
     <ScrollView
