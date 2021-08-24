@@ -71,125 +71,129 @@
         app:layout_constraintStart_toStartOf="@+id/gd_left2"
         app:layout_constraintTop_toBottomOf="@+id/tv_start" />
 
+    <RadioGroup
+        android:id="@+id/toggle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/toggle_widget_unselected"
+        android:checkedButton="@+id/tg_hoster"
+        android:elevation="2dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/gd_right2"
+        app:layout_constraintStart_toStartOf="@+id/gd_left2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_registration">
+
+        <RadioButton
+            android:id="@+id/tg_finder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_widget_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Finder"
+            android:textColor="#5E5E5E" />
+
+        <RadioButton
+            android:id="@+id/tg_hoster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_widget_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Hoster"
+            android:textColor="@color/white" />
+    </RadioGroup>
+
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:overScrollMode="never"
+        android:paddingTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gd_right2"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="@+id/gd_left2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_registration">
+        app:layout_constraintTop_toBottomOf="@+id/toggle">
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="First Name" />
+
+            <EditText
+                android:id="@+id/et_reg_first"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Juan"
+                android:inputType="textPersonName"
+                tools:ignore="TouchTargetSizeCheck" />
 
-                <RadioGroup
-                    android:id="@+id/toggle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginRight="356dp"
-                    android:background="@drawable/toggle_widget_unselected"
-                    android:checkedButton="@+id/tg_hoster"
-                    android:elevation="2dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RadioButton
-                        android:id="@+id/tg_finder"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="1dp"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginBottom="1dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/toggle_widget_background"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="Finder"
-                        android:textColor="#5E5E5E" />
-
-                    <RadioButton
-                        android:id="@+id/tg_hoster"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="1dp"
-                        android:layout_marginRight="1dp"
-                        android:layout_marginBottom="1dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/toggle_widget_background"
-                        android:button="@null"
-                        android:gravity="center"
-                        android:text="Hoster"
-                        android:textColor="@color/white" />
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/textView4"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:text="Last Name" />
 
-                <EditText
-                    android:id="@+id/et_reg_first"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="First Name"
-                    android:inputType="textPersonName"
-                    tools:ignore="TouchTargetSizeCheck" />
-
-                <EditText
-                    android:id="@+id/et_reg_last"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Last Name"
-                    android:inputType="textPersonName" />
-            </LinearLayout>
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/et_reg_last"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginBottom="20dp"
-                android:orientation="horizontal">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="Dela Cruz"
+                android:inputType="textPersonName" />
 
-                <EditText
-                    android:id="@+id/et_reg_pass"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    tools:ignore="TouchTargetSizeCheck" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password" />
 
-                <EditText
-                    android:id="@+id/et_reg_conpass"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Confirm Password"
-                    android:inputType="textPassword" />
+            <EditText
+                android:id="@+id/et_reg_pass"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPassword"
+                tools:ignore="TouchTargetSizeCheck" />
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password" />
+
+            <EditText
+                android:id="@+id/et_reg_conpass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email" />
 
             <EditText
                 android:id="@+id/et_reg_email"
@@ -197,9 +201,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:ems="10"
-                android:hint="E-mail"
+                android:hint="email@example.com"
                 android:inputType="textEmailAddress"
                 android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone" />
 
             <EditText
                 android:id="@+id/et_reg_phone"
@@ -214,7 +224,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -231,11 +240,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:hint="DD/MM/YYYY"
+                    android:hint="(Tap to Select) DD/MM/YYYY"
                     android:minHeight="48dp"
                     android:padding="4dp"
                     android:textColor="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 

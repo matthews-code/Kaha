@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NavBarTrue">
         <activity
+            android:name=".SpaceAddActivity"
+            android:exported="true" />
+        <activity
             android:name=".SpaceViewActivity"
             android:exported="true" />
         <activity
