@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -26,6 +27,7 @@ public class SpaceAddActivity extends AppCompatActivity {
     private Button btnCreateSpace;
     private ProgressBar pbUploadStatus;
     private ImageView ivThumb;
+    private ImageButton ibBack;
 
     private Uri mImageUri;
 
@@ -44,6 +46,14 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.btnCreateSpace = findViewById(R.id.btn_create);
         this.pbUploadStatus = findViewById(R.id.pb_upload_status);
         this.ivThumb = findViewById(R.id.iv_thumb_create);
+        this.ibBack = findViewById(R.id.ib_navbar_back);
+
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         btnChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
