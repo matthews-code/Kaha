@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "412152549733",
+    "firebase_url": "https://kaha-13b7f-default-rtdb.firebaseio.com",
+    "project_id": "kaha-13b7f",
+    "storage_bucket": "kaha-13b7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412152549733:android:d97708bafce1c3851a518c",
+        "android_client_info": {
+          "package_name": "com.example.kahaapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412152549733-l57d04cf5ei4db9tclm25a7f9aufgnul.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMbgRJFpiF1Y3_ZBSi_Q-udKzQRVs2fKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412152549733-l57d04cf5ei4db9tclm25a7f9aufgnul.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
