@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -44,6 +45,9 @@ public class RegisterActivity extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener setListener;
 
     private RadioButton tgFinder;
+    private RadioButton tgHoster;
+
+    private RadioGroup tgGroup;
 
     private ImageButton ibBack;
     private Button btnRegister;
@@ -59,6 +63,31 @@ public class RegisterActivity extends AppCompatActivity {
         this.initFireBase();
         this.initComponents();
 
+        this.tgFinder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(tgFinder.isChecked()) {
+                    tgFinder.setTextColor(Color.parseColor("#FFFFFF"));
+                    tgHoster.setTextColor(Color.parseColor("#5E5E5E"));
+                } else {
+                    tgFinder.setTextColor(Color.parseColor("#5E5E5E"));
+                    tgHoster.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+            }
+        });
+
+        this.tgHoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(tgFinder.isChecked()) {
+                    tgFinder.setTextColor(Color.parseColor("#FFFFFF"));
+                    tgHoster.setTextColor(Color.parseColor("#5E5E5E"));
+                } else {
+                    tgFinder.setTextColor(Color.parseColor("#5E5E5E"));
+                    tgHoster.setTextColor(Color.parseColor("#FFFFFF"));
+                }
+            }
+        });
     }
 
     private void initFireBase() {
@@ -76,6 +105,8 @@ public class RegisterActivity extends AppCompatActivity {
         this.etPhone = findViewById(R.id.et_reg_phone);
 
         this.tgFinder = findViewById(R.id.tg_finder);
+        this.tgHoster = findViewById(R.id.tg_hoster);
+        this.tgGroup = findViewById(R.id.tg_group);
 
         this.pbRegister = findViewById(R.id.pb_register);
 
