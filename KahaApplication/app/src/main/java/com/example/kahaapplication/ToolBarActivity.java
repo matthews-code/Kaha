@@ -24,6 +24,7 @@ public class ToolBarActivity extends AppCompatActivity {
                 finish();
             }
         });
+        //popup menu click listener
         ibMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,11 +49,8 @@ public class ToolBarActivity extends AppCompatActivity {
                                 Intent intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
                                 startActivity(intent);
                                 return true;
-
-
                             default:
                                 return false;
-
                         }
                     }
                 });
@@ -60,9 +58,5 @@ public class ToolBarActivity extends AppCompatActivity {
                 popupMenu.show();
             }
         });
-
-
     }
-
-
 }

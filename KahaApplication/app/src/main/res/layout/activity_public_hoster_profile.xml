@@ -48,7 +48,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/iv_space_hoster"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:paddingLeft="20sp"

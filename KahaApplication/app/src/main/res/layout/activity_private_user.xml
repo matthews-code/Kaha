@@ -44,7 +44,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/iv_space_hoster"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 tools:srcCompat="@tools:sample/avatars"
@@ -287,7 +287,7 @@
                 android:background="?android:attr/listDivider" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_contact"
+                android:id="@+id/btn_space_contact"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="20dp"
