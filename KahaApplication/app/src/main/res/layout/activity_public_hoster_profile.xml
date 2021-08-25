@@ -17,17 +17,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:paddingLeft="20dp"
             android:paddingTop="5dp"
-            android:paddingRight="20dp"
             android:paddingBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include"
@@ -38,6 +40,8 @@
                 android:id="@+id/tv_profile_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp"
                 android:text="Profile"
                 android:textColor="@color/black"
                 android:textSize="34sp"
@@ -47,6 +51,8 @@
                 android:id="@+id/imageView3"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp"
                 tools:srcCompat="@tools:sample/avatars"
                 tools:visibility="visible" />
 
@@ -74,6 +80,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.9"
+                        android:paddingLeft="20sp"
+                        android:paddingRight="20sp"
                         android:text="Public Bio"
                         android:textColor="@color/black"
                         android:textSize="20sp"
@@ -85,6 +93,8 @@
                     android:id="@+id/tv_bio_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id dolor nibh. Nam eget massa eget tortor ornare ultrices ut."
                     android:textSize="16sp" />
             </LinearLayout>
@@ -95,7 +105,9 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
+                android:background="?android:attr/listDivider"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp" />
 
 
             <LinearLayout
@@ -106,8 +118,10 @@
                 <TextView
                     android:id="@+id/tv_contact"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.3"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
                     android:text="Contact"
                     android:textColor="@color/black"
                     android:textSize="20sp"
@@ -116,9 +130,11 @@
                 <TextView
                     android:id="@+id/tv_3"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.7"
                     android:gravity="right"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
                     android:text="0995XXXXXXX"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -132,7 +148,9 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
+                android:background="?android:attr/listDivider"
+                android:paddingLeft="20sp"
+                android:paddingRight="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -142,8 +160,10 @@
                 <TextView
                     android:id="@+id/tv_email"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.3"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
                     android:text="Email"
                     android:textColor="@color/black"
                     android:textSize="20sp"
@@ -152,9 +172,11 @@
                 <TextView
                     android:id="@+id/tv_user_email"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.7"
                     android:gravity="right"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
                     android:text="beabeaves@xxxx.com"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -168,29 +190,40 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:background="?android:attr/listDivider" />
+                android:background="?android:attr/listDivider"
+                android:paddingRight="20sp"
+                android:paddingLeft="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_user_spaces"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="@integer/material_motion_duration_long_1"
+                    android:paddingLeft="20sp"
+                    android:paddingRight="20sp"
                     android:text="Beaverly's Spaces"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="248dp"
-                android:layout_height="match_parent"
-                android:orientation="horizontal" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_user_spaces"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" />
+
+                </LinearLayout>
+            </LinearLayout>
 
 
         </LinearLayout>

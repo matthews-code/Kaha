@@ -11,7 +11,6 @@ public class PrivateUserActivity extends ToolBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_private_user);
-        Toast.makeText(PrivateUserActivity.this, getClass().getName(), Toast.LENGTH_SHORT).show();
         initToolbar();
     }
 }

@@ -17,8 +17,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,21 +68,23 @@
                 <TextView
                     android:id="@+id/tv_full_name"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.4"
                     android:text="Full Name"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_1"
+                <EditText
+                    android:id="@+id/et_profile_fullname"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="left"
-                    android:text="Braverly C. Beaves"
-                    android:textSize="18sp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:background="@null"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Beaverly C. Beaves"
+                    android:textColor="@color/secondary_gray" />
 
                 <ImageView
                     android:id="@+id/iv_name_pencil"
@@ -114,14 +120,16 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_2"
+                <EditText
+                    android:id="@+id/et_profile_location"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="left"
-                    android:text="Warehouse"
-                    android:textSize="18sp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:background="@null"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:text="B City"
+                    android:textColor="@color/secondary_gray" />
 
                 <ImageView
                     android:id="@+id/iv_location_pencil"
@@ -157,14 +165,16 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_3"
+                <EditText
+                    android:id="@+id/et_profile_contact"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:gravity="left"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:background="@null"
+                    android:ems="10"
+                    android:inputType="phone"
                     android:text="0995XXXXXXX"
-                    android:textSize="18sp" />
+                    android:textColor="@color/secondary_gray" />
 
                 <ImageView
                     android:id="@+id/iv_contact_pencil"
@@ -206,7 +216,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
                     android:gravity="left"
-                    android:text="Warehouse"
+                    android:text="beabeaves@xxxx.com"
+                    android:textColor="@color/secondary_gray"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -234,7 +245,7 @@
                     <TextView
                         android:id="@+id/tv_bio"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="0.9"
                         android:text="Public Bio"
                         android:textColor="@color/black"
@@ -244,7 +255,7 @@
                     <ImageView
                         android:id="@+id/iv_bio_pencil"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="0.1"
                         android:scaleX="0.7"
                         android:scaleY="0.7"
@@ -253,11 +264,18 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_bio_text"
+                <EditText
+                    android:id="@+id/et_profile_bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id dolor nibh. Nam eget massa eget tortor ornare ultrices ut." />
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:ems="10"
+                    android:inputType="text|textMultiLine"
+                    android:scrollHorizontally="false"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id dolor nibh. Nam eget massa eget tortor ornare ultrices ut.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id dolor nibh. Nam eget massa eget tortor ornare ultrices ut.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id dolor nibh. Nam eget massa eget tortor ornare ultrices ut."
+                    android:textColor="@color/secondary_gray" />
+
             </LinearLayout>
 
             <View

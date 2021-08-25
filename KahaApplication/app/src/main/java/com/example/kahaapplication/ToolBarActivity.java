@@ -44,6 +44,11 @@ public class ToolBarActivity extends AppCompatActivity {
                                     startActivity(intent);
                                     return true;
                                 } else {return false;}
+                            case R.id.item_host:
+                                Intent intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
+                                startActivity(intent);
+                                return true;
+
 
                             default:
                                 return false;
