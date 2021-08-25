@@ -211,7 +211,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_user_email"
+                    android:id="@+id/tv_show_hoster_email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.6"
