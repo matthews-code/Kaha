@@ -1,13 +1,11 @@
 package com.example.kahaapplication;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,11 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageTask;
 
 import java.util.ArrayList;
-
-import okhttp3.internal.cache.DiskLruCache;
 
 public class PublicHosterProfileActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener{
 
@@ -94,7 +89,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
 
         this.fullName = findViewById(R.id.tv_show_hoster_name);
         this.contactNumber = findViewById(R.id.tv_show_hoster_contact);
-        this.emailAddress = findViewById(R.id.tv_show_hoster_email);
+        this.emailAddress = findViewById(R.id.tv_profile_email);
         this.spacesHeader = findViewById(R.id.tv_show_hoster_spaces);
 
         this.adapter = new FinderHomeAdapter(data,  this);

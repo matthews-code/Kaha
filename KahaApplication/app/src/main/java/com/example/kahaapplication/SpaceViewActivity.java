@@ -1,12 +1,10 @@
 package com.example.kahaapplication;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -15,8 +13,6 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-
-import java.security.Key;
 
 public class SpaceViewActivity extends AppCompatActivity implements OnMapReadyCallback{
     private ImageView ivThumbnail;
@@ -49,7 +45,7 @@ public class SpaceViewActivity extends AppCompatActivity implements OnMapReadyCa
 
         this.mapView = findViewById(R.id.mv_show_location);
 
-        this.btnContact = findViewById(R.id.btn_contact);
+        this.btnContact = findViewById(R.id.btn_update_profile);
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
