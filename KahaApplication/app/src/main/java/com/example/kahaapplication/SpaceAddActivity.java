@@ -91,8 +91,8 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.ibBack = findViewById(R.id.ib_navbar_back);
         this.pbUploadStatus = findViewById(R.id.pb_upload_status);
 
-        srStorageRef = FirebaseStorage.getInstance().getReference("HOSTER_UPLOADS");
-        drDatabaseRef = FirebaseDatabase.getInstance().getReference("HOSTER_UPLOADS");
+        srStorageRef = FirebaseStorage.getInstance().getReference("HOSTER/UPLOADS");
+        drDatabaseRef = FirebaseDatabase.getInstance().getReference("HOSTER/UPLOADS");
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
