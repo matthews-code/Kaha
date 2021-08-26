@@ -42,7 +42,12 @@ public class SpaceAddActivity extends AppCompatActivity {
 
     //Fields
     private Spinner spnType;
+    private EditText etLength;
+    private EditText etWidth;
+    private EditText etHeight;
     private EditText etLocation;
+    private EditText etMonthly;
+    private EditText etDescription;
     private ImageView ivThumb;
 
     //Uploading
@@ -71,7 +76,12 @@ public class SpaceAddActivity extends AppCompatActivity {
 
         //Fields
         this.spnType = findViewById(R.id.spn_space_add_type);
+        this.etLength = findViewById(R.id.et_space_add_length);
+        this.etWidth = findViewById(R.id.et_space_add_width);
+        this.etHeight = findViewById(R.id.et_space_add_height);
         this.etLocation = findViewById(R.id.et_space_add_location);
+        this.etMonthly = findViewById(R.id.et_space_add_monthly);
+        this.etDescription = findViewById(R.id.et_space_add_description);
 
         //Uploading
         this.btnChooseImage = findViewById(R.id.btn_upload);
@@ -81,8 +91,8 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.ibBack = findViewById(R.id.ib_navbar_back);
         this.pbUploadStatus = findViewById(R.id.pb_upload_status);
 
-        srStorageRef = FirebaseStorage.getInstance().getReference("uploads");
-        drDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads");
+        srStorageRef = FirebaseStorage.getInstance().getReference("HOSTER_UPLOADS");
+        drDatabaseRef = FirebaseDatabase.getInstance().getReference("HOSTER_UPLOADS");
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +126,7 @@ public class SpaceAddActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        //Also deprecated
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
@@ -136,6 +147,59 @@ public class SpaceAddActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+//VIDEO CODE
+    private void uploadFile() {
+        if(mImageUri != null) {
+            StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
+            + "." + getFileExtension(mImageUri));
+
+            stUploadTask = fileReference.putFile(mImageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //Delays reset of progress bar for 5 seconds
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    pbUploadStatus.setProgress(0);
+                                }
+                            }, 5000);
+
+                            Toast.makeText(SpaceAddActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
+                            SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
+                                    etWidth.getText().toString().trim(), etHeight.getText().toString().trim(),
+                                    etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
+                                    etDescription.getText().toString().trim(),
+                                    //Deprecated, might need to switch to none-deprecated alternative soon.
+                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+
+                            //Create new database entry
+                            String uploadId = drDatabaseRef.push().getKey();
+                            drDatabaseRef.child(uploadId).setValue(upload);
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SpaceAddActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                            double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                            pbUploadStatus.setProgress((int) progress);
+                        }
+                    });
+        } else {
+            Toast.makeText(this,"No file selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+}
+
+//  NONE DEPRECATED UPLOAD ALTERNATIVE.
 //    private void uploadFile() {
 //        if (mImageUri != null) {
 //            srStorageRef.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -167,52 +231,3 @@ public class SpaceAddActivity extends AppCompatActivity {
 //        }
 //    }
 // }
-
-//VIDEO CODE
-    private void uploadFile() {
-        if(mImageUri != null) {
-            StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
-            + "." + getFileExtension(mImageUri));
-
-            stUploadTask = fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //Delays reset of progress bar for 5 seconds
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    pbUploadStatus.setProgress(0);
-                                }
-                            }, 5000);
-
-                            Toast.makeText(SpaceAddActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
-                            SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(),
-                                    etLocation.getText().toString().trim(),
-                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
-
-                            //Create new database entry
-                            String uploadId = drDatabaseRef.push().getKey();
-                            drDatabaseRef.child(uploadId).setValue(upload);
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SpaceAddActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                            pbUploadStatus.setProgress((int) progress);
-                        }
-                    });
-        } else {
-            Toast.makeText(this,"No file selected", Toast.LENGTH_SHORT).show();
-        }
-    }
-}
