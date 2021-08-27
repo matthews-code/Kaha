@@ -28,6 +28,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -58,8 +60,11 @@ public class SpaceAddActivity extends AppCompatActivity {
 
     private Uri mImageUri;
 
+    private FirebaseUser user;
     private StorageReference srStorageRef;
     private DatabaseReference drDatabaseRef;
+
+    private String userId;
 
     private StorageTask stUploadTask;
 
@@ -68,6 +73,10 @@ public class SpaceAddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_space_add);
 
+        initComponents();
+    }
+
+    private void initComponents() {
         Spinner spinner = (Spinner) findViewById(R.id.spn_space_add_type);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spaces_array, android.R.layout.simple_spinner_item);
@@ -91,8 +100,11 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.ibBack = findViewById(R.id.ib_navbar_back);
         this.pbUploadStatus = findViewById(R.id.pb_upload_status);
 
-        srStorageRef = FirebaseStorage.getInstance().getReference("HOSTER/UPLOADS");
-        drDatabaseRef = FirebaseDatabase.getInstance().getReference("HOSTER/UPLOADS");
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
+        this.userId = this.user.getUid();
+
+        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.HOSTER_SPACES.name());
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.HOSTER_SPACES.name());
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +133,7 @@ public class SpaceAddActivity extends AppCompatActivity {
 
         ivThumb.setImageResource(R.drawable.no_image);
     }
+
 
     private void openFileChooser() {
         Intent intent = new Intent();
@@ -177,6 +190,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                             //Create new database entry
                             String uploadId = drDatabaseRef.push().getKey();
                             drDatabaseRef.child(uploadId).setValue(upload);
+                            finish();
 
                         }
                     })

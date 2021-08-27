@@ -80,14 +80,15 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.btnEdit = findViewById(R.id.btn_edit);
         this.btnDelete = findViewById(R.id.btn_delete);
 
-        /*
-        ibBack.setOnClickListener(new View.OnClickListener() {
+
+        btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(SpaceViewActivity.this, PrivateUserActivity.class);
+                startActivity(intent);
             }
         });
-         */
+
 
         initMap(savedInstanceState);
         retrieveData();
