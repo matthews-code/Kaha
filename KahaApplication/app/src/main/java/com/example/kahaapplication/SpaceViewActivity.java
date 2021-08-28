@@ -1,24 +1,29 @@
 package com.example.kahaapplication;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.security.Key;
+import org.w3c.dom.Text;
 
-public class SpaceViewActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCallback{
     private ImageView ivThumbnail;
 
     private TextView tvSize;
@@ -27,16 +32,30 @@ public class SpaceViewActivity extends AppCompatActivity implements OnMapReadyCa
     private TextView tvType;
     private TextView tvTitle;
     private MapView mapView;
-
-    private ImageButton ibBack;
+    private AppCompatButton btnReserve;
+    private AppCompatButton btnEdit;
+    private AppCompatButton btnDelete;
+    private TextView tvPerMonth;
+    private TextView tvProfileHeader;
+    private ImageView ivHostImage;
+    private LinearLayout llPrice;
+    private View vPriceDivider;
 
     private AppCompatButton btnContact;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+
+    //Firebase Vars
+    private FirebaseUser user;
+    private FirebaseAuth mAuth;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_space_view);
+
+        initToolbar();
+        this.initFirebase();
 
         this.ivThumbnail = findViewById(R.id.iv_thumb);
 
@@ -45,18 +64,31 @@ public class SpaceViewActivity extends AppCompatActivity implements OnMapReadyCa
         this.tvHost = findViewById(R.id.tv_show_hoster_name);
         this.tvType = findViewById(R.id.tv_show_type);
         this.tvTitle = findViewById(R.id.tv_title);
-        this.ibBack = findViewById(R.id.ib_navbar_back);
+        this.tvPerMonth = findViewById(R.id.tv_show_price_month);
+        this.tvProfileHeader = findViewById(R.id.tv_profile_header);
+
+        this.ivHostImage = findViewById(R.id.iv_space_hoster);
+
+        this.llPrice = findViewById(R.id.ll_price);
+
+        this.vPriceDivider = findViewById(R.id.divider_price);
 
         this.mapView = findViewById(R.id.mv_show_location);
 
-        this.btnContact = findViewById(R.id.btn_contact);
+        this.btnContact = findViewById(R.id.btn_space_contact);
+        this.btnReserve = findViewById(R.id.btn_reserve);
+        this.btnEdit = findViewById(R.id.btn_edit);
+        this.btnDelete = findViewById(R.id.btn_delete);
 
-        ibBack.setOnClickListener(new View.OnClickListener() {
+
+        btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(SpaceViewActivity.this, PrivateUserActivity.class);
+                startActivity(intent);
             }
         });
+
 
         initMap(savedInstanceState);
         retrieveData();
@@ -117,6 +149,52 @@ public class SpaceViewActivity extends AppCompatActivity implements OnMapReadyCa
         mapView.onSaveInstanceState(mapViewBundle);
     }
 
+    private void setViews(String isFinder) {
+        this.btnDelete.setVisibility(View.GONE);
+        this.btnEdit.setVisibility(View.GONE);
+        this.llPrice.setVisibility(View.GONE);
+        this.vPriceDivider.setVisibility(View.GONE);
+
+        if(isFinder.equalsIgnoreCase("false")) {
+            this.tvPerMonth.setVisibility(View.GONE);
+            this.tvPrice.setVisibility(View.GONE);
+            this.tvHost.setVisibility(View.GONE);
+            this.tvProfileHeader.setVisibility(View.GONE);
+            this.ivHostImage.setVisibility(View.GONE);
+            this.btnContact.setVisibility(View.GONE);
+            this.btnReserve.setVisibility(View.GONE);
+
+            this.btnDelete.setVisibility(View.VISIBLE);
+            this.btnEdit.setVisibility(View.VISIBLE);
+            this.llPrice.setVisibility(View.VISIBLE);
+            this.vPriceDivider.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+
+    private void initFirebase() {
+        this.mAuth = FirebaseAuth.getInstance();
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
+        this.userId = this.user.getUid();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+
+        //this.pbProfile.setVisibility(View.VISIBLE);
+        reference.child(this.userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                setViews(snapshot.child("userIsFinder").getValue().toString());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //pbProfile.setVisibility(View.GONE);
+            }
+        });
+    }
     @Override
     public void onResume() {
         super.onResume();

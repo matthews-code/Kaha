@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NavBarTrue">
         <activity
+            android:name=".PublicHosterProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PrivateUserActivity"
+            android:exported="true" />
+        <activity
             android:name=".SpaceAddActivity"
             android:exported="true" />
         <activity
@@ -40,7 +46,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCqjilAW355Bjn7jyNzF-JTww4zAoI_Cag" />
-
     </application>
 
 </manifest>

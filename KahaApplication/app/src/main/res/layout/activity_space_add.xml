@@ -63,7 +63,7 @@
                 android:background="?android:attr/listDivider" />
 
             <Spinner
-                android:id="@+id/space_type_spinner"
+                android:id="@+id/spn_space_add_type"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:dropDownWidth="match_parent"
@@ -84,10 +84,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName2"
+                    android:id="@+id/et_space_add_length"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -96,7 +98,7 @@
                     android:inputType="textPersonName" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName3"
+                    android:id="@+id/et_space_add_width"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -105,7 +107,7 @@
                     android:inputType="textPersonName" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName4"
+                    android:id="@+id/et_space_add_height"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -118,10 +120,12 @@
                 android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location" />
+                android:text="Location"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
 
             <EditText
-                android:id="@+id/editTextTextPersonName5"
+                android:id="@+id/et_space_add_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -138,7 +142,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:id="@+id/textView16"
@@ -150,7 +156,7 @@
                     android:textSize="24sp" />
 
                 <EditText
-                    android:id="@+id/editTextNumberDecimal2"
+                    android:id="@+id/et_space_add_monthly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -171,10 +177,12 @@
                 android:id="@+id/textView17"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description" />
+                android:text="Description"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
 
             <EditText
-                android:id="@+id/editTextTextPersonName6"
+                android:id="@+id/et_space_add_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

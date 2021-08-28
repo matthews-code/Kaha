@@ -1,25 +1,13 @@
 package com.example.kahaapplication;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,18 +18,16 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener{
+public class PublicHosterProfileActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener{
+
     private ArrayList<SpaceModel> data;
-
-    private TextView tvHeader;
-
-    private ImageButton ibBack;
-    private NestedScrollView nsvFinderHome;
-
     private RecyclerView recyclerView;
     private FinderHomeAdapter adapter;
 
-    private FloatingActionButton fabAddSpace;
+    private TextView fullName;
+    private TextView contactNumber;
+    private TextView emailAddress;
+    private TextView spacesHeader;
 
     private FirebaseUser user;
     private FirebaseAuth mAuth;
@@ -50,42 +36,11 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_finder_home);
+        setContentView(R.layout.activity_public_hoster_profile);
+
         initToolbar();
         this.initComponents();
         this.initFirebase();
-    }
-
-    private void initComponents () {
-        this.data = new DataHelper().initData();
-
-        this.tvHeader = findViewById(R.id.tv_listing_header);
-
-        this.recyclerView = findViewById(R.id.rv_listings);
-        this.nsvFinderHome = findViewById(R.id.nsv_finder_home);
-       // this.ibBack = findViewById(R.id.ib_navbar_back);
-
-        this.adapter = new FinderHomeAdapter(data, this);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        this.fabAddSpace = findViewById(R.id.fab_add_space);
-        this.fabAddSpace.setImageResource(R.drawable.ic_baseline_add_business_24);
-
-        /*
-        ibBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });*/
-
-        fabAddSpace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(FinderHomeActivity.this, SpaceAddActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void initFirebase() {
@@ -100,7 +55,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                setViews(snapshot.child("userIsFinder").getValue().toString());
+                setViews(snapshot);
 
             }
 
@@ -111,27 +66,34 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         });
     }
 
-    private void setViews(String isFinder) {
-
-        if(isFinder.equalsIgnoreCase("true")) {
-            this.tvHeader.setText("Search for");
-            this.fabAddSpace.setVisibility(View.GONE);
+    private void setViews(DataSnapshot snapshot) {
+        String fullName = snapshot.child("userFirstName").getValue().toString() + " " + snapshot.child("userLastName").getValue().toString();
+        String firstName = snapshot.child("userFirstName").getValue().toString();
+        String spaceHeader;
+        if(Character.toLowerCase(firstName.charAt(firstName.length() - 1)) == 's') {
+            spaceHeader = firstName + "' spaces";
         } else {
-            this.tvHeader.setText("Your");
-            this.fabAddSpace.setVisibility(View.VISIBLE);
+            spaceHeader = firstName + "'s spaces";
         }
 
+        this.fullName.setText(fullName);
+        this.contactNumber.setText(snapshot.child("userPhone").getValue().toString());
+        this.emailAddress.setText(snapshot.child("userEmail").getValue().toString());
+        this.spacesHeader.setText(spaceHeader);
+
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadData();
-    }
+    private void initComponents () {
+        this.data = new DataHelper().initData();
+        this.recyclerView = findViewById(R.id.rv_user_spaces);
 
-    private void loadData() {
-        this.nsvFinderHome.scrollTo(0,300);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.fullName = findViewById(R.id.tv_show_hoster_name);
+        this.contactNumber = findViewById(R.id.tv_show_hoster_contact);
+        this.emailAddress = findViewById(R.id.tv_profile_email);
+        this.spacesHeader = findViewById(R.id.tv_show_hoster_spaces);
+
+        this.adapter = new FinderHomeAdapter(data,  this);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
         this.recyclerView.setAdapter(this.adapter);
     }
 
