@@ -27,14 +27,17 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private ImageView ivThumbnail;
 
     private TextView tvSize;
-    private TextView tvPrice;
+    private TextView tvValue;
     private TextView tvHost;
     private TextView tvType;
     private TextView tvTitle;
     private MapView mapView;
+
     private AppCompatButton btnReserve;
     private AppCompatButton btnEdit;
     private AppCompatButton btnDelete;
+    private TextView tvPrice;
+
     private TextView tvPerMonth;
     private TextView tvProfileHeader;
     private ImageView ivHostImage;
@@ -60,8 +63,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.ivThumbnail = findViewById(R.id.iv_thumb);
 
         this.tvSize = findViewById(R.id.tv_show_size);
-        this.tvPrice = findViewById(R.id.tv_show_price);
+
         this.tvHost = findViewById(R.id.tv_show_hoster_name);
+        this.tvValue = findViewById(R.id.tv_price_value);
         this.tvType = findViewById(R.id.tv_show_type);
         this.tvTitle = findViewById(R.id.tv_title);
         this.tvPerMonth = findViewById(R.id.tv_show_price_month);
@@ -76,22 +80,47 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.mapView = findViewById(R.id.mv_show_location);
 
         this.btnContact = findViewById(R.id.btn_space_contact);
+        this.tvPrice = findViewById(R.id.tv_show_price);
         this.btnReserve = findViewById(R.id.btn_reserve);
         this.btnEdit = findViewById(R.id.btn_edit);
         this.btnDelete = findViewById(R.id.btn_delete);
 
-
+        //FINDER BUTTONS
         btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SpaceViewActivity.this, PrivateUserActivity.class);
+
                 startActivity(intent);
             }
         });
 
+        Intent i = getIntent();
 
         initMap(savedInstanceState);
         retrieveData();
+
+        //EDIT BUTTON
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SpaceViewActivity.this, SpaceAddActivity.class);
+                intent.putExtra(Keys.KEY_IS_EDITING.name(), true);
+
+                intent.putExtra(Keys.KEY_SPACE_TYPE.name(), i.getStringExtra(Keys.KEY_SPACE_TYPE.name()));
+
+                intent.putExtra(Keys.KEY_SPACE_LENGTH.name(),   i.getFloatExtra(Keys.KEY_SPACE_LENGTH.name(), 0));
+                intent.putExtra(Keys.KEY_SPACE_WIDTH.name(),    i.getFloatExtra(Keys.KEY_SPACE_WIDTH.name(), 0));
+                intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(),   i.getFloatExtra(Keys.KEY_SPACE_HEIGHT.name(), 0));
+
+                intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), i.getStringExtra(Keys.KEY_SPACE_LOCATION.name()));
+                intent.putExtra(Keys.KEY_SPACE_PRICE.name(), i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0));
+                //
+                // REQUIRES FIREBASE DESCRIPTION
+                // intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), i.getStringExtra(Keys.KEY_SPACE_TYPE.name()));
+                startActivity(intent);
+            }
+        });
 
     }
 
@@ -120,6 +149,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
         float sPrice = i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0);
         this.tvPrice.setText("₱" + sPrice);
+        this.tvValue.setText("₱" + sPrice);
 
         String sHost = i.getStringExtra(Keys.KEY_SPACE_HOST.name());
         this.tvHost.setText(sHost);
@@ -127,6 +157,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
         String sType = i.getStringExtra(Keys.KEY_SPACE_TYPE.name());
         this.tvType.setText(sType);
+
         String sLocation = i.getStringExtra(Keys.KEY_SPACE_LOCATION.name());
         this.tvTitle.setText(sType + " in " + sLocation);
     }

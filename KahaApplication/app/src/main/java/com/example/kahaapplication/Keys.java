@@ -3,6 +3,8 @@ package com.example.kahaapplication;
 public enum Keys {
     COLLECTIONS_USERS,
     HOSTER_SPACES,
+
+    //SPACE DETAILS
     KEY_SPACE_THUMBNAIL,
     KEY_SPACE_LENGTH,
     KEY_SPACE_WIDTH,
@@ -10,5 +12,9 @@ public enum Keys {
     KEY_SPACE_PRICE,
     KEY_SPACE_HOST,
     KEY_SPACE_TYPE,
-    KEY_SPACE_LOCATION
+    KEY_SPACE_LOCATION,
+    KEY_SPACE_DESCRIPTION,
+
+    //MISCELLANEOUS
+    KEY_IS_EDITING
 }

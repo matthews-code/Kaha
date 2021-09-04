@@ -52,6 +52,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finder_home);
         initToolbar();
+
         this.initComponents();
         this.initFirebase();
     }
@@ -79,6 +80,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
             }
         });*/
 
+        //ADD BUTTON
         fabAddSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

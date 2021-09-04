@@ -21,9 +21,7 @@ public class SpaceModel {
         return spaceImage;
     }
 
-    public float getLength() {
-        return length;
-    }
+    public float getLength() { return length; }
 
     public float getWidth() {
         return width;

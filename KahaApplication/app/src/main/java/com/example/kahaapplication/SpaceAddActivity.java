@@ -58,15 +58,18 @@ public class SpaceAddActivity extends AppCompatActivity {
     private ProgressBar pbUploadStatus;
     private ImageButton ibBack;
 
+    //Image URI
     private Uri mImageUri;
 
+    //Firebase
     private FirebaseUser user;
     private StorageReference srStorageRef;
     private DatabaseReference drDatabaseRef;
-
-    private String userId;
-
     private StorageTask stUploadTask;
+
+    //Account
+    private String userId;
+    private boolean isEditing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +80,16 @@ public class SpaceAddActivity extends AppCompatActivity {
     }
 
     private void initComponents() {
+        //Initial Declarations
         Spinner spinner = (Spinner) findViewById(R.id.spn_space_add_type);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.spaces_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        //Editing getIntent() declaration
+        Intent i = getIntent();
+        this.isEditing = i.getBooleanExtra(Keys.KEY_IS_EDITING.name(), false);
 
         //Fields
         this.spnType = findViewById(R.id.spn_space_add_type);
@@ -100,9 +108,11 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.ibBack = findViewById(R.id.ib_navbar_back);
         this.pbUploadStatus = findViewById(R.id.pb_upload_status);
 
+        //Account
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
 
+        //Firebase
         this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.HOSTER_SPACES.name());
         this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.HOSTER_SPACES.name());
 
@@ -131,6 +141,32 @@ public class SpaceAddActivity extends AppCompatActivity {
             }
         });
 
+        //Editing Adjustments
+        if(isEditing) {
+            Toast.makeText(SpaceAddActivity.this, "Editing a " + i.getStringExtra(Keys.KEY_SPACE_TYPE.name()), Toast.LENGTH_SHORT).show();
+            //Get Extras
+            String sType = i.getStringExtra(Keys.KEY_SPACE_TYPE.name());
+
+            float fLength = i.getFloatExtra(Keys.KEY_SPACE_LENGTH.name(), 0);
+            float fWidth = i.getFloatExtra(Keys.KEY_SPACE_WIDTH.name(), 0);
+            float fHeight = i.getFloatExtra(Keys.KEY_SPACE_HEIGHT.name(), 0);
+
+            String sLocation = i.getStringExtra(Keys.KEY_SPACE_LOCATION.name());
+            float fPrice = i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0);
+
+            //Assign from Extras
+
+            this.etLength.setText(String.valueOf(fLength));
+            this.etWidth.setText(String.valueOf(fWidth));
+            this.etHeight.setText(String.valueOf(fHeight));
+
+            this.etLocation.setText(sLocation);
+            this.etMonthly.setText(String.valueOf(fPrice));
+
+        } else {
+            Toast.makeText(SpaceAddActivity.this, "Not Editing.", Toast.LENGTH_SHORT).show();
+        }
+
         ivThumb.setImageResource(R.drawable.no_image);
     }
 
@@ -139,7 +175,9 @@ public class SpaceAddActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        //Also deprecated
+
+        //Deprecated but still works
+        //see non-deprecated code below (to implement in future LMAO)
         startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
