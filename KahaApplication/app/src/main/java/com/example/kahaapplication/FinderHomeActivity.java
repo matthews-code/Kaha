@@ -14,10 +14,13 @@ import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener{
+public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener, FilterBottomSheetDialog.BottomSheetListener{
     private ArrayList<SpaceModel> data;
 
     private TextView tvHeader;
@@ -46,6 +49,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     private FirebaseUser user;
     private FirebaseAuth mAuth;
     private String userId;
+
+    private Button btnFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         this.fabAddSpace = findViewById(R.id.fab_add_space);
         this.fabAddSpace.setImageResource(R.drawable.ic_baseline_add_business_24);
 
+        this.btnFilter = findViewById(R.id.btn_filter);
+
         /*
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +93,15 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
             public void onClick(View view) {
                 Intent intent = new Intent(FinderHomeActivity.this, SpaceAddActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        //FILTER Button
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilterBottomSheetDialog filterBottomSheet = new FilterBottomSheetDialog();
+                filterBottomSheet.show(getSupportFragmentManager(), "filterBottomSheet");
             }
         });
     }
@@ -151,5 +167,11 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), data.get(position).getLocation());
 
         startActivity(intent);
+    }
+
+    // FILTER ON SAVE CHANGES CLICKED
+    @Override
+    public void onButtonClicked(String text) {
+        Toast.makeText(FinderHomeActivity.this, text, Toast.LENGTH_SHORT).show();
     }
 }
