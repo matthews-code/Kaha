@@ -155,13 +155,16 @@ public class SpaceAddActivity extends AppCompatActivity {
             float fPrice = i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0);
 
             //Assign from Extras
-
+            this.spnType.setSelection(getSpaceTypeInt(sType));
             this.etLength.setText(String.valueOf(fLength));
             this.etWidth.setText(String.valueOf(fWidth));
             this.etHeight.setText(String.valueOf(fHeight));
 
             this.etLocation.setText(sLocation);
             this.etMonthly.setText(String.valueOf(fPrice));
+
+            //Miscellaneous
+            this.btnCreateSpace.setText("Save Changes");
 
         } else {
             Toast.makeText(SpaceAddActivity.this, "Not Editing.", Toast.LENGTH_SHORT).show();
@@ -170,6 +173,24 @@ public class SpaceAddActivity extends AppCompatActivity {
         ivThumb.setImageResource(R.drawable.no_image);
     }
 
+    private int getSpaceTypeInt(String sType) {
+        switch (sType) {
+            case "Garage":
+                return 0;
+            case "Shed":
+                return 1;
+            case "Safe":
+                return 2;
+            case "Room":
+                return 3;
+            case "Unit":
+                return 4;
+            case "Warehouse":
+                return 5;
+            default:
+                return 6;
+        }
+    }
 
     private void openFileChooser() {
         Intent intent = new Intent();
