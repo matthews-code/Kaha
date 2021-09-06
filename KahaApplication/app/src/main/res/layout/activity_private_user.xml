@@ -80,10 +80,11 @@
                     android:textColor="@color/secondary_gray" />
 
                 <ImageView
-                    android:id="@+id/iv_lname_pencil3"
+                    android:id="@+id/iv_fname_pencil"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:clickable="true"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
                     app:srcCompat="@drawable/ic_baseline_create_24" />
@@ -131,6 +132,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:clickable="true"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
                     app:srcCompat="@drawable/ic_baseline_create_24" />
@@ -178,6 +180,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.1"
+                    android:clickable="true"
                     android:scaleX="0.7"
                     android:scaleY="0.7"
                     app:srcCompat="@drawable/ic_baseline_create_24" />
@@ -258,6 +261,7 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.1"
+                        android:clickable="true"
                         android:scaleX="0.7"
                         android:scaleY="0.7"
                         app:srcCompat="@drawable/ic_baseline_create_24" />
@@ -288,7 +292,7 @@
                 android:background="?android:attr/listDivider" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_space_contact"
+                android:id="@+id/btn_save_profile"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@drawable/gradient"
@@ -299,7 +303,26 @@
                 android:textSize="18sp"
                 android:textStyle="normal" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_delete_profile"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/grey_background"
+                android:fontFamily="sans-serif-light"
+                android:text="Delete Account"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+
+
+
         </LinearLayout>
+
+
+
+
     </ScrollView>
 
 
