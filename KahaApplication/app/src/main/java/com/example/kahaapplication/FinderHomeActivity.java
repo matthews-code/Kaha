@@ -34,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener, FilterBottomSheetDialog.BottomSheetListener{
-    private ArrayList<SpaceModel> data;
+    private ArrayList<SpaceUpload> data;
 
     private TextView tvHeader;
 
@@ -64,6 +64,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
     private void initComponents () {
         initData();
+        //this.data = DataHelper.initData();
 
         this.tvHeader = findViewById(R.id.tv_listing_header);
 
@@ -79,13 +80,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
         this.btnFilter = findViewById(R.id.btn_filter);
 
-        /*
-        ibBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });*/
 
         //ADD BUTTON
         fabAddSpace.setOnClickListener(new View.OnClickListener() {
@@ -113,9 +107,9 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
 
-        ArrayList<SpaceModel> data = new ArrayList<>();
+        ArrayList<SpaceUpload> data = new ArrayList<>();
 
-        reference.child(this.userId).child("HOSTER_SPACES").addValueEventListener(new ValueEventListener() {
+        reference.child(this.userId).child("SPACES").addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -126,15 +120,16 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                     //SpaceModel spaceInfo = indivSpace.getValue(SpaceModel.class);
                     //Log.d("mesg", String.valueOf(spaceInfo));
 
-                    SpaceModel spaceInfo = new SpaceModel(
-                            R.drawable.sample_garage2,
-                            Float.parseFloat(String.valueOf(indivSpace.child("spaceLength").getValue())),
-                            Float.parseFloat(String.valueOf(indivSpace.child("spaceWidth").getValue())),
-                            Float.parseFloat(String.valueOf(indivSpace.child("spaceHeight").getValue())),
-                            Float.parseFloat(String.valueOf(indivSpace.child("spaceMonthly").getValue())),
-                            "Matt",
+                    SpaceUpload spaceInfo = new SpaceUpload(
                             String.valueOf(indivSpace.child("spaceType").getValue()),
-                            String.valueOf(indivSpace.child("spaceLocation").getValue())
+                            String.valueOf(indivSpace.child("spaceLength").getValue()),
+                            String.valueOf(indivSpace.child("spaceWidth").getValue()),
+                            String.valueOf(indivSpace.child("spaceHeight").getValue()),
+                            String.valueOf(indivSpace.child("spaceLocation").getValue()),
+                            String.valueOf(indivSpace.child("spaceMonthly").getValue()),
+                            String.valueOf(indivSpace.child("spaceDescription").getValue()),
+                            String.valueOf(indivSpace.child("spaceImageURL").getValue()),
+                            String.valueOf(indivSpace.child("spaceHost").getValue())
                     );
                     data.add(spaceInfo);
                 }
@@ -150,6 +145,10 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     }
 
     private void initFirebase() {
+
+        this.mAuth = FirebaseAuth.getInstance();
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
+        this.userId = this.user.getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
@@ -196,14 +195,15 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     public void onSpaceClick(int position) {
         Intent intent = new Intent(this, SpaceViewActivity.class);
 
-        intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), data.get(position).getSpaceImage());
-        intent.putExtra(Keys.KEY_SPACE_LENGTH.name(), data.get(position).getLength());
-        intent.putExtra(Keys.KEY_SPACE_WIDTH.name(), data.get(position).getWidth());
-        intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(), data.get(position).getHeight());
-        intent.putExtra(Keys.KEY_SPACE_PRICE.name(), data.get(position).getPrice());
-        intent.putExtra(Keys.KEY_SPACE_HOST.name(), data.get(position).getHost());
-        intent.putExtra(Keys.KEY_SPACE_TYPE.name(), data.get(position).getType());
-        intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), data.get(position).getLocation());
+        intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), data.get(position).getSpaceImageUrl());
+        intent.putExtra(Keys.KEY_SPACE_LENGTH.name(), data.get(position).getSpaceLength());
+        intent.putExtra(Keys.KEY_SPACE_WIDTH.name(), data.get(position).getSpaceWidth());
+        intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(), data.get(position).getSpaceHeight());
+        intent.putExtra(Keys.KEY_SPACE_PRICE.name(), data.get(position).getSpaceMonthly());
+        intent.putExtra(Keys.KEY_SPACE_HOST.name(), data.get(position).getSpaceHost());
+        intent.putExtra(Keys.KEY_SPACE_TYPE.name(), data.get(position).getSpaceType());
+        intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), data.get(position).getSpaceLocation());
+        intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), data.get(position).getSpaceDescription());
 
         startActivity(intent);
     }

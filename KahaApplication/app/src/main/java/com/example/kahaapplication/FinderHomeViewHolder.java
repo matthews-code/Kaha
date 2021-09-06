@@ -72,15 +72,15 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
         itemView.setOnClickListener(this);
     }
 
-    public void BindData(SpaceModel space) {
-        String size = new String(space.getLength() + " x " + space.getWidth() + " x " + space.getHeight());
-        String price = new String("₱" + String.valueOf(space.getPrice()) + " / month");
+    public void BindData(SpaceUpload space) {
+        String size = new String(space.getSpaceLength() + " x " + space.getSpaceWidth() + " x " + space.getSpaceHeight());
+        String price = new String("₱" + String.valueOf(space.getSpaceMonthly()) + " / month");
 
-        this.ivSpace.setImageResource(space.getSpaceImage());
+        this.ivSpace.setImageResource(R.drawable.sample_garage2);
         this.tvSize.setText(size);
-        this.tvType.setText(space.getType());
-        this.tvLocation.setText(space.getLocation());
-        this.tvHost.setText(space.getHost());
+        this.tvType.setText(space.getSpaceType());
+        this.tvLocation.setText(space.getSpaceLocation());
+        this.tvHost.setText(space.getSpaceHost());
         this.tvPrice.setText(price);
 
         initFirebase();

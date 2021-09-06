@@ -4,49 +4,30 @@ import java.util.ArrayList;
 
 public class DataHelper {
 
-    public static ArrayList<SpaceModel> initData() {
-        ArrayList<SpaceModel> data = new ArrayList<>();
-        data.add(new SpaceModel(
-                R.drawable.sample_garage,
-                12,
-                20,
-                8,
-                20000,
-                "Matthew Buensalida",
+    public static ArrayList<SpaceUpload> initData() {
+        ArrayList<SpaceUpload> data = new ArrayList<>();
+        data.add(new SpaceUpload(
                 "Garage",
-                "Muntinlupa"
+                "12",
+                "120",
+                "5",
+                "Las Pinas",
+                "15,000",
+                "A nice storage space",
+                "Image",
+                "Matt"
         ));
-        data.add(new SpaceModel(
-                R.drawable.sample_garage2,
-                8,
-                8,
-                5,
-                12500,
-                "Jacob Darvin",
-                "Garage",
-                "Quezon"
-        ));
-        data.add(new SpaceModel(
-                R.drawable.sample_shed,
-                5,
-                5,
-                10,
-                3000,
-                "Joshua Ranjo",
+        data.add(new SpaceUpload(
                 "Shed",
-                "Makati"
+                "14",
+                "15",
+                "3",
+                "Makati",
+                "5,000",
+                "Perfect for your small items",
+                "Image",
+                "Matt"
         ));
-        data.add(new SpaceModel(
-                R.drawable.sample_warehouse,
-                100,
-                200,
-                60,
-                65000,
-                "Clark Kent",
-                "Warehouse",
-                "Pasig"
-        ));
-
         return data;
     }
 
