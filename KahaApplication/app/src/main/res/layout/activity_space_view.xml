@@ -51,6 +51,30 @@
                     android:textSize="34sp"
                     android:textStyle="bold" />
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_reservees_space"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="#FA3E3E"
+                    app:cardCornerRadius="25dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="8 Pending Reservees"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
+                </androidx.cardview.widget.CardView>
+
                 <View
                     android:id="@+id/divider"
                     android:layout_width="match_parent"

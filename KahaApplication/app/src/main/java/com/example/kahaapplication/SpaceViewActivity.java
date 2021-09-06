@@ -2,6 +2,7 @@ package com.example.kahaapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,8 +21,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCallback{
     private ImageView ivThumbnail;
@@ -51,6 +50,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private FirebaseUser user;
     private FirebaseAuth mAuth;
     private String userId;
+
+    private CardView cvNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +85,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.btnReserve = findViewById(R.id.btn_reserve);
         this.btnEdit = findViewById(R.id.btn_edit);
         this.btnDelete = findViewById(R.id.btn_delete);
+
+        this.cvNotification = findViewById(R.id.cv_reservees_space);
 
         //FINDER BUTTONS
         btnContact.setOnClickListener(new View.OnClickListener() {
@@ -199,10 +202,12 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             this.btnEdit.setVisibility(View.VISIBLE);
             this.llPrice.setVisibility(View.VISIBLE);
             this.vPriceDivider.setVisibility(View.VISIBLE);
+
+            //NOTIFICATION VISIBILITY
+            this.cvNotification.setVisibility(View.VISIBLE);
         }
 
     }
-
 
     private void initFirebase() {
         this.mAuth = FirebaseAuth.getInstance();
@@ -215,9 +220,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 setViews(snapshot.child("userIsFinder").getValue().toString());
-
             }
 
             @Override
@@ -226,6 +229,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             }
         });
     }
+
     @Override
     public void onResume() {
         super.onResume();

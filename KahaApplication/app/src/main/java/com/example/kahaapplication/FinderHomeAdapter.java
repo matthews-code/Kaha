@@ -23,6 +23,7 @@ public class FinderHomeAdapter extends RecyclerView.Adapter<FinderHomeViewHolder
         View itemView = layoutInflater.inflate(R.layout.spaces_feed, parent, false);
         FinderHomeViewHolder holder = new FinderHomeViewHolder(itemView, mOnSpaceListener);
 
+
         return holder;
     }
 
