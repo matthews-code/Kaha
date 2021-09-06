@@ -3,12 +3,15 @@ package com.example.kahaapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -23,7 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCallback{
-    private ImageView ivThumbnail;
+    //Carousel
+    //private ImageView ivThumbnail;
 
     private TextView tvSize;
     private TextView tvValue;
@@ -61,7 +65,10 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         initToolbar();
         this.initFirebase();
 
-        this.ivThumbnail = findViewById(R.id.iv_thumb);
+        //this.ivThumbnail = findViewById(R.id.iv_thumb);
+        ViewPager vpCarousel = findViewById(R.id.vp_carousel);
+        SpaceImageAdapter siAdapter = new SpaceImageAdapter(this);
+        vpCarousel.setAdapter(siAdapter);
 
         this.tvSize = findViewById(R.id.tv_show_size);
 
@@ -142,7 +149,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private void retrieveData() {
         Intent i = getIntent();
         int iThumbnail = i.getIntExtra(Keys.KEY_SPACE_THUMBNAIL.name(), 0);
-        this.ivThumbnail.setImageResource(iThumbnail);
+        //this.ivThumbnail.setImageResource(iThumbnail);
 
         float sLength = i.getFloatExtra(Keys.KEY_SPACE_LENGTH.name(), 0);
         float sWidth = i.getFloatExtra(Keys.KEY_SPACE_WIDTH.name(), 0);
