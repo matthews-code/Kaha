@@ -117,8 +117,11 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.userId = this.user.getUid();
 
         //Firebase
-        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.SPACES.name());
-        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.SPACES.name());
+//        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.SPACES.name());
+//        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.SPACES.name());
+
+        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -265,7 +268,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                                     etDescription.getText().toString().trim(),
                                     //Deprecated, might need to switch to none-deprecated alternative soon.
                                     taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
-                                    currUser
+                                    currUser, userId
                                     );
 
                             //Create new database entry
