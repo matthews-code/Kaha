@@ -34,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener, FilterBottomSheetDialog.BottomSheetListener{
-    private ArrayList<SpaceModel> data;
+    private ArrayList<SpaceUpload> data;
 
     private TextView tvHeader;
 
@@ -63,7 +63,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     }
 
     private void initComponents () {
-        this.data = new DataHelper().initData();
+        initData();
+        //this.data = DataHelper.initData();
 
         this.tvHeader = findViewById(R.id.tv_listing_header);
 
@@ -79,13 +80,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
         this.btnFilter = findViewById(R.id.btn_filter);
 
-        /*
-        ibBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });*/
 
         //ADD BUTTON
         fabAddSpace.setOnClickListener(new View.OnClickListener() {
@@ -106,11 +100,55 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         });
     }
 
-    private void initFirebase() {
+    private void initData() {
         this.mAuth = FirebaseAuth.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
 
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+
+        ArrayList<SpaceUpload> data = new ArrayList<>();
+
+        reference.child(this.userId).child("SPACES").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot indivSpace : snapshot.getChildren()) {
+
+                    //Log.d("msg", String.valueOf(indivSpace.child("spaceDescription").getValue()));
+                    //Log.d("msg", String.valueOf(indivSpace.getValue()));
+                    //SpaceModel spaceInfo = indivSpace.getValue(SpaceModel.class);
+                    //Log.d("mesg", String.valueOf(spaceInfo));
+
+                    SpaceUpload spaceInfo = new SpaceUpload(
+                            String.valueOf(indivSpace.child("spaceType").getValue()),
+                            String.valueOf(indivSpace.child("spaceLength").getValue()),
+                            String.valueOf(indivSpace.child("spaceWidth").getValue()),
+                            String.valueOf(indivSpace.child("spaceHeight").getValue()),
+                            String.valueOf(indivSpace.child("spaceLocation").getValue()),
+                            String.valueOf(indivSpace.child("spaceMonthly").getValue()),
+                            String.valueOf(indivSpace.child("spaceDescription").getValue()),
+                            String.valueOf(indivSpace.child("spaceImageURL").getValue()),
+                            String.valueOf(indivSpace.child("spaceHost").getValue())
+                    );
+                    data.add(spaceInfo);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        this.data = data;
+    }
+
+    private void initFirebase() {
+
+        this.mAuth = FirebaseAuth.getInstance();
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
+        this.userId = this.user.getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
@@ -157,14 +195,15 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     public void onSpaceClick(int position) {
         Intent intent = new Intent(this, SpaceViewActivity.class);
 
-        intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), data.get(position).getSpaceImage());
-        intent.putExtra(Keys.KEY_SPACE_LENGTH.name(), data.get(position).getLength());
-        intent.putExtra(Keys.KEY_SPACE_WIDTH.name(), data.get(position).getWidth());
-        intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(), data.get(position).getHeight());
-        intent.putExtra(Keys.KEY_SPACE_PRICE.name(), data.get(position).getPrice());
-        intent.putExtra(Keys.KEY_SPACE_HOST.name(), data.get(position).getHost());
-        intent.putExtra(Keys.KEY_SPACE_TYPE.name(), data.get(position).getType());
-        intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), data.get(position).getLocation());
+        intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), data.get(position).getSpaceImageUrl());
+        intent.putExtra(Keys.KEY_SPACE_LENGTH.name(), data.get(position).getSpaceLength());
+        intent.putExtra(Keys.KEY_SPACE_WIDTH.name(), data.get(position).getSpaceWidth());
+        intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(), data.get(position).getSpaceHeight());
+        intent.putExtra(Keys.KEY_SPACE_PRICE.name(), data.get(position).getSpaceMonthly());
+        intent.putExtra(Keys.KEY_SPACE_HOST.name(), data.get(position).getSpaceHost());
+        intent.putExtra(Keys.KEY_SPACE_TYPE.name(), data.get(position).getSpaceType());
+        intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), data.get(position).getSpaceLocation());
+        intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), data.get(position).getSpaceDescription());
 
         startActivity(intent);
     }

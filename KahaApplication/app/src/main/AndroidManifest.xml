@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NavBarTrue">
         <activity
+            android:name=".SearchResultsActivity"
+            android:exported="true" />
+        <activity
             android:name=".PublicHosterProfileActivity"
             android:exported="true" />
         <activity
