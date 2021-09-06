@@ -63,7 +63,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     }
 
     private void initComponents () {
-        this.data = new DataHelper().initData();
+        initData();
 
         this.tvHeader = findViewById(R.id.tv_listing_header);
 
@@ -106,11 +106,50 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         });
     }
 
-    private void initFirebase() {
+    private void initData() {
         this.mAuth = FirebaseAuth.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
 
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+
+        ArrayList<SpaceModel> data = new ArrayList<>();
+
+        reference.child(this.userId).child("HOSTER_SPACES").addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot indivSpace : snapshot.getChildren()) {
+
+                    //Log.d("msg", String.valueOf(indivSpace.child("spaceDescription").getValue()));
+                    //Log.d("msg", String.valueOf(indivSpace.getValue()));
+                    //SpaceModel spaceInfo = indivSpace.getValue(SpaceModel.class);
+                    //Log.d("mesg", String.valueOf(spaceInfo));
+
+                    SpaceModel spaceInfo = new SpaceModel(
+                            R.drawable.sample_garage2,
+                            Float.parseFloat(String.valueOf(indivSpace.child("spaceLength").getValue())),
+                            Float.parseFloat(String.valueOf(indivSpace.child("spaceWidth").getValue())),
+                            Float.parseFloat(String.valueOf(indivSpace.child("spaceHeight").getValue())),
+                            Float.parseFloat(String.valueOf(indivSpace.child("spaceMonthly").getValue())),
+                            "Matt",
+                            String.valueOf(indivSpace.child("spaceType").getValue()),
+                            String.valueOf(indivSpace.child("spaceLocation").getValue())
+                    );
+                    data.add(spaceInfo);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        this.data = data;
+    }
+
+    private void initFirebase() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
