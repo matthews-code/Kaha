@@ -30,8 +30,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -70,6 +73,7 @@ public class SpaceAddActivity extends AppCompatActivity {
     //Account
     private String userId;
     private boolean isEditing;
+    private String currUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +117,8 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.userId = this.user.getUid();
 
         //Firebase
-        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.HOSTER_SPACES.name());
-        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.HOSTER_SPACES.name());
+        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.SPACES.name());
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.SPACES.name());
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +140,22 @@ public class SpaceAddActivity extends AppCompatActivity {
                 if(stUploadTask != null && stUploadTask.isInProgress()) {
                     Toast.makeText(SpaceAddActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+                    reference.child(userId).addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            currUser = snapshot.child("userFirstName").getValue().toString() + " " +
+                                    snapshot.child("userLastName").getValue().toString();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                     uploadFile();
                 }
             }
@@ -244,7 +264,9 @@ public class SpaceAddActivity extends AppCompatActivity {
                                     etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
                                     etDescription.getText().toString().trim(),
                                     //Deprecated, might need to switch to none-deprecated alternative soon.
-                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
+                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
+                                    currUser
+                                    );
 
                             //Create new database entry
                             String uploadId = drDatabaseRef.push().getKey();

@@ -2,7 +2,7 @@ package com.example.kahaapplication;
 
 public enum Keys {
     COLLECTIONS_USERS,
-    HOSTER_SPACES,
+    SPACES,
 
     //SPACE DETAILS
     KEY_SPACE_THUMBNAIL,

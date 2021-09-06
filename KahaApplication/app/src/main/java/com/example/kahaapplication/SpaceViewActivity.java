@@ -34,6 +34,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private TextView tvHost;
     private TextView tvType;
     private TextView tvTitle;
+    private TextView tvDescription;
     private MapView mapView;
 
     private AppCompatButton btnReserve;
@@ -71,7 +72,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         vpCarousel.setAdapter(siAdapter);
 
         this.tvSize = findViewById(R.id.tv_show_size);
-
+        this.tvDescription = findViewById(R.id.tv_show_desc);
         this.tvHost = findViewById(R.id.tv_show_hoster_name);
         this.tvValue = findViewById(R.id.tv_price_value);
         this.tvType = findViewById(R.id.tv_show_type);
@@ -170,6 +171,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
         String sLocation = i.getStringExtra(Keys.KEY_SPACE_LOCATION.name());
         this.tvTitle.setText(sType + " in " + sLocation);
+
+        String sDescription = i.getStringExtra(Keys.KEY_SPACE_DESCRIPTION.name());
+        this.tvDescription.setText(sDescription);
     }
 
     @Override

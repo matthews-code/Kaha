@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class FinderHomeAdapter extends RecyclerView.Adapter<FinderHomeViewHolder> {
-    private ArrayList<SpaceModel> data;
+    private ArrayList<SpaceUpload> data;
     private OnSpaceListener mOnSpaceListener;
 
-    public FinderHomeAdapter(ArrayList<SpaceModel> data, OnSpaceListener onSpaceListener) {
+    public FinderHomeAdapter(ArrayList<SpaceUpload> data, OnSpaceListener onSpaceListener) {
         this.data = data;
         this.mOnSpaceListener = onSpaceListener;
     }
@@ -22,7 +22,6 @@ public class FinderHomeAdapter extends RecyclerView.Adapter<FinderHomeViewHolder
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View itemView = layoutInflater.inflate(R.layout.spaces_feed, parent, false);
         FinderHomeViewHolder holder = new FinderHomeViewHolder(itemView, mOnSpaceListener);
-
 
         return holder;
     }
