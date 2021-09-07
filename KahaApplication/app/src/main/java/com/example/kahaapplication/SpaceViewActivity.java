@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -80,7 +81,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
     private CardView cvNotification;
 
-    private String spaceID, length, width, height, price, location, imgUrl;
+    private String spaceID, length, width, height, price, location, imgUrl, visibility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,6 +170,29 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             }
         });
 
+        //RADIO BUTTONS
+        rgVisibility.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                Log.d(TAG, "onCheckedChanged: " + radioGroup.findViewById(i));
+                View selectedRadioButton = radioGroup.findViewById(i);
+                int index = radioGroup.indexOfChild(selectedRadioButton);
+
+                Log.d(TAG, "onCheckedChanged: " + index);
+
+                switch (index){
+                    case 2:
+                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
+                        break;
+                    case 3:
+                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
         //DELETE BUTTON
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,7 +239,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 if(snapshot.child("spaceType").getValue() != null) {
                     String type = snapshot.child("spaceType").getValue().toString();
                     String location = snapshot.child("spaceLocation").getValue().toString();
@@ -227,7 +250,10 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                     String host = snapshot.child("spaceHost").getValue().toString();
                     String url = snapshot.child("spaceImageUrl").getValue().toString();
 
-                    setTextViews(type, location, price, length, width, height, description, host, url);
+                    //Get visibility status
+                    String visibility = snapshot.child("spaceVisibility").getValue().toString();
+
+                    setTextViews(type, location, price, length, width, height, description, host, url, visibility);
                 }
             }
 
@@ -238,8 +264,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         });
     }
 
-    private void setTextViews (String type, String location, String price, String length, String width, String height, String description, String host, String url) {
-
+    private void setTextViews (String type, String location, String price, String length, String width, String height, String description, String host, String url, String visibility) {
+        this.visibility = visibility;
         this.length = length;
         this.width = width;
         this.height = height;
@@ -261,6 +287,14 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.tvTitle.setText(type + " in " + location);
 
         this.tvDescription.setText(description);
+
+        if(this.visibility.equals("public")) {
+            this.rbPublic.setChecked(true);
+            this.rbPrivate.setChecked(false);
+        } else {
+            this.rbPublic.setChecked(false);
+            this.rbPrivate.setChecked(true);
+        }
 
     }
 
@@ -295,16 +329,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         mapView.onSaveInstanceState(mapViewBundle);
     }
 
-    private boolean setVisibilityRadio(String visibility) {
-        if(visibility.equals("public")) {
-            return true;
-        } else if (visibility.equals("private")) {
-            return false;
-        } else {
-            return false;
-        }
-    }
-
     private void setViews(String isFinder) {
         this.btnDelete.setVisibility(View.GONE);
         this.btnEdit.setVisibility(View.GONE);
@@ -330,9 +354,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
             //SPACE VISIBILITY VISIBILITY
             this.rgVisibility.setVisibility(View.VISIBLE);
-//
-//            if(setVisibilityRadio())
-//            this.rbPublic.setChecked(setVisibilityRadio());
         }
     }
 
