@@ -151,13 +151,13 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         int iThumbnail = i.getIntExtra(Keys.KEY_SPACE_THUMBNAIL.name(), 0);
         //this.ivThumbnail.setImageResource(iThumbnail);
 
-        float sLength = i.getFloatExtra(Keys.KEY_SPACE_LENGTH.name(), 0);
-        float sWidth = i.getFloatExtra(Keys.KEY_SPACE_WIDTH.name(), 0);
-        float sHeight = i.getFloatExtra(Keys.KEY_SPACE_HEIGHT.name(), 0);
+        String sLength = i.getStringExtra(Keys.KEY_SPACE_LENGTH.name());
+        String sWidth = i.getStringExtra(Keys.KEY_SPACE_WIDTH.name());
+        String sHeight = i.getStringExtra(Keys.KEY_SPACE_HEIGHT.name());
 
         this.tvSize.setText(sLength + " x " + sWidth + " x " + sHeight);
 
-        float sPrice = i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0);
+        String sPrice = i.getStringExtra(Keys.KEY_SPACE_PRICE.name());
         this.tvPrice.setText("₱" + sPrice);
         this.tvValue.setText("₱" + sPrice);
 

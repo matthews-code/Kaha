@@ -75,6 +75,7 @@
                     android:id="@+id/editTextTextPersonName"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="0.9"
                     android:ems="10"
                     android:hint="@string/search"
                     android:inputType="textPersonName"
@@ -85,15 +86,18 @@
                     android:id="@+id/imageButton3"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="-10dp"
+                    android:layout_weight="0.01"
                     android:backgroundTint="#00FFFFFF"
                     app:srcCompat="@drawable/search" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="FILTER" />
+                    android:layout_weight="0.01"
+                    android:backgroundTint="#FFFFFF"
+                    app:srcCompat="@drawable/tune" />
 
             </LinearLayout>
 
