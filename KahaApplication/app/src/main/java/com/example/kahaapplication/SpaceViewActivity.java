@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.Key;
+
 public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCallback{
     //Carousel
     //private ImageView ivThumbnail;
@@ -117,17 +119,20 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             public void onClick(View view) {
                 Intent intent = new Intent(SpaceViewActivity.this, SpaceEditActivity.class);
 
+                intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()));
                 intent.putExtra(Keys.KEY_SPACE_TYPE.name(), i.getStringExtra(Keys.KEY_SPACE_TYPE.name()));
 
-                intent.putExtra(Keys.KEY_SPACE_LENGTH.name(),   i.getFloatExtra(Keys.KEY_SPACE_LENGTH.name(), 0));
-                intent.putExtra(Keys.KEY_SPACE_WIDTH.name(),    i.getFloatExtra(Keys.KEY_SPACE_WIDTH.name(), 0));
-                intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(),   i.getFloatExtra(Keys.KEY_SPACE_HEIGHT.name(), 0));
+                intent.putExtra(Keys.KEY_SPACE_LENGTH.name(),   i.getStringExtra(Keys.KEY_SPACE_LENGTH.name()));
+                intent.putExtra(Keys.KEY_SPACE_WIDTH.name(),    i.getStringExtra(Keys.KEY_SPACE_WIDTH.name()));
+                intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(),   i.getStringExtra(Keys.KEY_SPACE_HEIGHT.name()));
 
                 intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), i.getStringExtra(Keys.KEY_SPACE_LOCATION.name()));
-                intent.putExtra(Keys.KEY_SPACE_PRICE.name(), i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0));
+                intent.putExtra(Keys.KEY_SPACE_PRICE.name(), i.getStringExtra(Keys.KEY_SPACE_PRICE.name()));
 
-                // REQUIRES FIREBASE DESCRIPTION
-                // intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), i.getStringExtra(Keys.KEY_SPACE_TYPE.name()));
+                intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), i.getStringExtra(Keys.KEY_SPACE_DESCRIPTION.name()));
+                intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()));
+                intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name()));
+
                 startActivity(intent);
             }
         });

@@ -16,7 +16,8 @@ public class DataHelper {
                 "A nice storage space",
                 "Image",
                 "Matt",
-                "SAMPLE ID"
+                "SAMPLE ID",
+                "SAMPLE UPLOAD ID"
         ));
         data.add(new SpaceUpload(
                 "Shed",
@@ -28,7 +29,8 @@ public class DataHelper {
                 "Perfect for your small items",
                 "Image",
                 "Matt",
-                "SAMPLE ID"
+                "SAMPLE ID",
+                "SAMPLE UPLOAD ID"
         ));
         return data;
     }

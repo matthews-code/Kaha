@@ -11,12 +11,13 @@ public class SpaceUpload {
     private String spaceImageUrl;
     private String spaceHost;
     private String spaceHostId;
+    private String spaceUploadId;
 
     public SpaceUpload(String type, String length,
                        String width, String height,
                        String location, String monthly,
                        String description, String imageUrl,
-                       String host, String id) {
+                       String host, String id, String uploadId) {
 
         spaceType = type;
         spaceLength = length;
@@ -25,9 +26,11 @@ public class SpaceUpload {
         spaceLocation = location;
         spaceMonthly = monthly;
         spaceDescription = description;
+
         spaceImageUrl = imageUrl;
         spaceHost = host;
         spaceHostId = id;
+        spaceUploadId = uploadId;
     }
 
     public String getSpaceType() { return spaceType; }
@@ -40,4 +43,5 @@ public class SpaceUpload {
     public String getSpaceImageUrl() { return spaceImageUrl; }
     public String getSpaceHost() { return spaceHost; }
     public String getSpaceHostId() { return spaceHostId; }
+    public String getSpaceUploadId() { return spaceUploadId; }
 }

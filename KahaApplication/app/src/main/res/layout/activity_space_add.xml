@@ -95,7 +95,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Length"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberDecimal" />
 
                 <EditText
                     android:id="@+id/et_space_add_width"
@@ -104,7 +104,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Width"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberDecimal" />
 
                 <EditText
                     android:id="@+id/et_space_add_height"
@@ -113,7 +113,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Height"
-                    android:inputType="textPersonName" />
+                    android:inputType="numberDecimal" />
             </LinearLayout>
 
             <TextView

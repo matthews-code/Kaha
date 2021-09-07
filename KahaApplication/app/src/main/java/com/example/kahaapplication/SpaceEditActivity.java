@@ -66,6 +66,7 @@ public class SpaceEditActivity extends AppCompatActivity {
     private ImageButton ibBack;
 
     //Image URI
+    private String sImageUri;
     private Uri mImageUri;
 
     //Firebase
@@ -73,6 +74,8 @@ public class SpaceEditActivity extends AppCompatActivity {
     private StorageReference srStorageRef;
     private DatabaseReference drDatabaseRef;
     private StorageTask stUploadTask;
+    private String sHostId;
+    private String sUploadId;
 
     //Account
     private String userId;
@@ -124,8 +127,8 @@ public class SpaceEditActivity extends AppCompatActivity {
         this.userId = this.user.getUid();
 
         //Firebase
-        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.SPACES.name());
-        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + this.userId + "/" + Keys.SPACES.name());
+        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,11 +144,29 @@ public class SpaceEditActivity extends AppCompatActivity {
             }
         });
 
-        //EDIT SPACE BUTTON
         btnEditSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(stUploadTask != null && stUploadTask.isInProgress()) {
+                    Toast.makeText(SpaceEditActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                } else {
 
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+                    reference.child(userId).addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            currUser = snapshot.child("userFirstName").getValue().toString() + " " +
+                                    snapshot.child("userLastName").getValue().toString();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                    uploadFile();
+                }
             }
         });
 
@@ -153,27 +174,43 @@ public class SpaceEditActivity extends AppCompatActivity {
         Toast.makeText(SpaceEditActivity.this, "Editing a " + i.getStringExtra(Keys.KEY_SPACE_TYPE.name()), Toast.LENGTH_SHORT).show();
         String sType = i.getStringExtra(Keys.KEY_SPACE_TYPE.name());
 
-        float fLength = i.getFloatExtra(Keys.KEY_SPACE_LENGTH.name(), 0);
-        float fWidth = i.getFloatExtra(Keys.KEY_SPACE_WIDTH.name(), 0);
-        float fHeight = i.getFloatExtra(Keys.KEY_SPACE_HEIGHT.name(), 0);
+        String sLength = i.getStringExtra(Keys.KEY_SPACE_LENGTH.name());
+        String sWidth = i.getStringExtra(Keys.KEY_SPACE_WIDTH.name());
+        String sHeight = i.getStringExtra(Keys.KEY_SPACE_HEIGHT.name());
+        String sDescription = i.getStringExtra(Keys.KEY_SPACE_DESCRIPTION.name());
 
         String sLocation = i.getStringExtra(Keys.KEY_SPACE_LOCATION.name());
-        float fPrice = i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0);
+        String sPrice = i.getStringExtra(Keys.KEY_SPACE_PRICE.name());
 
         //Assign from Extras
         this.spnType.setSelection(getSpaceTypeInt(sType));
-        this.etLength.setText(String.valueOf(fLength));
-        this.etWidth.setText(String.valueOf(fWidth));
-        this.etHeight.setText(String.valueOf(fHeight));
+        this.etLength.setText(sLength);
+        this.etWidth.setText(sWidth);
+        this.etHeight.setText(sHeight);
 
         this.etLocation.setText(sLocation);
-        this.etMonthly.setText(String.valueOf(fPrice));
+        this.etMonthly.setText(sPrice);
+
+        this.etDescription.setText(sDescription);
 
         //Swap Buttons
         this.btnCreateSpace.setVisibility(View.GONE);
         this.btnEditSpace.setVisibility(View.VISIBLE);
 
-        ivThumb.setImageResource(R.drawable.no_image);
+        //Bind ID
+        this.sHostId = i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name());
+        this.sUploadId = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
+
+        //Curr ImageURI
+        this.sImageUri = i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name());
+
+        //DEBUGGING
+        Toast.makeText(this, "Upload ID: " + sUploadId, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Image URI: " + i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()), Toast.LENGTH_SHORT).show();
+
+        //ivThumb.setImageResource(R.drawable.no_image);
+        //Download Thumbnail
+        Picasso.get().load(sImageUri).fit().centerCrop().into(ivThumb);
     }
 
     private int getSpaceTypeInt(String sType) {
@@ -212,6 +249,7 @@ public class SpaceEditActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             mImageUri = data.getData();
+            Toast.makeText(this, "" + mImageUri, Toast.LENGTH_SHORT).show();
             Picasso.get().load(mImageUri).into(ivThumb);
         }
     }
@@ -241,19 +279,29 @@ public class SpaceEditActivity extends AppCompatActivity {
                                 }
                             }, 5000);
 
-                            Toast.makeText(SpaceEditActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
-                            SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
-                                    etWidth.getText().toString().trim(), etHeight.getText().toString().trim(),
-                                    etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
-                                    etDescription.getText().toString().trim(),
-                                    //Deprecated, might need to switch to none-deprecated alternative soon.
-                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
-                                    currUser
-                            );
+                            drDatabaseRef.child(sUploadId).child("spaceType").setValue(spnType.getSelectedItem().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceLength").setValue(etLength.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceWidth").setValue(etWidth.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceHeight").setValue(etHeight.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceLocation").setValue(etLocation.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceMonthly").setValue(etMonthly.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceDescription").setValue(etDescription.getText().toString().trim());
+
+//                            String uploadId = drDatabaseRef.push().getKey();
+//
+//                            Toast.makeText(SpaceEditActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
+//                            SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
+//                                    etWidth.getText().toString().trim(), etHeight.getText().toString().trim(),
+//                                    etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
+//                                    etDescription.getText().toString().trim(),
+//                                    //Deprecated, might need to switch to none-deprecated alternative soon.
+//                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
+//                                    currUser, userId, uploadId
+//                            );
 
                             //Create new database entry
-                            String uploadId = drDatabaseRef.push().getKey();
-                            drDatabaseRef.child(uploadId).setValue(upload);
+                            //drDatabaseRef.child(uploadId).setValue(upload);
+
                             finish();
 
                         }

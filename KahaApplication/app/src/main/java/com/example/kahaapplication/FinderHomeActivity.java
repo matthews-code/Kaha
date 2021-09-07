@@ -63,7 +63,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     }
 
     private void initComponents () {
-        this.dataList = initData();
+        //this.dataList = initData();
         Log.d("HERE", "INIT COMPONENTS");
 
         this.tvHeader = findViewById(R.id.tv_listing_header);
@@ -71,7 +71,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         this.recyclerView = findViewById(R.id.rv_listings);
         this.nsvFinderHome = findViewById(R.id.nsv_finder_home);
 
-        this.adapter = new FinderHomeAdapter(dataList, this);
+        //this.adapter = new FinderHomeAdapter(dataList, this);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         this.fabAddSpace = findViewById(R.id.fab_add_space);
@@ -123,10 +123,11 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                             String.valueOf(indivSpace.child("spaceDescription").getValue()),
                             String.valueOf(indivSpace.child("spaceImageUrl").getValue()),
                             String.valueOf(indivSpace.child("spaceHost").getValue()),
-                            String.valueOf(indivSpace.child("spaceHostId").getValue())
+                            String.valueOf(indivSpace.child("spaceHostId").getValue()),
+                            String.valueOf(indivSpace.child("spaceUploadId").getValue())
                     );
 
-                    Log.d("SPACEINFO", "FOR");
+                    Log.d("SPACEINFO", "loaded: " + indivSpace.child("spaceUploadId").getValue());
                     tempData.add(spaceInfo);
 
 //                    SpaceUpload spaceInfo = indivSpace.getValue(SpaceUpload.class);
@@ -181,8 +182,10 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
+        this.dataList = initData();
+        this.adapter = new FinderHomeAdapter(dataList, this);
         loadData();
     }
 
@@ -205,7 +208,10 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         intent.putExtra(Keys.KEY_SPACE_TYPE.name(), dataList.get(position).getSpaceType());
         intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), dataList.get(position).getSpaceLocation());
         intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), dataList.get(position).getSpaceDescription());
+        intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
+        intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), dataList.get(position).getSpaceUploadId());
 
+        dataList.clear();
         startActivity(intent);
     }
 

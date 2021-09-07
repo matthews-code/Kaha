@@ -216,90 +216,99 @@ public class SpaceAddActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-//VIDEO CODE
+////VIDEO CODE
+//    private void uploadFile() {
+//        if(mImageUri != null) {
+//            StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
+//            + "." + getFileExtension(mImageUri));
+//
+//            stUploadTask = fileReference.putFile(mImageUri)
+//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                            //Delays reset of progress bar for 5 seconds
+//                            Handler handler = new Handler();
+//                            handler.postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    pbUploadStatus.setProgress(0);
+//                                }
+//                            }, 5000);
+//
+//                            String uploadId = drDatabaseRef.push().getKey();
+//
+//                            Toast.makeText(SpaceAddActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
+//                            SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
+//                                    etWidth.getText().toString().trim(), etHeight.getText().toString().trim(),
+//                                    etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
+//                                    etDescription.getText().toString().trim(),
+//                                    //IMAGE URL / Deprecated, might need to switch to none-deprecated alternative soon.
+//                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
+//                                    currUser, userId, uploadId
+//                                    );
+//
+//                            //Create new database entry
+//                            drDatabaseRef.child(uploadId).setValue(upload);
+//                            finish();
+//
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Toast.makeText(SpaceAddActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    })
+//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+//                        @Override
+//                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+//                            double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+//                            pbUploadStatus.setProgress((int) progress);
+//                        }
+//                    });
+//        } else {
+//            Toast.makeText(this,"No file selected", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//}
+
+//  NONE DEPRECATED UPLOAD ALTERNATIVE.
     private void uploadFile() {
-        if(mImageUri != null) {
+        if (mImageUri != null) {
             StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
             + "." + getFileExtension(mImageUri));
 
-            stUploadTask = fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //Delays reset of progress bar for 5 seconds
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    pbUploadStatus.setProgress(0);
-                                }
-                            }, 5000);
+            fileReference.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return srStorageRef.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        Log.e(TAG, "Then: " + downloadUri.toString());
 
-                            Toast.makeText(SpaceAddActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
-                            SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
+                        String uploadId = drDatabaseRef.push().getKey();
+
+                        SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
                                     etWidth.getText().toString().trim(), etHeight.getText().toString().trim(),
                                     etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
                                     etDescription.getText().toString().trim(),
-                                    //Deprecated, might need to switch to none-deprecated alternative soon.
-                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
-                                    currUser, userId
-                                    );
+                                    downloadUri.toString(),
+                                    currUser, userId, uploadId);
 
-                            //Create new database entry
-                            String uploadId = drDatabaseRef.push().getKey();
-                            drDatabaseRef.child(uploadId).setValue(upload);
-                            finish();
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SpaceAddActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                            pbUploadStatus.setProgress((int) progress);
-                        }
-                    });
-        } else {
-            Toast.makeText(this,"No file selected", Toast.LENGTH_SHORT).show();
+                        drDatabaseRef.child(uploadId).setValue(upload);
+                        finish();
+                    } else {
+                        Toast.makeText(SpaceAddActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
-}
-
-//  NONE DEPRECATED UPLOAD ALTERNATIVE.
-//    private void uploadFile() {
-//        if (mImageUri != null) {
-//            srStorageRef.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-//                @Override
-//                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-//                    if (!task.isSuccessful()) {
-//                        throw task.getException();
-//                    }
-//                    return srStorageRef.getDownloadUrl();
-//                }
-//            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Uri> task) {
-//                    if (task.isSuccessful()) {
-//                        Uri downloadUri = task.getResult();
-//                        Log.e(TAG, "Then: " + downloadUri.toString());
-//
-//
-//                        SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(),
-//                                etLocation.getText().toString().trim(),
-//                                downloadUri.toString());
-//
-//                        drDatabaseRef.push().setValue(upload);
-//                    } else {
-//                        Toast.makeText(SpaceAddActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
-//        }
-//    }
-// }
+ }

@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -82,6 +83,11 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
         this.tvLocation.setText(space.getSpaceLocation());
         this.tvHost.setText(space.getSpaceHost());
         this.tvPrice.setText(price);
+
+        Picasso.get().load(space.getSpaceImageUrl()).fit().centerCrop()
+                .error(R.drawable.sample_garage2)
+                .placeholder(R.drawable.sample_garage2)
+                .into(this.ivSpace);
 
         initFirebase();
     }

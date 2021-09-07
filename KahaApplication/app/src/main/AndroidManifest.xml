@@ -22,6 +22,9 @@
             android:name=".SpaceAddActivity"
             android:exported="true" />
         <activity
+            android:name=".SpaceEditActivity"
+            android:exported="true" />
+        <activity
             android:name=".SpaceViewActivity"
             android:exported="true" />
         <activity
