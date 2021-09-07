@@ -1,11 +1,15 @@
 package com.example.kahaapplication;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +18,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.security.Key;
 
@@ -58,6 +67,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private FirebaseUser user;
     private FirebaseAuth mAuth;
     private String userId;
+
+    private StorageReference srStorageRef;
+    private DatabaseReference drDatabaseRef;
 
     private CardView cvNotification;
 
@@ -100,6 +112,10 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
         this.cvNotification = findViewById(R.id.cv_reservees_space);
 
+        //Firebase
+        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+
         //FINDER BUTTONS
         btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +132,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         initMap(savedInstanceState);
         retrieveData();
 
+        //HOSTER BUTTONS
         //EDIT BUTTON
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -196,6 +213,42 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.tvTitle.setText(type + " in " + location);
 
         this.tvDescription.setText(description);
+
+        //DELETE BUTTON
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(SpaceViewActivity.this)
+                        .setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this space? You cannot undo this action.")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Delete Document
+                                drDatabaseRef.child(i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name())).removeValue();
+                                Toast.makeText(SpaceViewActivity.this, "Space Deleted", Toast.LENGTH_SHORT).show();
+
+                                //Delete Picture
+                                StorageReference photoRef = srStorageRef.getStorage().getReferenceFromUrl(i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()));
+                                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d(TAG, "Deleted Picture: " + photoRef);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "did not delete file!");
+                                    }
+                                });
+
+                                finish();
+                            }
+                        })
+
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+            }
+        });
 
     }
 
