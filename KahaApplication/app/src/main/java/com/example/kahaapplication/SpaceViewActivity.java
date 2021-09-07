@@ -168,63 +168,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                 startActivity(intent);
             }
         });
-    }
-
-    private void retrieveData () {
-        this.mAuth = FirebaseAuth.getInstance();
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name());
-
-        reference.child(Keys.SPACES.name()).child(spaceID).addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("HERE", String.valueOf(snapshot));
-                Log.d("HERE AGAAAAAAAAAAAAAAAAAAAIN", snapshot.child("spaceType").getValue().toString() + " " + snapshot.child("spaceMonthly").getValue().toString());
-
-                String type = snapshot.child("spaceType").getValue().toString();
-                String location = snapshot.child("spaceLocation").getValue().toString();
-                String price = snapshot.child("spaceMonthly").getValue().toString();
-                String length = snapshot.child("spaceLength").getValue().toString();
-                String width = snapshot.child("spaceWidth").getValue().toString();
-                String height = snapshot.child("spaceHeight").getValue().toString();
-                String description = snapshot.child("spaceDescription").getValue().toString();
-                String host = snapshot.child("spaceHost").getValue().toString();
-                String url = snapshot.child("spaceImageUrl").getValue().toString();
-
-                setTextViews(type, location, price, length, width, height, description, host, url);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR", String.valueOf(error));
-            }
-        });
-    }
-
-    private void setTextViews (String type, String location, String price, String length, String width, String height, String description, String host, String url) {
-
-        this.length = length;
-        this.width = width;
-        this.height = height;
-        this.price = price;
-        this.location = location;
-        this.imgUrl = url;
-
-        String dimensions = length + " x " + width + " x " + height;
-        this.tvSize.setText(dimensions);
-
-        this.tvPrice.setText("₱" + price);
-        this.tvValue.setText("₱" + price);
-
-        this.tvHost.setText(host);
-        this.btnContact.setText("Contact " + host);
-
-        this.tvType.setText(type);
-
-        this.tvTitle.setText(type + " in " + location);
-
-        this.tvDescription.setText(description);
 
         //DELETE BUTTON
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -261,6 +204,63 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                         .show();
             }
         });
+    }
+
+    private void retrieveData () {
+        this.mAuth = FirebaseAuth.getInstance();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name());
+
+        reference.child(Keys.SPACES.name()).child(spaceID).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.child("spaceType").getValue() != null) {
+                    String type = snapshot.child("spaceType").getValue().toString();
+                    String location = snapshot.child("spaceLocation").getValue().toString();
+                    String price = snapshot.child("spaceMonthly").getValue().toString();
+                    String length = snapshot.child("spaceLength").getValue().toString();
+                    String width = snapshot.child("spaceWidth").getValue().toString();
+                    String height = snapshot.child("spaceHeight").getValue().toString();
+                    String description = snapshot.child("spaceDescription").getValue().toString();
+                    String host = snapshot.child("spaceHost").getValue().toString();
+                    String url = snapshot.child("spaceImageUrl").getValue().toString();
+
+                    setTextViews(type, location, price, length, width, height, description, host, url);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR", String.valueOf(error));
+            }
+        });
+    }
+
+    private void setTextViews (String type, String location, String price, String length, String width, String height, String description, String host, String url) {
+
+        this.length = length;
+        this.width = width;
+        this.height = height;
+        this.price = price;
+        this.location = location;
+        this.imgUrl = url;
+
+        String dimensions = length + " x " + width + " x " + height;
+        this.tvSize.setText(dimensions);
+
+        this.tvPrice.setText("₱" + price);
+        this.tvValue.setText("₱" + price);
+
+        this.tvHost.setText(host);
+        this.btnContact.setText("Contact " + host);
+
+        this.tvType.setText(type);
+
+        this.tvTitle.setText(type + " in " + location);
+
+        this.tvDescription.setText(description);
 
     }
 
