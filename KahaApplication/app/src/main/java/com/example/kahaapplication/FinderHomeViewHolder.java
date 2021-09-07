@@ -77,7 +77,7 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
         String size = new String(space.getSpaceLength() + " x " + space.getSpaceWidth() + " x " + space.getSpaceHeight());
         String price = new String("₱" + String.valueOf(space.getSpaceMonthly()) + " / month");
 
-        this.ivSpace.setImageResource(R.drawable.sample_garage2);
+        this.ivSpace.setImageResource(R.drawable.loading);
         this.tvSize.setText(size);
         this.tvType.setText(space.getSpaceType());
         this.tvLocation.setText(space.getSpaceLocation());
@@ -85,8 +85,8 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
         this.tvPrice.setText(price);
 
         Picasso.get().load(space.getSpaceImageUrl()).fit().centerCrop()
-                .error(R.drawable.sample_garage2)
-                .placeholder(R.drawable.sample_garage2)
+                .error(R.drawable.loading)
+                .placeholder(R.drawable.loading)
                 .into(this.ivSpace);
 
         initFirebase();
