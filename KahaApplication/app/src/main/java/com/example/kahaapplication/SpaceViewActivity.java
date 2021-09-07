@@ -1,5 +1,7 @@
 package com.example.kahaapplication;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
@@ -10,15 +12,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +32,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.security.Key;
 
@@ -59,6 +67,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private FirebaseUser user;
     private FirebaseAuth mAuth;
     private String userId;
+
+    private StorageReference srStorageRef;
+    private DatabaseReference drDatabaseRef;
 
     private CardView cvNotification;
 
@@ -99,6 +110,10 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.btnDelete = findViewById(R.id.btn_delete);
 
         this.cvNotification = findViewById(R.id.cv_reservees_space);
+
+        //Firebase
+        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
 
         //FINDER BUTTONS
         btnContact.setOnClickListener(new View.OnClickListener() {
@@ -147,16 +162,30 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                 new AlertDialog.Builder(SpaceViewActivity.this)
                         .setTitle("Delete entry")
                         .setMessage("Are you sure you want to delete this space? You cannot undo this action.")
-
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // Continue with delete operation
+                                //Delete Document
+                                drDatabaseRef.child(i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name())).removeValue();
+                                Toast.makeText(SpaceViewActivity.this, "Space Deleted", Toast.LENGTH_SHORT).show();
+
+                                //Delete Picture
+                                StorageReference photoRef = srStorageRef.getStorage().getReferenceFromUrl(i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()));
+                                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d(TAG, "Deleted Picture: " + photoRef);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "did not delete file!");
+                                    }
+                                });
+
+                                finish();
                             }
                         })
 
-                        // A null listener allows the button to dismiss the dialog and take no further action.
                         .setNegativeButton(android.R.string.no, null)
                         .show();
             }
