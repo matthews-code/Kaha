@@ -284,7 +284,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                     if (!task.isSuccessful()) {
                         throw task.getException();
                     }
-                    return srStorageRef.getDownloadUrl();
+                    return fileReference.getDownloadUrl();
                 }
             }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override

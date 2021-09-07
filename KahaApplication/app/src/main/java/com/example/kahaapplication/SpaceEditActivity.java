@@ -171,7 +171,7 @@ public class SpaceEditActivity extends AppCompatActivity {
         });
 
         //Declare Editing Activity
-        Toast.makeText(SpaceEditActivity.this, "Editing a " + i.getStringExtra(Keys.KEY_SPACE_TYPE.name()), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(SpaceEditActivity.this, "Editing a " + i.getStringExtra(Keys.KEY_SPACE_TYPE.name()), Toast.LENGTH_SHORT).show();
         String sType = i.getStringExtra(Keys.KEY_SPACE_TYPE.name());
 
         String sLength = i.getStringExtra(Keys.KEY_SPACE_LENGTH.name());
@@ -205,11 +205,11 @@ public class SpaceEditActivity extends AppCompatActivity {
         this.sImageUri = i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name());
 
         //DEBUGGING
-        Toast.makeText(this, "Upload ID: " + sUploadId, Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Image URI: " + i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Upload ID: " + sUploadId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Image URI: " + i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()), Toast.LENGTH_SHORT).show();
 
         //ivThumb.setImageResource(R.drawable.no_image);
-        //Download Thumbnail
+        //Replace Thumbnail
         Picasso.get().load(sImageUri).fit().centerCrop().into(ivThumb);
     }
 
@@ -260,67 +260,57 @@ public class SpaceEditActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    //VIDEO CODE
     private void uploadFile() {
-        if(mImageUri != null) {
+        if (mImageUri != null) {
             StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
-            stUploadTask = fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //Delays reset of progress bar for 5 seconds
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    pbUploadStatus.setProgress(0);
-                                }
-                            }, 5000);
+            fileReference.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+                    return fileReference.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        Log.e(TAG, "Then: " + downloadUri.toString());
 
-                            drDatabaseRef.child(sUploadId).child("spaceType").setValue(spnType.getSelectedItem().toString().trim());
-                            drDatabaseRef.child(sUploadId).child("spaceLength").setValue(etLength.getText().toString().trim());
-                            drDatabaseRef.child(sUploadId).child("spaceWidth").setValue(etWidth.getText().toString().trim());
-                            drDatabaseRef.child(sUploadId).child("spaceHeight").setValue(etHeight.getText().toString().trim());
-                            drDatabaseRef.child(sUploadId).child("spaceLocation").setValue(etLocation.getText().toString().trim());
-                            drDatabaseRef.child(sUploadId).child("spaceMonthly").setValue(etMonthly.getText().toString().trim());
-                            drDatabaseRef.child(sUploadId).child("spaceDescription").setValue(etDescription.getText().toString().trim());
+                        //Update Fields
+                        drDatabaseRef.child(sUploadId).child("spaceType").setValue(spnType.getSelectedItem().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceLength").setValue(etLength.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceWidth").setValue(etWidth.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceHeight").setValue(etHeight.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceLocation").setValue(etLocation.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceMonthly").setValue(etMonthly.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceDescription").setValue(etDescription.getText().toString().trim());
 
-//                            String uploadId = drDatabaseRef.push().getKey();
-//
-//                            Toast.makeText(SpaceEditActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
-//                            SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
-//                                    etWidth.getText().toString().trim(), etHeight.getText().toString().trim(),
-//                                    etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
-//                                    etDescription.getText().toString().trim(),
-//                                    //Deprecated, might need to switch to none-deprecated alternative soon.
-//                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
-//                                    currUser, userId, uploadId
-//                            );
+                        //Change Picture
+                        drDatabaseRef.child(sUploadId).child("spaceImageUrl").setValue(downloadUri.toString().trim());
+                        //Delete Previous Picture
+                        StorageReference photoRef = srStorageRef.getStorage().getReferenceFromUrl(sImageUri);
+                        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "deleted file: " + photoRef);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, "did not delete file!");
+                            }
+                        });
 
-                            //Create new database entry
-                            //drDatabaseRef.child(uploadId).setValue(upload);
-
-                            finish();
-
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SpaceEditActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                            pbUploadStatus.setProgress((int) progress);
-                        }
-                    });
-        } else {
-            Toast.makeText(this,"No file selected", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(SpaceEditActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 }
