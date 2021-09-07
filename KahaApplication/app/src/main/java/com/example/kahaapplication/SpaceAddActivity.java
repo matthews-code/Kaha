@@ -300,7 +300,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                                     etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
                                     etDescription.getText().toString().trim(),
                                     downloadUri.toString(),
-                                    currUser, userId, uploadId);
+                                    currUser, userId, uploadId, "public");
 
                         drDatabaseRef.child(uploadId).setValue(upload);
                         finish();

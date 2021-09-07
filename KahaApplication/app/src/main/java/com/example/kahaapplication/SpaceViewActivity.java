@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +64,11 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
     private AppCompatButton btnContact;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+
+    //Hoster VARS
+    private RadioGroup rgVisibility;
+    private RadioButton rbPublic;
+    private RadioButton rbPrivate;
 
     //Firebase Vars
     private FirebaseUser user;
@@ -115,6 +122,11 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         //Firebase
         this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
         this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+
+        //Host
+        this.rgVisibility = findViewById(R.id.rg_visibility);
+        this.rbPublic = findViewById(R.id.rb_visibility_public);
+        this.rbPrivate = findViewById(R.id.rb_visibility_private);
 
         //FINDER BUTTONS
         btnContact.setOnClickListener(new View.OnClickListener() {
@@ -224,11 +236,11 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //Delete Document
-                                drDatabaseRef.child(i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name())).removeValue();
+                                drDatabaseRef.child(spaceID).removeValue();
                                 Toast.makeText(SpaceViewActivity.this, "Space Deleted", Toast.LENGTH_SHORT).show();
 
                                 //Delete Picture
-                                StorageReference photoRef = srStorageRef.getStorage().getReferenceFromUrl(i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()));
+                                StorageReference photoRef = srStorageRef.getStorage().getReferenceFromUrl(imgUrl);
                                 photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
@@ -283,6 +295,16 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         mapView.onSaveInstanceState(mapViewBundle);
     }
 
+    private boolean setVisibilityRadio(String visibility) {
+        if(visibility.equals("public")) {
+            return true;
+        } else if (visibility.equals("private")) {
+            return false;
+        } else {
+            return false;
+        }
+    }
+
     private void setViews(String isFinder) {
         this.btnDelete.setVisibility(View.GONE);
         this.btnEdit.setVisibility(View.GONE);
@@ -305,6 +327,12 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
             //NOTIFICATION VISIBILITY
             this.cvNotification.setVisibility(View.VISIBLE);
+
+            //SPACE VISIBILITY VISIBILITY
+            this.rgVisibility.setVisibility(View.VISIBLE);
+//
+//            if(setVisibilityRadio())
+//            this.rbPublic.setChecked(setVisibilityRadio());
         }
     }
 

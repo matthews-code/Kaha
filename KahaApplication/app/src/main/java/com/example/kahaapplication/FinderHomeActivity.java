@@ -122,7 +122,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                             String.valueOf(indivSpace.child("spaceImageUrl").getValue()),
                             String.valueOf(indivSpace.child("spaceHost").getValue()),
                             String.valueOf(indivSpace.child("spaceHostId").getValue()),
-                            String.valueOf(indivSpace.child("spaceUploadId").getValue())
+                            String.valueOf(indivSpace.child("spaceUploadId").getValue()),
+                            String.valueOf(indivSpace.child("spaceVisibility").getValue())
                     );
 
                     Log.d("SPACEINFO", "loaded: " + indivSpace.child("spaceUploadId").getValue());

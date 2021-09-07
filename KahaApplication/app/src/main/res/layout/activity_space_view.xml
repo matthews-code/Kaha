@@ -39,6 +39,48 @@
                 android:paddingRight="20dp"
                 android:paddingBottom="20dp">
 
+                <RadioGroup
+                    android:id="@+id/rg_visibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <View
+                        android:id="@+id/divider9"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:id="@+id/tv_visibility_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Visibility"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_visibility_public"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Public" />
+
+                    <RadioButton
+                        android:id="@+id/rb_visibility_private"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Private" />
+
+                    <View
+                        android:id="@+id/divider8"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/listDivider" />
+                </RadioGroup>
+
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
@@ -230,24 +272,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="450dp"
                     android:layout_marginBottom="20dp" />
-
-                <TextView
-                    android:id="@+id/tv_show_features_intro"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Features"
-                    android:textColor="@color/black"
-                    android:textSize="34sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_show_features"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:lineSpacingExtra="4sp"
-                    android:text="- Security"
-                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_profile_header"
