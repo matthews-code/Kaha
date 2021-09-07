@@ -156,6 +156,42 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                 startActivity(intent);
             }
         });
+
+        //DELETE BUTTON
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(SpaceViewActivity.this)
+                        .setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this space? You cannot undo this action.")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //Delete Document
+                                drDatabaseRef.child(spaceID).removeValue();
+                                Toast.makeText(SpaceViewActivity.this, "Space Deleted", Toast.LENGTH_SHORT).show();
+
+                                //Delete Picture
+                                StorageReference photoRef = srStorageRef.getStorage().getReferenceFromUrl(imgUrl);
+                                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d(TAG, "Deleted Picture: " + photoRef);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "did not delete file!");
+                                    }
+                                });
+
+                                finish();
+                            }
+                        })
+
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+            }
+        });
     }
 
     private void retrieveData () {
@@ -167,20 +203,20 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("HERE", String.valueOf(snapshot));
-                Log.d("HERE AGAAAAAAAAAAAAAAAAAAAIN", snapshot.child("spaceType").getValue().toString() + " " + snapshot.child("spaceMonthly").getValue().toString());
 
-                String type = snapshot.child("spaceType").getValue().toString();
-                String location = snapshot.child("spaceLocation").getValue().toString();
-                String price = snapshot.child("spaceMonthly").getValue().toString();
-                String length = snapshot.child("spaceLength").getValue().toString();
-                String width = snapshot.child("spaceWidth").getValue().toString();
-                String height = snapshot.child("spaceHeight").getValue().toString();
-                String description = snapshot.child("spaceDescription").getValue().toString();
-                String host = snapshot.child("spaceHost").getValue().toString();
-                String url = snapshot.child("spaceImageUrl").getValue().toString();
+                if(snapshot.child("spaceType").getValue() != null) {
+                    String type = snapshot.child("spaceType").getValue().toString();
+                    String location = snapshot.child("spaceLocation").getValue().toString();
+                    String price = snapshot.child("spaceMonthly").getValue().toString();
+                    String length = snapshot.child("spaceLength").getValue().toString();
+                    String width = snapshot.child("spaceWidth").getValue().toString();
+                    String height = snapshot.child("spaceHeight").getValue().toString();
+                    String description = snapshot.child("spaceDescription").getValue().toString();
+                    String host = snapshot.child("spaceHost").getValue().toString();
+                    String url = snapshot.child("spaceImageUrl").getValue().toString();
 
-                setTextViews(type, location, price, length, width, height, description, host, url);
+                    setTextViews(type, location, price, length, width, height, description, host, url);
+                }
             }
 
             @Override
@@ -213,42 +249,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.tvTitle.setText(type + " in " + location);
 
         this.tvDescription.setText(description);
-
-        //DELETE BUTTON
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(SpaceViewActivity.this)
-                        .setTitle("Delete entry")
-                        .setMessage("Are you sure you want to delete this space? You cannot undo this action.")
-                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                //Delete Document
-                                drDatabaseRef.child(i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name())).removeValue();
-                                Toast.makeText(SpaceViewActivity.this, "Space Deleted", Toast.LENGTH_SHORT).show();
-
-                                //Delete Picture
-                                StorageReference photoRef = srStorageRef.getStorage().getReferenceFromUrl(i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()));
-                                photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        Log.d(TAG, "Deleted Picture: " + photoRef);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.d(TAG, "did not delete file!");
-                                    }
-                                });
-
-                                finish();
-                            }
-                        })
-
-                        .setNegativeButton(android.R.string.no, null)
-                        .show();
-            }
-        });
 
     }
 
