@@ -8,6 +8,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,6 +61,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
     private CardView cvNotification;
 
+    private String spaceID, length, width, height, price, location, imgUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +71,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         initToolbar();
         this.initFirebase();
 
-        //this.ivThumbnail = findViewById(R.id.iv_thumb);
         ViewPager vpCarousel = findViewById(R.id.vp_carousel);
         SpaceImageAdapter siAdapter = new SpaceImageAdapter(this);
         vpCarousel.setAdapter(siAdapter);
@@ -109,6 +111,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         });
 
         Intent i = getIntent();
+        this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
 
         initMap(savedInstanceState);
         retrieveData();
@@ -119,23 +122,80 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             public void onClick(View view) {
                 Intent intent = new Intent(SpaceViewActivity.this, SpaceEditActivity.class);
 
-                intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), i.getStringExtra(Keys.KEY_SPACE_THUMBNAIL.name()));
-                intent.putExtra(Keys.KEY_SPACE_TYPE.name(), i.getStringExtra(Keys.KEY_SPACE_TYPE.name()));
+                intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), imgUrl);
+                intent.putExtra(Keys.KEY_SPACE_TYPE.name(), tvType.getText().toString().trim());
 
-                intent.putExtra(Keys.KEY_SPACE_LENGTH.name(),   i.getStringExtra(Keys.KEY_SPACE_LENGTH.name()));
-                intent.putExtra(Keys.KEY_SPACE_WIDTH.name(),    i.getStringExtra(Keys.KEY_SPACE_WIDTH.name()));
-                intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(),   i.getStringExtra(Keys.KEY_SPACE_HEIGHT.name()));
+                intent.putExtra(Keys.KEY_SPACE_LENGTH.name(),   length);
+                intent.putExtra(Keys.KEY_SPACE_WIDTH.name(),   width);
+                intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(),  height);
 
-                intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), i.getStringExtra(Keys.KEY_SPACE_LOCATION.name()));
-                intent.putExtra(Keys.KEY_SPACE_PRICE.name(), i.getStringExtra(Keys.KEY_SPACE_PRICE.name()));
+                intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), location);
+                intent.putExtra(Keys.KEY_SPACE_PRICE.name(), price);
 
-                intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), i.getStringExtra(Keys.KEY_SPACE_DESCRIPTION.name()));
+                intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), tvDescription.getText().toString().trim());
                 intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()));
                 intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name()));
 
                 startActivity(intent);
             }
         });
+    }
+
+    private void retrieveData () {
+        this.mAuth = FirebaseAuth.getInstance();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name());
+
+        reference.child(Keys.SPACES.name()).child(spaceID).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("HERE", String.valueOf(snapshot));
+                Log.d("HERE AGAAAAAAAAAAAAAAAAAAAIN", snapshot.child("spaceType").getValue().toString() + " " + snapshot.child("spaceMonthly").getValue().toString());
+
+                String type = snapshot.child("spaceType").getValue().toString();
+                String location = snapshot.child("spaceLocation").getValue().toString();
+                String price = snapshot.child("spaceMonthly").getValue().toString();
+                String length = snapshot.child("spaceLength").getValue().toString();
+                String width = snapshot.child("spaceWidth").getValue().toString();
+                String height = snapshot.child("spaceHeight").getValue().toString();
+                String description = snapshot.child("spaceDescription").getValue().toString();
+                String host = snapshot.child("spaceHost").getValue().toString();
+                String url = snapshot.child("spaceImageUrl").getValue().toString();
+
+                setTextViews(type, location, price, length, width, height, description, host, url);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR", String.valueOf(error));
+            }
+        });
+    }
+
+    private void setTextViews (String type, String location, String price, String length, String width, String height, String description, String host, String url) {
+
+        this.length = length;
+        this.width = width;
+        this.height = height;
+        this.price = price;
+        this.location = location;
+        this.imgUrl = url;
+
+        String dimensions = length + " x " + width + " x " + height;
+        this.tvSize.setText(dimensions);
+
+        this.tvPrice.setText("₱" + price);
+        this.tvValue.setText("₱" + price);
+
+        this.tvHost.setText(host);
+        this.btnContact.setText("Contact " + host);
+
+        this.tvType.setText(type);
+
+        this.tvTitle.setText(type + " in " + location);
+
+        this.tvDescription.setText(description);
 
     }
 
@@ -151,34 +211,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         mapView.getMapAsync(this);
     }
 
-    private void retrieveData() {
-        Intent i = getIntent();
-        int iThumbnail = i.getIntExtra(Keys.KEY_SPACE_THUMBNAIL.name(), 0);
-        //this.ivThumbnail.setImageResource(iThumbnail);
-
-        String sLength = i.getStringExtra(Keys.KEY_SPACE_LENGTH.name());
-        String sWidth = i.getStringExtra(Keys.KEY_SPACE_WIDTH.name());
-        String sHeight = i.getStringExtra(Keys.KEY_SPACE_HEIGHT.name());
-
-        this.tvSize.setText(sLength + " x " + sWidth + " x " + sHeight);
-
-        String sPrice = i.getStringExtra(Keys.KEY_SPACE_PRICE.name());
-        this.tvPrice.setText("₱" + sPrice);
-        this.tvValue.setText("₱" + sPrice);
-
-        String sHost = i.getStringExtra(Keys.KEY_SPACE_HOST.name());
-        this.tvHost.setText(sHost);
-        this.btnContact.setText("Contact " + sHost);
-
-        String sType = i.getStringExtra(Keys.KEY_SPACE_TYPE.name());
-        this.tvType.setText(sType);
-
-        String sLocation = i.getStringExtra(Keys.KEY_SPACE_LOCATION.name());
-        this.tvTitle.setText(sType + " in " + sLocation);
-
-        String sDescription = i.getStringExtra(Keys.KEY_SPACE_DESCRIPTION.name());
-        this.tvDescription.setText(sDescription);
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -221,7 +253,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             //NOTIFICATION VISIBILITY
             this.cvNotification.setVisibility(View.VISIBLE);
         }
-
     }
 
     private void initFirebase() {
@@ -254,6 +285,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     @Override
     public void onStart() {
         super.onStart();
+        retrieveData();
         mapView.onStart();
     }
 

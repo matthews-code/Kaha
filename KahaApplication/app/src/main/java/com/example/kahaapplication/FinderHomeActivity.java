@@ -100,8 +100,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
     private ArrayList<SpaceUpload> initData() {
         this.mAuth = FirebaseAuth.getInstance();
-        this.user = FirebaseAuth.getInstance().getCurrentUser();
-        this.userId = this.user.getUid();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name());
 
@@ -207,17 +205,19 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     public void onSpaceClick(int position) {
         Intent intent = new Intent(this, SpaceViewActivity.class);
 
+//        intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), dataList.get(position).getSpaceImageUrl());
+//        intent.putExtra(Keys.KEY_SPACE_LENGTH.name(), dataList.get(position).getSpaceLength());
+//        intent.putExtra(Keys.KEY_SPACE_WIDTH.name(), dataList.get(position).getSpaceWidth());
+//        intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(), dataList.get(position).getSpaceHeight());
+//        intent.putExtra(Keys.KEY_SPACE_PRICE.name(), dataList.get(position).getSpaceMonthly());
+//        intent.putExtra(Keys.KEY_SPACE_HOST.name(), dataList.get(position).getSpaceHost());
+//        intent.putExtra(Keys.KEY_SPACE_TYPE.name(), dataList.get(position).getSpaceType());
+//        intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), dataList.get(position).getSpaceLocation());
+//        intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), dataList.get(position).getSpaceDescription());
+//        intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
         intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), dataList.get(position).getSpaceImageUrl());
-        intent.putExtra(Keys.KEY_SPACE_LENGTH.name(), dataList.get(position).getSpaceLength());
-        intent.putExtra(Keys.KEY_SPACE_WIDTH.name(), dataList.get(position).getSpaceWidth());
-        intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(), dataList.get(position).getSpaceHeight());
-        intent.putExtra(Keys.KEY_SPACE_PRICE.name(), dataList.get(position).getSpaceMonthly());
-        intent.putExtra(Keys.KEY_SPACE_HOST.name(), dataList.get(position).getSpaceHost());
-        intent.putExtra(Keys.KEY_SPACE_TYPE.name(), dataList.get(position).getSpaceType());
-        intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), dataList.get(position).getSpaceLocation());
-        intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), dataList.get(position).getSpaceDescription());
-        intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
         intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), dataList.get(position).getSpaceUploadId());
+        intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
 
         startActivity(intent);
     }

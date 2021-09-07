@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -35,6 +36,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.installations.local.PersistedInstallationEntry;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -44,6 +46,9 @@ import com.squareup.picasso.Picasso;
 
 public class SpaceEditActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
+
+    //Misc
+    private TextView tvCreateIntro;
 
     //Fields
     private Spinner spnType;
@@ -102,6 +107,9 @@ public class SpaceEditActivity extends AppCompatActivity {
         //Editing getIntent() declaration
         Intent i = getIntent();
 
+        //Misc
+        this.tvCreateIntro = findViewById(R.id.tv_create_space_intro);
+
         //Fields
         this.spnType = findViewById(R.id.spn_space_add_type);
         this.etLength = findViewById(R.id.et_space_add_length);
@@ -158,6 +166,8 @@ public class SpaceEditActivity extends AppCompatActivity {
         String sPrice = i.getStringExtra(Keys.KEY_SPACE_PRICE.name());
 
         //Assign from Extras
+        this.tvCreateIntro.setText("Edit your ");
+
         this.spnType.setSelection(getSpaceTypeInt(sType));
         this.etLength.setText(sLength);
         this.etWidth.setText(sWidth);
