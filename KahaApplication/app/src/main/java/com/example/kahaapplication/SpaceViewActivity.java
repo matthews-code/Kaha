@@ -6,6 +6,8 @@ import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -113,6 +115,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         initMap(savedInstanceState);
         retrieveData();
 
+        //HOSTER BUTTONS
         //EDIT BUTTON
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +137,28 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                 intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name()));
 
                 startActivity(intent);
+            }
+        });
+
+        //DELETE BUTTON
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(SpaceViewActivity.this)
+                        .setTitle("Delete entry")
+                        .setMessage("Are you sure you want to delete this space? You cannot undo this action.")
+
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Continue with delete operation
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
             }
         });
 
