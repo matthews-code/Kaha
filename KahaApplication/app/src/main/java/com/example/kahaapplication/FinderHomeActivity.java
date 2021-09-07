@@ -58,6 +58,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         setContentView(R.layout.activity_finder_home);
         initToolbar();
 
+        this.dataList = initData();
         this.initComponents();
         this.initFirebase();
     }
@@ -82,7 +83,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         fabAddSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dataList.clear();
                 Intent intent = new Intent(FinderHomeActivity.this, SpaceAddActivity.class);
                 startActivity(intent);
             }
@@ -135,6 +135,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
                     //Log.d("READ HERE", String.valueOf(indivSpace));
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -186,7 +187,14 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         super.onStart();
         this.dataList = initData();
         this.adapter = new FinderHomeAdapter(dataList, this);
+        adapter.notifyDataSetChanged();
         loadData();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        dataList.clear();
     }
 
     private void loadData() {
@@ -211,7 +219,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
         intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), dataList.get(position).getSpaceUploadId());
 
-        dataList.clear();
         startActivity(intent);
     }
 
