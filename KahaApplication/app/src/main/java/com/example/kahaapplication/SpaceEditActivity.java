@@ -42,7 +42,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-public class SpaceAddActivity extends AppCompatActivity {
+public class SpaceEditActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     //Fields
@@ -60,6 +60,7 @@ public class SpaceAddActivity extends AppCompatActivity {
 
     //Create / Edit
     private Button btnCreateSpace;
+    private Button btnEditSpace;
 
     private ProgressBar pbUploadStatus;
     private ImageButton ibBack;
@@ -75,6 +76,7 @@ public class SpaceAddActivity extends AppCompatActivity {
 
     //Account
     private String userId;
+    private boolean isEditing;
     private String currUser;
 
     @Override
@@ -93,6 +95,7 @@ public class SpaceAddActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        //Editing getIntent() declaration
         Intent i = getIntent();
 
         //Fields
@@ -107,8 +110,9 @@ public class SpaceAddActivity extends AppCompatActivity {
         //Uploading
         this.btnChooseImage = findViewById(R.id.btn_upload);
 
-        //Create
+        //Create/Edit
         this.btnCreateSpace = findViewById(R.id.btn_create);
+        this.btnEditSpace = findViewById(R.id.btn_space_edit);
 
         this.pbUploadStatus = findViewById(R.id.pb_upload_status);
         this.ivThumb = findViewById(R.id.iv_thumb_create);
@@ -137,32 +141,37 @@ public class SpaceAddActivity extends AppCompatActivity {
             }
         });
 
-        //CREATE SPACE BUTTON
-        btnCreateSpace.setOnClickListener(new View.OnClickListener() {
+        //EDIT SPACE BUTTON
+        btnEditSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(stUploadTask != null && stUploadTask.isInProgress()) {
-                    Toast.makeText(SpaceAddActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-                } else {
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
-                    reference.child(userId).addValueEventListener(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            currUser = snapshot.child("userFirstName").getValue().toString() + " " +
-                                    snapshot.child("userLastName").getValue().toString();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                    uploadFile();
-                }
             }
         });
+
+        //Declare Editing Activity
+        Toast.makeText(SpaceEditActivity.this, "Editing a " + i.getStringExtra(Keys.KEY_SPACE_TYPE.name()), Toast.LENGTH_SHORT).show();
+        String sType = i.getStringExtra(Keys.KEY_SPACE_TYPE.name());
+
+        float fLength = i.getFloatExtra(Keys.KEY_SPACE_LENGTH.name(), 0);
+        float fWidth = i.getFloatExtra(Keys.KEY_SPACE_WIDTH.name(), 0);
+        float fHeight = i.getFloatExtra(Keys.KEY_SPACE_HEIGHT.name(), 0);
+
+        String sLocation = i.getStringExtra(Keys.KEY_SPACE_LOCATION.name());
+        float fPrice = i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0);
+
+        //Assign from Extras
+        this.spnType.setSelection(getSpaceTypeInt(sType));
+        this.etLength.setText(String.valueOf(fLength));
+        this.etWidth.setText(String.valueOf(fWidth));
+        this.etHeight.setText(String.valueOf(fHeight));
+
+        this.etLocation.setText(sLocation);
+        this.etMonthly.setText(String.valueOf(fPrice));
+
+        //Swap Buttons
+        this.btnCreateSpace.setVisibility(View.GONE);
+        this.btnEditSpace.setVisibility(View.VISIBLE);
 
         ivThumb.setImageResource(R.drawable.no_image);
     }
@@ -213,11 +222,11 @@ public class SpaceAddActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-//VIDEO CODE
+    //VIDEO CODE
     private void uploadFile() {
         if(mImageUri != null) {
             StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
-            + "." + getFileExtension(mImageUri));
+                    + "." + getFileExtension(mImageUri));
 
             stUploadTask = fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -232,7 +241,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                                 }
                             }, 5000);
 
-                            Toast.makeText(SpaceAddActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SpaceEditActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
                             SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
                                     etWidth.getText().toString().trim(), etHeight.getText().toString().trim(),
                                     etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
@@ -240,7 +249,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                                     //Deprecated, might need to switch to none-deprecated alternative soon.
                                     taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
                                     currUser
-                                    );
+                            );
 
                             //Create new database entry
                             String uploadId = drDatabaseRef.push().getKey();
@@ -252,7 +261,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(SpaceAddActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SpaceEditActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -267,36 +276,3 @@ public class SpaceAddActivity extends AppCompatActivity {
         }
     }
 }
-
-//  NONE DEPRECATED UPLOAD ALTERNATIVE.
-//    private void uploadFile() {
-//        if (mImageUri != null) {
-//            srStorageRef.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-//                @Override
-//                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-//                    if (!task.isSuccessful()) {
-//                        throw task.getException();
-//                    }
-//                    return srStorageRef.getDownloadUrl();
-//                }
-//            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-//                @Override
-//                public void onComplete(@NonNull Task<Uri> task) {
-//                    if (task.isSuccessful()) {
-//                        Uri downloadUri = task.getResult();
-//                        Log.e(TAG, "Then: " + downloadUri.toString());
-//
-//
-//                        SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(),
-//                                etLocation.getText().toString().trim(),
-//                                downloadUri.toString());
-//
-//                        drDatabaseRef.push().setValue(upload);
-//                    } else {
-//                        Toast.makeText(SpaceAddActivity.this, "Upload Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
-//        }
-//    }
-// }

@@ -228,6 +228,19 @@
                 android:textSize="18sp"
                 android:textStyle="normal|bold" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_space_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gradient"
+                android:fontFamily="sans-serif"
+                android:text="Apply Changes"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="normal|bold"
+                android:visibility="gone" />
+
         </LinearLayout>
     </ScrollView>
 

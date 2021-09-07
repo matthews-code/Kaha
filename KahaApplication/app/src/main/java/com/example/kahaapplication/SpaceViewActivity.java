@@ -115,8 +115,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SpaceViewActivity.this, SpaceAddActivity.class);
-                intent.putExtra(Keys.KEY_IS_EDITING.name(), true);
+                Intent intent = new Intent(SpaceViewActivity.this, SpaceEditActivity.class);
 
                 intent.putExtra(Keys.KEY_SPACE_TYPE.name(), i.getStringExtra(Keys.KEY_SPACE_TYPE.name()));
 
@@ -126,7 +125,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
                 intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), i.getStringExtra(Keys.KEY_SPACE_LOCATION.name()));
                 intent.putExtra(Keys.KEY_SPACE_PRICE.name(), i.getFloatExtra(Keys.KEY_SPACE_PRICE.name(), 0));
-                //
+
                 // REQUIRES FIREBASE DESCRIPTION
                 // intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), i.getStringExtra(Keys.KEY_SPACE_TYPE.name()));
                 startActivity(intent);
