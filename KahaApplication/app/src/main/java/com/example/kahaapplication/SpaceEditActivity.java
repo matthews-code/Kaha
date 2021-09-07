@@ -57,6 +57,7 @@ public class SpaceEditActivity extends AppCompatActivity {
 
     //Uploading
     private Button btnChooseImage;
+    private boolean boolDetectImage = false;
 
     //Create / Edit
     private Button btnCreateSpace;
@@ -144,32 +145,6 @@ public class SpaceEditActivity extends AppCompatActivity {
             }
         });
 
-        btnEditSpace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(stUploadTask != null && stUploadTask.isInProgress()) {
-                    Toast.makeText(SpaceEditActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
-                    reference.child(userId).addValueEventListener(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            currUser = snapshot.child("userFirstName").getValue().toString() + " " +
-                                    snapshot.child("userLastName").getValue().toString();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                    uploadFile();
-                }
-            }
-        });
-
         //Declare Editing Activity
         //Toast.makeText(SpaceEditActivity.this, "Editing a " + i.getStringExtra(Keys.KEY_SPACE_TYPE.name()), Toast.LENGTH_SHORT).show();
         String sType = i.getStringExtra(Keys.KEY_SPACE_TYPE.name());
@@ -210,6 +185,46 @@ public class SpaceEditActivity extends AppCompatActivity {
 
         //ivThumb.setImageResource(R.drawable.no_image);
         //Replace Thumbnail
+        btnEditSpace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(stUploadTask != null && stUploadTask.isInProgress()) {
+                    Toast.makeText(SpaceEditActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                } else {
+
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+                    reference.child(userId).addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            currUser = snapshot.child("userFirstName").getValue().toString() + " " +
+                                    snapshot.child("userLastName").getValue().toString();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                    if(boolDetectImage) {
+                        uploadFile();
+                    }
+                    else {
+                        drDatabaseRef.child(sUploadId).child("spaceType").setValue(spnType.getSelectedItem().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceLength").setValue(etLength.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceWidth").setValue(etWidth.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceHeight").setValue(etHeight.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceLocation").setValue(etLocation.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceMonthly").setValue(etMonthly.getText().toString().trim());
+                        drDatabaseRef.child(sUploadId).child("spaceDescription").setValue(etDescription.getText().toString().trim());
+
+                        finish();
+                    }
+                }
+            }
+        });
+
         Picasso.get().load(sImageUri).fit().centerCrop().into(ivThumb);
     }
 
@@ -251,6 +266,8 @@ public class SpaceEditActivity extends AppCompatActivity {
             mImageUri = data.getData();
             Toast.makeText(this, "" + mImageUri, Toast.LENGTH_SHORT).show();
             Picasso.get().load(mImageUri).into(ivThumb);
+
+            this.boolDetectImage = true;
         }
     }
 
