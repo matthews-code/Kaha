@@ -171,27 +171,27 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         });
 
         //RADIO BUTTONS
-        rgVisibility.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                Log.d(TAG, "onCheckedChanged: " + radioGroup.findViewById(i));
-                View selectedRadioButton = radioGroup.findViewById(i);
-                int index = radioGroup.indexOfChild(selectedRadioButton);
-
-                Log.d(TAG, "onCheckedChanged: " + index);
-
-                switch (index){
-                    case 2:
-                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
-                        break;
-                    case 3:
-                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+//        rgVisibility.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+//                Log.d(TAG, "onCheckedChanged: " + radioGroup.findViewById(i));
+//                View selectedRadioButton = radioGroup.findViewById(i);
+//                int index = radioGroup.indexOfChild(selectedRadioButton);
+//
+//                Log.d(TAG, "onCheckedChanged: " + index);
+//
+//                switch (index){
+//                    case 2:
+//                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
+//                        break;
+//                    case 3:
+//                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        });
 
         //DELETE BUTTON
         btnDelete.setOnClickListener(new View.OnClickListener() {
