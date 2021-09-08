@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,9 +35,15 @@ public class PrivateUserActivity extends ToolBarActivity {
 
     private TextView emailAddress;
 
+    private Button editProfile;
+    private Button deleteProfile;
+
     private FirebaseUser user;
     private FirebaseAuth mAuth;
+    private DatabaseReference drDatabaseRef;
     private String userId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +56,42 @@ public class PrivateUserActivity extends ToolBarActivity {
     }
 
     private void initComponents() {
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
+        this.userId = this.user.getUid();
+
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTION_USERS.name() + "/" + userId);
+
         this.firstName = findViewById(R.id.et_profile_firstname);
         this.lastName = findViewById(R.id.et_profile_lastname);
         this.contactNumber = findViewById(R.id.et_profile_contact);
         this.emailAddress = findViewById(R.id.tv_profile_email);
         this.publicBio = findViewById(R.id.et_profile_bio);
 
+        this.editProfile = findViewById(R.id.btn_save_profile);
+        this.deleteProfile = findViewById(R.id.btn_delete_profile);
+
         this.ivFirstNamePencil = findViewById(R.id.iv_fname_pencil);
         this.ivLastNamePencil = findViewById(R.id.iv_lname_pencil);
         this.ivContactPencil = findViewById(R.id.iv_contact_pencil);
         this.ivBioPencil = findViewById(R.id.iv_bio_pencil);
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drDatabaseRef.child("userFirstName").setValue(firstName.getText().toString().trim());
+                drDatabaseRef.child("userLastName").setValue(lastName.getText().toString().trim());
+                drDatabaseRef.child("userPhone").setValue(contactNumber.getText().toString().trim());
+                drDatabaseRef.child("userDescription").setValue(publicBio.getText().toString().trim());
+                Toast.makeText(PrivateUserActivity.this, "Edited Profile", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        deleteProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         ivFirstNamePencil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,10 +128,8 @@ public class PrivateUserActivity extends ToolBarActivity {
 
     private void initFirebase() {
         this.mAuth = FirebaseAuth.getInstance();
-        this.user = FirebaseAuth.getInstance().getCurrentUser();
-        this.userId = this.user.getUid();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTION_USERS.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {
@@ -117,13 +148,19 @@ public class PrivateUserActivity extends ToolBarActivity {
     }
 
     private void setViews(DataSnapshot snapshot) {
-        String firstName = snapshot.child("userFirstName").getValue().toString();
-        String lastName = snapshot.child("userLastName").getValue().toString();
+        String firstName = snapshot.child("userFirstName").getValue().toString().trim();
+        String lastName = snapshot.child("userLastName").getValue().toString().trim();
 
         this.firstName.setText(firstName);
         this.lastName.setText(lastName);
-        this.contactNumber.setText(snapshot.child("userPhone").getValue().toString());
-        this.emailAddress.setText(snapshot.child("userEmail").getValue().toString());
+        this.contactNumber.setText(snapshot.child("userPhone").getValue().toString().trim());
+        this.emailAddress.setText(snapshot.child("userEmail").getValue().toString().trim());
+
+        if(snapshot.child("userDescription").getValue().toString().equals("")) {
+            this.publicBio.setText("No description");
+        } else {
+            this.publicBio.setText(snapshot.child("userDescription").getValue().toString().trim());
+        }
     }
 
     private void showKeyboard(){

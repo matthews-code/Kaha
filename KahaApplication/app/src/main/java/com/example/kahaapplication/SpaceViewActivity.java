@@ -362,7 +362,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTION_USERS.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {

@@ -209,24 +209,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8sp"
                 android:background="@drawable/gradient_green"
-                android:fontFamily="sans-serif"
+                android:fontFamily="sans-serif-light"
                 android:text="Add Image"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:textStyle="normal|bold" />
+                android:textStyle="normal" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_create"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/gradient"
-                android:fontFamily="sans-serif"
+                android:fontFamily="sans-serif-light"
                 android:text="Create Space"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:textStyle="normal|bold" />
+                android:textStyle="normal" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_space_edit"
