@@ -90,9 +90,9 @@ public class PrivateUserActivity extends ToolBarActivity {
 
 
                                 mAuth.getCurrentUser().delete();
+                                drDatabaseRef.removeValue();
                                 Intent i = new Intent(PrivateUserActivity.this, LoginActivity.class);
                                 startActivity(i);
-                                drDatabaseRef.removeValue();
                             }
                         })
 
@@ -166,9 +166,9 @@ public class PrivateUserActivity extends ToolBarActivity {
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                setViews(snapshot);
-
+                if(snapshot.exists()) {
+                    setViews(snapshot);
+                }
             }
 
             @Override

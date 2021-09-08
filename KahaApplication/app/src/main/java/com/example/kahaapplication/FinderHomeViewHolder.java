@@ -48,7 +48,9 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                setViews(snapshot.child("userIsFinder").getValue().toString());
+                if(snapshot.exists()) {
+                    setViews(snapshot.child("userIsFinder").getValue().toString());
+                }
             }
 
             @Override

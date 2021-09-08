@@ -66,36 +66,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         this.initFirebase();
     }
 
-    private void initComponents () {
-        this.tvHeader = findViewById(R.id.tv_listing_header);
-        this.nsvFinderHome = findViewById(R.id.nsv_finder_home);
-
-        this.recyclerView = findViewById(R.id.rv_listings);
-        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        this.fabAddSpace = findViewById(R.id.fab_add_space);
-        this.fabAddSpace.setImageResource(R.drawable.ic_baseline_add_business_24);
-
-        this.btnFilter = findViewById(R.id.btn_filter);
-
-        //ADD BUTTON
-        fabAddSpace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(FinderHomeActivity.this, SpaceAddActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        //FILTER Button
-        btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FilterBottomSheetDialog filterBottomSheet = new FilterBottomSheetDialog();
-                filterBottomSheet.show(getSupportFragmentManager(), "filterBottomSheet");
-            }
-        });
-    }
-
     private ArrayList<SpaceUpload> initData() {
         this.mAuth = FirebaseAuth.getInstance();
 
@@ -142,6 +112,36 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         return tempData;
     }
 
+    private void initComponents () {
+        this.tvHeader = findViewById(R.id.tv_listing_header);
+        this.nsvFinderHome = findViewById(R.id.nsv_finder_home);
+
+        this.recyclerView = findViewById(R.id.rv_listings);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        this.fabAddSpace = findViewById(R.id.fab_add_space);
+        this.fabAddSpace.setImageResource(R.drawable.ic_baseline_add_business_24);
+
+        this.btnFilter = findViewById(R.id.btn_filter);
+
+        //ADD BUTTON
+        fabAddSpace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FinderHomeActivity.this, SpaceAddActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        //FILTER Button
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FilterBottomSheetDialog filterBottomSheet = new FilterBottomSheetDialog();
+                filterBottomSheet.show(getSupportFragmentManager(), "filterBottomSheet");
+            }
+        });
+    }
+
     private void initFirebase() {
 
         this.mAuth = FirebaseAuth.getInstance();
@@ -153,13 +153,13 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
 
-        //this.pbProfile.setVisibility(View.VISIBLE);
+        Log.d("TRACE", "initFirebase: happened");
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                setViews(snapshot.child("userIsFinder").getValue().toString());
-
+                if(snapshot.exists()) {
+                    setViews(snapshot.child("userIsFinder").getValue().toString());
+                }
             }
 
             @Override
