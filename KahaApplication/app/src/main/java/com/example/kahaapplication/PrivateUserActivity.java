@@ -1,10 +1,16 @@
 package com.example.kahaapplication;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -13,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +28,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.Objects;
 
 public class PrivateUserActivity extends ToolBarActivity {
 
@@ -53,9 +64,47 @@ public class PrivateUserActivity extends ToolBarActivity {
 
         this.initComponents();
         this.initFirebase();
+        this.initBtns();
+    }
+
+    private void initBtns() {
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drDatabaseRef.child("userFirstName").setValue(firstName.getText().toString().trim());
+                drDatabaseRef.child("userLastName").setValue(lastName.getText().toString().trim());
+                drDatabaseRef.child("userPhone").setValue(contactNumber.getText().toString().trim());
+                drDatabaseRef.child("userDescription").setValue(publicBio.getText().toString().trim());
+                Toast.makeText(PrivateUserActivity.this, "Edited Profile", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        deleteProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(PrivateUserActivity.this)
+                        .setTitle("Delete account")
+                        .setMessage("Are you sure you want to delete your account? You cannot undo this action.")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+
+                                mAuth.getCurrentUser().delete();
+                                drDatabaseRef.removeValue();
+                                Intent i = new Intent(PrivateUserActivity.this, LoginActivity.class);
+                                startActivity(i);
+                            }
+                        })
+
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+            }
+        });
     }
 
     private void initComponents() {
+        this.mAuth = FirebaseAuth.getInstance();
+
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
 
@@ -74,24 +123,6 @@ public class PrivateUserActivity extends ToolBarActivity {
         this.ivLastNamePencil = findViewById(R.id.iv_lname_pencil);
         this.ivContactPencil = findViewById(R.id.iv_contact_pencil);
         this.ivBioPencil = findViewById(R.id.iv_bio_pencil);
-
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                drDatabaseRef.child("userFirstName").setValue(firstName.getText().toString().trim());
-                drDatabaseRef.child("userLastName").setValue(lastName.getText().toString().trim());
-                drDatabaseRef.child("userPhone").setValue(contactNumber.getText().toString().trim());
-                drDatabaseRef.child("userDescription").setValue(publicBio.getText().toString().trim());
-                Toast.makeText(PrivateUserActivity.this, "Edited Profile", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        deleteProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         ivFirstNamePencil.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,9 +166,9 @@ public class PrivateUserActivity extends ToolBarActivity {
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                setViews(snapshot);
-
+                if(snapshot.exists()) {
+                    setViews(snapshot);
+                }
             }
 
             @Override
