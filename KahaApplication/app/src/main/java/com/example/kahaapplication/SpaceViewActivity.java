@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -37,12 +38,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.security.Key;
 
 public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCallback{
     //Carousel
-    //private ImageView ivThumbnail;
+    private ImageView ivThumbnail;
 
     private TextView tvSize;
     private TextView tvValue;
@@ -70,6 +72,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private RadioGroup rgVisibility;
     private RadioButton rbPublic;
     private RadioButton rbPrivate;
+    private boolean isPublic;
+    private ImageButton ibNavBack;
 
     //Firebase Vars
     private FirebaseUser user;
@@ -94,6 +98,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         ViewPager vpCarousel = findViewById(R.id.vp_carousel);
         SpaceImageAdapter siAdapter = new SpaceImageAdapter(this);
         vpCarousel.setAdapter(siAdapter);
+
+        this.ivThumbnail = findViewById(R.id.iv_space_view_image);
 
         this.tvSize = findViewById(R.id.tv_show_size);
         this.tvDescription = findViewById(R.id.tv_show_desc);
@@ -128,6 +134,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.rgVisibility = findViewById(R.id.rg_visibility);
         this.rbPublic = findViewById(R.id.rb_visibility_public);
         this.rbPrivate = findViewById(R.id.rb_visibility_private);
+        this.ibNavBack = findViewById(R.id.ib_navbar_back);
 
         //FINDER BUTTONS
         btnContact.setOnClickListener(new View.OnClickListener() {
@@ -171,27 +178,26 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         });
 
         //RADIO BUTTONS
-//        rgVisibility.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-//                Log.d(TAG, "onCheckedChanged: " + radioGroup.findViewById(i));
-//                View selectedRadioButton = radioGroup.findViewById(i);
-//                int index = radioGroup.indexOfChild(selectedRadioButton);
-//
-//                Log.d(TAG, "onCheckedChanged: " + index);
-//
-//                switch (index){
-//                    case 2:
-//                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
-//                        break;
-//                    case 3:
-//                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        });
+        rgVisibility.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                View selectedRadioButton = radioGroup.findViewById(i);
+                int index = radioGroup.indexOfChild(selectedRadioButton);
+
+                Log.d(TAG, "onCheckedChanged: " + index);
+
+                switch (index){
+                    case 2:
+                        isPublic = true;
+                        break;
+                    case 3:
+                        isPublic = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
         //DELETE BUTTON
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -296,6 +302,10 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             this.rbPrivate.setChecked(true);
         }
 
+        Picasso.get().load(imgUrl).fit().centerCrop()
+                .error(R.drawable.loading)
+                .placeholder(R.drawable.loading)
+                .into(ivThumbnail);
     }
 
     private void initMap(Bundle savedInstanceState) {
@@ -354,6 +364,41 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
             //SPACE VISIBILITY VISIBILITY
             this.rgVisibility.setVisibility(View.VISIBLE);
+
+            //Save VISIBILITY Back behavior on HOSTER
+            ibNavBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(isPublic) {
+                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public").addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(SpaceViewActivity.this, "Switched to Public", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SpaceViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        finish();
+                    } else {
+                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private").addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(SpaceViewActivity.this, "Switched to Private", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(SpaceViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 
@@ -394,6 +439,11 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     @Override
     public void onStop() {
         super.onStop();
+        if(isPublic) {
+            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
+        } else {
+            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
+        }
         mapView.onStop();
     }
 

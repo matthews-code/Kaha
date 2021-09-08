@@ -21,7 +21,8 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
 
     private ImageView ivSpace;
     private TextView tvSize, tvType, tvLocation, tvHost, tvPrice;
-    private CardView cvNotification;
+    private CardView cvReservee, cvVisibility;
+    private TextView tvReservee, tvVisibility;
 
     //Fire base
     //Firebase Vars
@@ -33,7 +34,8 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
 
     private void setViews(String isFinder) {
         if(isFinder.equalsIgnoreCase("false")) {
-            this.cvNotification.setVisibility(View.VISIBLE);
+            this.cvReservee.setVisibility(View.VISIBLE);
+            this.cvVisibility.setVisibility(View.VISIBLE);
         }
     }
 
@@ -67,7 +69,13 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
         this.tvLocation = itemView.findViewById(R.id.tv_space_location);
         this.tvHost = itemView.findViewById(R.id.tv_space_hoster);
         this.tvPrice = itemView.findViewById(R.id.tv_space_price);
-        this.cvNotification = itemView.findViewById(R.id.cv_reservees_feed);
+
+        this.cvReservee = itemView.findViewById(R.id.cv_reservees_feed);
+        this.tvReservee = itemView.findViewById(R.id.tv_reservee_status);
+
+        this.cvVisibility = itemView.findViewById(R.id.cv_visibility_feed);
+        this.tvVisibility = itemView.findViewById(R.id.tv_visibility_status);
+
         this.onSpaceListener = onSpaceListener;
 
         itemView.setOnClickListener(this);
@@ -84,6 +92,17 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
         this.tvHost.setText(space.getSpaceHost());
         this.tvPrice.setText(price);
 
+        //Visibility Status
+        if(space.getSpaceVisibility().equals("public")) {
+            this.cvVisibility.setCardBackgroundColor(0xFF168C1D);
+            this.tvVisibility.setText("PUBLIC");
+        } else {
+            this.cvVisibility.setCardBackgroundColor(0xFFFDA600);
+            this.tvVisibility.setText("PRIVATE");
+        }
+
+
+        //Thumbnail
         Picasso.get().load(space.getSpaceImageUrl()).fit().centerCrop()
                 .error(R.drawable.loading)
                 .placeholder(R.drawable.loading)
