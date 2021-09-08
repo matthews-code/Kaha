@@ -1,7 +1,7 @@
 package com.example.kahaapplication;
 
 public enum Keys {
-    COLLECTION_USERS,
+    COLLECTIONS_USERS,
     COLLECTIONS_SPACES,
     SPACES,
 

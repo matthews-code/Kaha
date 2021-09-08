@@ -209,7 +209,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            database.getReference(Keys.COLLECTION_USERS.name())
+                            database.getReference(Keys.COLLECTIONS_USERS.name())
                                     .child(mAuth.getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
