@@ -366,39 +366,39 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             this.rgVisibility.setVisibility(View.VISIBLE);
 
             //Save VISIBILITY Back behavior on HOSTER
-            ibNavBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(isPublic) {
-                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public").addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(SpaceViewActivity.this, "Switched to Public", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(SpaceViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        finish();
-                    } else {
-                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private").addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Toast.makeText(SpaceViewActivity.this, "Switched to Private", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(SpaceViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-            });
+//            ibNavBack.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    if(isPublic) {
+//                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public").addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void unused) {
+//                                //Toast.makeText(SpaceViewActivity.this, "Switched to Public", Toast.LENGTH_SHORT).show();
+//                                finish();
+//                            }
+//                        }).addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Toast.makeText(SpaceViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                        finish();
+//                    } else {
+//                        drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private").addOnSuccessListener(new OnSuccessListener<Void>() {
+//                            @Override
+//                            public void onSuccess(Void unused) {
+//                                //Toast.makeText(SpaceViewActivity.this, "Switched to Private", Toast.LENGTH_SHORT).show();
+//                                finish();
+//                            }
+//                        }).addOnFailureListener(new OnFailureListener() {
+//                            @Override
+//                            public void onFailure(@NonNull Exception e) {
+//                                Toast.makeText(SpaceViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                }
+//            });
         }
     }
 
@@ -450,12 +450,22 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     @Override
     public void onPause() {
         super.onPause();
+        if(isPublic) {
+            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
+        } else {
+            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
+        }
         mapView.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(isPublic) {
+            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
+        } else {
+            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
+        }
         mapView.onDestroy();
     }
 
