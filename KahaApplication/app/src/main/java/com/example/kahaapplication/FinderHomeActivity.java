@@ -9,6 +9,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     private FirebaseUser user;
     private FirebaseAuth mAuth;
     private String userId;
+    private DatabaseReference drDatabaseRef;
 
     private ImageButton btnFilter;
 
@@ -58,27 +60,23 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         setContentView(R.layout.activity_finder_home);
         initToolbar();
 
+        Log.d("CREATE", "*****************************************************");
         this.dataList = initData();
         this.initComponents();
         this.initFirebase();
     }
 
     private void initComponents () {
-        //this.dataList = initData();
-        Log.d("HERE", "INIT COMPONENTS");
-
         this.tvHeader = findViewById(R.id.tv_listing_header);
-
-        this.recyclerView = findViewById(R.id.rv_listings);
         this.nsvFinderHome = findViewById(R.id.nsv_finder_home);
 
-        //this.adapter = new FinderHomeAdapter(dataList, this);
+        this.recyclerView = findViewById(R.id.rv_listings);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         this.fabAddSpace = findViewById(R.id.fab_add_space);
         this.fabAddSpace.setImageResource(R.drawable.ic_baseline_add_business_24);
 
         this.btnFilter = findViewById(R.id.btn_filter);
+
         //ADD BUTTON
         fabAddSpace.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +123,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                             String.valueOf(indivSpace.child("spaceUploadId").getValue()),
                             String.valueOf(indivSpace.child("spaceVisibility").getValue())
                     );
-
-                    Log.d("SPACEINFO", "loaded: " + indivSpace.child("spaceUploadId").getValue());
                     tempData.add(spaceInfo);
 
 //                    SpaceUpload spaceInfo = indivSpace.getValue(SpaceUpload.class);
@@ -151,6 +147,10 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         this.mAuth = FirebaseAuth.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
+
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + userId);
+        this.mAuth = FirebaseAuth.getInstance();
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
@@ -184,6 +184,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("START", "*****************************************************");
         this.dataList = initData();
         this.adapter = new FinderHomeAdapter(dataList, this);
         adapter.notifyDataSetChanged();
@@ -206,16 +207,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     public void onSpaceClick(int position) {
         Intent intent = new Intent(this, SpaceViewActivity.class);
 
-//        intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), dataList.get(position).getSpaceImageUrl());
-//        intent.putExtra(Keys.KEY_SPACE_LENGTH.name(), dataList.get(position).getSpaceLength());
-//        intent.putExtra(Keys.KEY_SPACE_WIDTH.name(), dataList.get(position).getSpaceWidth());
-//        intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(), dataList.get(position).getSpaceHeight());
-//        intent.putExtra(Keys.KEY_SPACE_PRICE.name(), dataList.get(position).getSpaceMonthly());
-//        intent.putExtra(Keys.KEY_SPACE_HOST.name(), dataList.get(position).getSpaceHost());
-//        intent.putExtra(Keys.KEY_SPACE_TYPE.name(), dataList.get(position).getSpaceType());
-//        intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), dataList.get(position).getSpaceLocation());
-//        intent.putExtra(Keys.KEY_SPACE_DESCRIPTION.name(), dataList.get(position).getSpaceDescription());
-//        intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
         intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), dataList.get(position).getSpaceImageUrl());
         intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), dataList.get(position).getSpaceUploadId());
         intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
