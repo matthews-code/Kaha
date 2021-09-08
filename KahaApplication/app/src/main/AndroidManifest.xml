@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NavBarTrue">
         <activity
+            android:name=".ViewReservations"
+            android:exported="true" >
+        </activity>
+        <activity
             android:name=".SearchResultsActivity"
             android:exported="true" />
         <activity
@@ -38,7 +42,7 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.NavBarFalse">
-            <intent-filter>
+           <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
