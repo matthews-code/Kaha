@@ -12,11 +12,6 @@
         <activity
             android:name=".ViewReservations"
             android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
         <activity
             android:name=".SearchResultsActivity"
@@ -47,11 +42,11 @@
             android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.NavBarFalse">
-           <!-- <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
         </activity>
 
         <uses-library
