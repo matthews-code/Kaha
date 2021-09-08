@@ -37,4 +37,17 @@ public class DataHelper {
         return data;
     }
 
+    public static ArrayList<String> initData2() {
+        ArrayList<String> data = new ArrayList<>();
+        data.add("Beaverly");
+        data.add("Matt Buensalida");
+        data.add("Beaverly");
+        data.add("Matt Buensalida");
+        data.add("Beaverly");
+        data.add("Matt Buensalida");
+        data.add("Beaverly");
+        data.add("Matt Buensalida");
+        return data;
+    }
+
 }

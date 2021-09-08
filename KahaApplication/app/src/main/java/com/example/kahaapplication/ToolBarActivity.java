@@ -37,7 +37,9 @@ public class ToolBarActivity extends AppCompatActivity {
                                 Toast.makeText(ToolBarActivity.this, "Logout Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.item_settings:
-                                Toast.makeText(ToolBarActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(ToolBarActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
+                                    Intent intent1 = new Intent(ToolBarActivity.this, ViewReservations.class);
+                                    startActivity(intent1);
                                 return true;
                             case R.id.item_profile:
                                 if(!getClass().getName().equals("com.example.kahaapplication.PrivateUserActivity")  ){
