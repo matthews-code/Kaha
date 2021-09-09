@@ -207,8 +207,10 @@ public class SpaceEditActivity extends AppCompatActivity {
 
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            currUser = snapshot.child("userFirstName").getValue().toString() + " " +
-                                    snapshot.child("userLastName").getValue().toString();
+                            if(snapshot.exists()) {
+                                currUser = snapshot.child("userFirstName").getValue().toString() + " " +
+                                        snapshot.child("userLastName").getValue().toString();
+                            }
                         }
 
                         @Override

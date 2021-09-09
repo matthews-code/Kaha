@@ -134,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 if(!checkEmpty(firstName, lastName, password, confpassword, email, phone, bday)) {
-                    User user = new User(firstName, lastName, email, password, phone, bday, isFinder);
+                    User user = new User(firstName, lastName, email, password, phone, bday, "", isFinder);
 
                     storeUser(user);
                 } else {

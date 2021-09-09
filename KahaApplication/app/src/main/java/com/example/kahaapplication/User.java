@@ -10,16 +10,18 @@ public class User {
     private String userPassword;
     private String userPhone;
     private String userBirthDate;
+    private String userDescription;
     private Boolean userIsFinder;
 
     public User(String userFirstName, String userLastName, String userEmail, String userPassword,
-                String userPhone, String userBirthDate, boolean userIsFinder) {
+                String userPhone, String userBirthDate, String userDescription, boolean userIsFinder) {
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userPhone = userPhone;
         this.userBirthDate = userBirthDate;
+        this.userDescription = userDescription;
         this.userIsFinder = userIsFinder;
     }
 
@@ -38,6 +40,8 @@ public class User {
     public String getUserPhone() { return userPhone; }
 
     public String getUserBirthDate() { return userBirthDate; }
+
+    public String getUserDescription() { return userDescription; }
 
     public boolean getUserIsFinder() { return userIsFinder; }
 }

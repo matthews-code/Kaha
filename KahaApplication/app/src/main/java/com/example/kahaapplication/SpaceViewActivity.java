@@ -373,7 +373,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                         drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public").addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(SpaceViewActivity.this, "Switched to Public", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(SpaceViewActivity.this, "Switched to Public", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -387,7 +387,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                         drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private").addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
-                                Toast.makeText(SpaceViewActivity.this, "Switched to Private", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(SpaceViewActivity.this, "Switched to Private", Toast.LENGTH_SHORT).show();
                                 finish();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -413,7 +413,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                setViews(snapshot.child("userIsFinder").getValue().toString());
+                if(snapshot.exists()) {
+                    setViews(snapshot.child("userIsFinder").getValue().toString());
+                }
             }
 
             @Override
@@ -439,23 +441,33 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     @Override
     public void onStop() {
         super.onStop();
-        if(isPublic) {
-            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
-        } else {
-            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
-        }
+//        if(isPublic) {
+//            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
+//        } else {
+//            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
+//        }
         mapView.onStop();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+//        if(isPublic) {
+//            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
+//        } else {
+//            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
+//        }
         mapView.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        if(isPublic) {
+//            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("public");
+//        } else {
+//            drDatabaseRef.child(spaceID).child("spaceVisibility").setValue("private");
+//        }
         mapView.onDestroy();
     }
 

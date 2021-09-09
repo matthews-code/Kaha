@@ -278,7 +278,7 @@
                     android:ems="10"
                     android:inputType="text|textMultiLine"
                     android:scrollHorizontally="false"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id dolor nibh. Nam eget massa eget tortor ornare ultrices ut.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id dolor nibh. Nam eget massa eget tortor ornare ultrices ut.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus id dolor nibh. Nam eget massa eget tortor ornare ultrices ut."
+                    android:text="No description"
                     android:textColor="@color/secondary_gray" />
 
             </LinearLayout>
