@@ -48,9 +48,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     private FloatingActionButton fabAddSpace;
 
     private FirebaseUser user;
-    private FirebaseAuth mAuth;
     private String userId;
-    private DatabaseReference drDatabaseRef;
 
     private ImageButton btnFilter;
 
@@ -60,14 +58,12 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         setContentView(R.layout.activity_finder_home);
         initToolbar();
 
-        Log.d("CREATE", "*****************************************************");
         this.dataList = initData();
         this.initComponents();
         this.initFirebase();
     }
 
     private ArrayList<SpaceUpload> initData() {
-        this.mAuth = FirebaseAuth.getInstance();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name());
 
@@ -95,10 +91,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                     );
                     tempData.add(spaceInfo);
 
-//                    SpaceUpload spaceInfo = indivSpace.getValue(SpaceUpload.class);
-//                    Log.d("HERE", "\n" +  indivSpace.child("spaceType").getValue());
-
-                    //Log.d("READ HERE", String.valueOf(indivSpace));
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -144,14 +136,10 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
     private void initFirebase() {
 
-        this.mAuth = FirebaseAuth.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
 
-        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + userId);
-        this.mAuth = FirebaseAuth.getInstance();
-
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
 
         Log.d("TRACE", "initFirebase: happened");
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {
@@ -178,13 +166,12 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
             this.tvHeader.setText("Your");
             this.fabAddSpace.setVisibility(View.VISIBLE);
         }
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("START", "*****************************************************");
+
         this.dataList = initData();
         this.adapter = new FinderHomeAdapter(dataList, this);
         adapter.notifyDataSetChanged();
