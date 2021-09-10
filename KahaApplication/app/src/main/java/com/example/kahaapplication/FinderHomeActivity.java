@@ -201,6 +201,10 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 //        this.adapter = new FinderHomeAdapter(dataList, this);
 //        adapter.notifyDataSetChanged();
 //        loadData();
+
+        this.initFirebase();
+        //this.dataList = initData();
+        this.initComponents();
     }
 
     @Override
