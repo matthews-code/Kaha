@@ -93,7 +93,9 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
 
                     Log.d("HOST ID", i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()) + "\n" + spaceInfo.getSpaceHostId());
                     if(i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()).equals(spaceInfo.getSpaceHostId())) {
-                        tempData.add(spaceInfo);
+                        if(spaceInfo.getSpaceVisibility().equals("public")) {
+                            tempData.add(spaceInfo);
+                        }
                     }
                 }
                 adapter.notifyDataSetChanged();
