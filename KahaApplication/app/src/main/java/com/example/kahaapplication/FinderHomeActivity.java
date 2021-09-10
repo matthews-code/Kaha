@@ -94,16 +94,16 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                             String.valueOf(indivSpace.child("spaceUploadId").getValue()),
                             String.valueOf(indivSpace.child("spaceVisibility").getValue())
                     );
+
                     if(isFinder.equalsIgnoreCase("false")) {
                         if(userId.equals(spaceInfo.getSpaceHostId())) {
                             tempData.add(spaceInfo);
                         }
-                    } else {
-                        tempData.add(spaceInfo);
+                    } else { // View everything
+                        if(spaceInfo.getSpaceVisibility().equals("public")) {
+                            tempData.add(spaceInfo);
+                        }
                     }
-//                    if(userId.equals(spaceInfo.getSpaceHostId())) {
-//                        tempData.add(spaceInfo);
-//                    }
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -170,7 +170,6 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                         adapter.notifyDataSetChanged();
                         loadData();
                     }
-
                     reference.removeEventListener(this);
                 }
             }
