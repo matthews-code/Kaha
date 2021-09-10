@@ -6,9 +6,6 @@
         android:id="@+id/item_profile"
         android:title="Profile" />
     <item
-        android:id="@+id/item_settings"
-        android:title="Settings" />
-    <item
         android:id="@+id/item_host"
         android:title="Host" />
     <item

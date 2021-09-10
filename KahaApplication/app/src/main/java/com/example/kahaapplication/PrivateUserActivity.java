@@ -186,12 +186,7 @@ public class PrivateUserActivity extends ToolBarActivity {
         this.lastName.setText(lastName);
         this.contactNumber.setText(snapshot.child("userPhone").getValue().toString().trim());
         this.emailAddress.setText(snapshot.child("userEmail").getValue().toString().trim());
-
-        if(snapshot.child("userDescription").getValue().toString().equals("")) {
-            this.publicBio.setText("No description");
-        } else {
-            this.publicBio.setText(snapshot.child("userDescription").getValue().toString().trim());
-        }
+        this.publicBio.setText(snapshot.child("userDescription").getValue().toString().trim());
     }
 
     private void showKeyboard(){

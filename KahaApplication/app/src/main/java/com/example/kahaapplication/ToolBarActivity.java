@@ -34,11 +34,11 @@ public class ToolBarActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         Intent intent;
                         switch(menuItem.getItemId()){
-
                             case R.id.item_logout:
                                 Toast.makeText(ToolBarActivity.this, "Logout Clicked", Toast.LENGTH_SHORT).show();
                                 intent = new Intent(ToolBarActivity.this, LoginActivity.class);
                                 startActivity(intent);
+                                finish();
                                 break;
                             case R.id.item_settings:
                                 Toast.makeText(ToolBarActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
@@ -48,7 +48,8 @@ public class ToolBarActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 return true;
                             case R.id.item_host:
-                                intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
+                                Intent intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
+                                intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), FinderHomeActivity.userId);
                                 startActivity(intent);
                                 return true;
                             default:
