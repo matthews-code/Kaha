@@ -32,26 +32,29 @@ public class ToolBarActivity extends AppCompatActivity {
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
+                        Intent intent;
                         switch(menuItem.getItemId()){
+
                             case R.id.item_logout:
                                 Toast.makeText(ToolBarActivity.this, "Logout Clicked", Toast.LENGTH_SHORT).show();
-                                return true;
+                                intent = new Intent(ToolBarActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                break;
                             case R.id.item_settings:
                                 Toast.makeText(ToolBarActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.item_profile:
-                                if(!getClass().getName().equals("com.example.kahaapplication.PrivateUserActivity")  ){
-                                    Intent intent = new Intent(ToolBarActivity.this, PrivateUserActivity.class);
+                                    intent = new Intent(ToolBarActivity.this, PrivateUserActivity.class);
                                     startActivity(intent);
-                                    return true;
-                                } else {return false;}
+                                return true;
                             case R.id.item_host:
-                                Intent intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
+                                intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
                                 startActivity(intent);
                                 return true;
                             default:
                                 return false;
                         }
+                        return false;
                     }
                 });
                 popupMenu.inflate(R.menu.navbar);

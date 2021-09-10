@@ -83,7 +83,7 @@
                     android:textColorHint="#65000000" />
 
                 <ImageButton
-                    android:id="@+id/imageButton3"
+                    android:id="@+id/ib_search"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="-10dp"

@@ -146,6 +146,25 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             }
         });
 
+        btnReserve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(SpaceViewActivity.this)
+                        .setTitle("Reserve space")
+                        .setMessage("Reserve " + tvTitle.getText() + "?")
+                        .setPositiveButton("Reserve", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                //TODO: Add record of this to db
+                                Toast.makeText(SpaceViewActivity.this, "SpaceReserved", Toast.LENGTH_SHORT).show();
+
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+                }
+        });
+
         Intent i = getIntent();
         this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
 
@@ -232,6 +251,15 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
                         .setNegativeButton(android.R.string.no, null)
                         .show();
+            }
+        });
+
+        //VIEW RESERVATION BLOB
+        cvNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SpaceViewActivity.this, ViewReservations.class);
+                startActivity(intent);
             }
         });
     }

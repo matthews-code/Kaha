@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ViewReservations extends AppCompatActivity {
+public class ViewReservations extends ToolBarActivity {
     private RecyclerView rvReserveList;
     private ReservationAdapter reservationAdapter;
     private ArrayList<String> data;
@@ -22,8 +23,11 @@ public class ViewReservations extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_reservations);
+        initToolbar();
+        
         DataHelper dh = new DataHelper();
         this.data = dh.initData2();
+
         //Init RV
         this.rvReserveList = findViewById(R.id.rv_reservation_list);
         this.reservationAdapter = new ReservationAdapter(data);
@@ -50,7 +54,9 @@ public class ViewReservations extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+            Intent intent = new Intent(view.getContext(), PublicHosterProfileActivity.class);
 
+            startActivity(intent);
         }
     }
 

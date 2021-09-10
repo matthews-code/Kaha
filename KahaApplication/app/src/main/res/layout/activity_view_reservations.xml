@@ -37,7 +37,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="79dp">
 
             <TextView
                 android:id="@+id/textView2"
@@ -64,6 +64,14 @@
                 app:layout_constraintStart_toStartOf="@+id/textView2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/secondary_gray" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_reservation_list"
