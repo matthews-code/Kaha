@@ -36,9 +36,6 @@ public class ToolBarActivity extends AppCompatActivity {
                             case R.id.item_logout:
                                 Toast.makeText(ToolBarActivity.this, "Logout Clicked", Toast.LENGTH_SHORT).show();
                                 return true;
-                            case R.id.item_settings:
-                                Toast.makeText(ToolBarActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
-                                return true;
                             case R.id.item_profile:
                                 if(!getClass().getName().equals("com.example.kahaapplication.PrivateUserActivity")  ){
                                     Intent intent = new Intent(ToolBarActivity.this, PrivateUserActivity.class);
@@ -47,6 +44,7 @@ public class ToolBarActivity extends AppCompatActivity {
                                 } else {return false;}
                             case R.id.item_host:
                                 Intent intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
+                                intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), FinderHomeActivity.userId);
                                 startActivity(intent);
                                 return true;
                             default:

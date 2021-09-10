@@ -123,7 +123,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tv_bio_text"
+                    android:id="@+id/tv_hoster_bio_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="20sp"

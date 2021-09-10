@@ -48,7 +48,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     private FloatingActionButton fabAddSpace;
 
     private FirebaseUser user;
-    private String userId;
+    public static String userId;
 
     private String isFinder;
 

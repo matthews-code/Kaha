@@ -19,5 +19,5 @@ public enum Keys {
     KEY_SPACE_UPLOAD_ID,
 
     //SESSION DETAILS
-    KEY_USER_TYPE
+    KEY_USER_ID
 }

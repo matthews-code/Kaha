@@ -136,18 +136,19 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.rbPrivate = findViewById(R.id.rb_visibility_private);
         this.ibNavBack = findViewById(R.id.ib_navbar_back);
 
+        Intent i = getIntent();
+        this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
+
         //FINDER BUTTONS
         btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SpaceViewActivity.this, PrivateUserActivity.class);
+                Intent intent = new Intent(SpaceViewActivity.this, PublicHosterProfileActivity.class);
+                intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()));
 
                 startActivity(intent);
             }
         });
-
-        Intent i = getIntent();
-        this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
 
         initMap(savedInstanceState);
         retrieveData();
