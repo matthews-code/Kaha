@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -13,11 +14,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.security.Key;
 
 public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCallback{
     //Carousel
@@ -111,7 +116,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
         this.vPriceDivider = findViewById(R.id.divider_price);
 
-        this.mapView = findViewById(R.id.mv_show_loc);
+        this.mapView = findViewById(R.id.mv_show_location);
 
         this.btnContact = findViewById(R.id.btn_space_contact);
         this.tvPrice = findViewById(R.id.tv_show_price);
@@ -342,7 +347,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
 
-        this.mapView = findViewById(R.id.mv_show_loc);
+        this.mapView = findViewById(R.id.mv_show_location);
         mapView.onCreate(mapViewBundle);
 
         mapView.getMapAsync(this);
