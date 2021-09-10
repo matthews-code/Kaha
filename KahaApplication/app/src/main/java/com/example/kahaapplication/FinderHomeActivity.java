@@ -50,6 +50,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     private FirebaseUser user;
     private String userId;
 
+    private String isFinder;
+
     private ImageButton btnFilter;
 
     @Override
@@ -58,9 +60,9 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         setContentView(R.layout.activity_finder_home);
         initToolbar();
 
-        this.dataList = initData();
-        this.initComponents();
         this.initFirebase();
+        //this.dataList = initData();
+        this.initComponents();
     }
 
     private ArrayList<SpaceUpload> initData() {
@@ -69,10 +71,13 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
         ArrayList<SpaceUpload> tempData = new ArrayList<>();
 
+        Log.d("TRACE", "Before referencing spaces");
+
         reference.child(Keys.SPACES.name()).addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("TRACE", "After referencing spaces. User type is " + isFinder);
                 for (DataSnapshot indivSpace : snapshot.getChildren()) {
 
                     SpaceUpload spaceInfo = new SpaceUpload(
@@ -89,9 +94,16 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                             String.valueOf(indivSpace.child("spaceUploadId").getValue()),
                             String.valueOf(indivSpace.child("spaceVisibility").getValue())
                     );
-                    if(userId.equals(spaceInfo.getSpaceHostId())) {
+                    if(isFinder.equalsIgnoreCase("false")) {
+                        if(userId.equals(spaceInfo.getSpaceHostId())) {
+                            tempData.add(spaceInfo);
+                        }
+                    } else {
                         tempData.add(spaceInfo);
                     }
+//                    if(userId.equals(spaceInfo.getSpaceHostId())) {
+//                        tempData.add(spaceInfo);
+//                    }
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -142,12 +154,24 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
 
-        Log.d("TRACE", "initFirebase: happened");
-        reference.child(this.userId).addValueEventListener(new ValueEventListener() {
+        Log.d("TRACE", "Before referencing user");
+        reference.child(this.userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
+                    isFinder = snapshot.child("userIsFinder").getValue().toString();
                     setViews(snapshot.child("userIsFinder").getValue().toString());
+
+                    Log.d("TRACE", "After referencing user. User type is " + isFinder);
+
+                    if(isFinder != null) {
+                        dataList = initData();
+                        adapter = new FinderHomeAdapter(dataList, FinderHomeActivity.this);
+                        adapter.notifyDataSetChanged();
+                        loadData();
+                    }
+
+                    reference.removeEventListener(this);
                 }
             }
 
@@ -173,10 +197,14 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     protected void onStart() {
         super.onStart();
 
-        this.dataList = initData();
-        this.adapter = new FinderHomeAdapter(dataList, this);
-        adapter.notifyDataSetChanged();
-        loadData();
+//        this.dataList = initData();
+//        this.adapter = new FinderHomeAdapter(dataList, this);
+//        adapter.notifyDataSetChanged();
+//        loadData();
+
+        this.initFirebase();
+        //this.dataList = initData();
+        this.initComponents();
     }
 
     @Override
