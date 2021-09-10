@@ -189,13 +189,8 @@ public class PrivateUserActivity extends ToolBarActivity {
         this.contactNumber.setText(snapshot.child("userPhone").getValue().toString().trim());
         this.emailAddress.setText(snapshot.child("userEmail").getValue().toString().trim());
 
-        if(snapshot.child("userDescription").getValue().toString().equals("")) {
-            this.publicBio.setText("No description");
-        } else {
-            this.publicBio.setText(snapshot.child("userDescription").getValue().toString().trim());
-        }
-
         this.ivProfilePicture.setImageResource(R.drawable.profile);
+        this.publicBio.setText(snapshot.child("userDescription").getValue().toString().trim());
     }
 
     private void showKeyboard(){

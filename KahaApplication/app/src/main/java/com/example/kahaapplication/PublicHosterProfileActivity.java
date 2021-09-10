@@ -33,6 +33,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
     private TextView emailAddress;
     private TextView spacesHeader;
     private ImageView hostPicture;
+    private TextView publicBio;
 
     private FirebaseUser user;
     private FirebaseAuth mAuth;
@@ -43,10 +44,12 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_public_hoster_profile);
 
+        Intent i = getIntent();
+
         initToolbar();
-        this.dataListSpaces = initData();
+        this.dataListSpaces = initData(i);
         this.initComponents();
-        this.initFirebase();
+        this.initFirebase(i);
     }
 
     private void initComponents () {
@@ -58,13 +61,14 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         this.emailAddress = findViewById(R.id.tv_profile_email);
         this.spacesHeader = findViewById(R.id.tv_show_hoster_spaces);
         this.hostPicture = findViewById(R.id.iv_space_hoster);
+        this.publicBio = findViewById(R.id.tv_hoster_bio_text);
 
         this.adapter = new FinderHomeAdapter(dataListSpaces,  this);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false));
         this.recyclerView.setAdapter(this.adapter);
     }
 
-    private ArrayList<SpaceUpload> initData() {
+    private ArrayList<SpaceUpload> initData(Intent i) {
         this.mAuth = FirebaseAuth.getInstance();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name());
 
@@ -90,13 +94,10 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
                             String.valueOf(indivSpace.child("spaceVisibility").getValue())
                     );
 
-                    Log.d("SPACEINFO", "loaded: " + indivSpace.child("spaceUploadId").getValue());
-                    tempData.add(spaceInfo);
-
-//                    SpaceUpload spaceInfo = indivSpace.getValue(SpaceUpload.class);
-//                    Log.d("HERE", "\n" +  indivSpace.child("spaceType").getValue());
-
-                    //Log.d("READ HERE", String.valueOf(indivSpace));
+                    Log.d("HOST ID", i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()) + "\n" + spaceInfo.getSpaceHostId());
+                    if(i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()).equals(spaceInfo.getSpaceHostId())) {
+                        tempData.add(spaceInfo);
+                    }
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -109,7 +110,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         return tempData;
     }
 
-    private void initFirebase() {
+    private void initFirebase(Intent i) {
         this.mAuth = FirebaseAuth.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
@@ -117,7 +118,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
-        reference.child(this.userId).addValueEventListener(new ValueEventListener() {
+        reference.child(i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 setViews(snapshot);
@@ -140,9 +141,12 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
             spaceHeader = firstName + "'s spaces";
         }
 
+        Log.d("DESCRIPTION", snapshot.child("userDescription").getValue().toString().trim());
+
         this.fullName.setText(fullName);
-        this.contactNumber.setText(snapshot.child("userPhone").getValue().toString());
-        this.emailAddress.setText(snapshot.child("userEmail").getValue().toString());
+        this.contactNumber.setText(snapshot.child("userPhone").getValue().toString().trim());
+        this.emailAddress.setText(snapshot.child("userEmail").getValue().toString().trim());
+        this.publicBio.setText(snapshot.child("userDescription").getValue().toString().trim());
         this.spacesHeader.setText(spaceHeader);
         this.hostPicture.setImageResource(R.drawable.profile);
     }
@@ -154,15 +158,8 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), dataListSpaces.get(position).getSpaceImageUrl());
         intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), dataListSpaces.get(position).getSpaceUploadId());
         intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataListSpaces.get(position).getSpaceHostId());
-//        intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), data.get(position).getSpaceImageUrl());
-//        intent.putExtra(Keys.KEY_SPACE_LENGTH.name(), data.get(position).getSpaceLength());
-//        intent.putExtra(Keys.KEY_SPACE_WIDTH.name(), data.get(position).getSpaceWidth());
-//        intent.putExtra(Keys.KEY_SPACE_HEIGHT.name(), data.get(position).getSpaceLength());
-//        intent.putExtra(Keys.KEY_SPACE_PRICE.name(), data.get(position).getSpaceMonthly());
-//        intent.putExtra(Keys.KEY_SPACE_HOST.name(), "matt");
-//        intent.putExtra(Keys.KEY_SPACE_TYPE.name(), data.get(position).getSpaceType());
-//        intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), data.get(position).getSpaceLocation());
 
         startActivity(intent);
+        //finish();
     }
 }
