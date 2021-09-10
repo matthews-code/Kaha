@@ -337,6 +337,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                 .error(R.drawable.loading)
                 .placeholder(R.drawable.loading)
                 .into(ivThumbnail);
+
+        this.ivHostImage.setImageResource(R.drawable.profile);
     }
 
     private void initMap(Bundle savedInstanceState) {
