@@ -108,7 +108,7 @@ public class PrivateUserActivity extends ToolBarActivity {
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
 
-        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name() + "/" + userId);
+        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name() + "/" + userId);
 
         this.firstName = findViewById(R.id.et_profile_firstname);
         this.lastName = findViewById(R.id.et_profile_lastname);
@@ -160,7 +160,7 @@ public class PrivateUserActivity extends ToolBarActivity {
     private void initFirebase() {
         this.mAuth = FirebaseAuth.getInstance();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {

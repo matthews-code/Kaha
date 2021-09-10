@@ -111,7 +111,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
 
         //this.pbProfile.setVisibility(View.VISIBLE);
         reference.child(this.userId).addValueEventListener(new ValueEventListener() {

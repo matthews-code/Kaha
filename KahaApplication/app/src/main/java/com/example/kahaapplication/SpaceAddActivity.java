@@ -148,7 +148,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                     Toast.makeText(SpaceAddActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_USERS.name());
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
                     reference.child(userId).addValueEventListener(new ValueEventListener() {
 
                         @Override
