@@ -61,7 +61,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         initToolbar();
 
         this.initFirebase();
-        this.dataList = initData();
+        //this.dataList = initData();
         this.initComponents();
     }
 
@@ -155,14 +155,23 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
 
         Log.d("TRACE", "Before referencing user");
-
-        reference.child(this.userId).addValueEventListener(new ValueEventListener() {
+        reference.child(this.userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     isFinder = snapshot.child("userIsFinder").getValue().toString();
-                    Log.d("TRACE", "After referencing user. User type is " + isFinder);
                     setViews(snapshot.child("userIsFinder").getValue().toString());
+
+                    Log.d("TRACE", "After referencing user. User type is " + isFinder);
+
+                    if(isFinder != null) {
+                        dataList = initData();
+                        adapter = new FinderHomeAdapter(dataList, FinderHomeActivity.this);
+                        adapter.notifyDataSetChanged();
+                        loadData();
+                    }
+
+                    reference.removeEventListener(this);
                 }
             }
 
@@ -188,10 +197,10 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     protected void onStart() {
         super.onStart();
 
-        this.dataList = initData();
-        this.adapter = new FinderHomeAdapter(dataList, this);
-        adapter.notifyDataSetChanged();
-        loadData();
+//        this.dataList = initData();
+//        this.adapter = new FinderHomeAdapter(dataList, this);
+//        adapter.notifyDataSetChanged();
+//        loadData();
     }
 
     @Override
