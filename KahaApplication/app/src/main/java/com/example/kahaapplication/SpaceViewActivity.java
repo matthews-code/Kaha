@@ -169,7 +169,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                 }
         });
 
-        Intent i = getIntent();
         this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
 
         initMap(savedInstanceState);

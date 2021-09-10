@@ -40,15 +40,12 @@ public class ToolBarActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                                 break;
-                            case R.id.item_settings:
-                                Toast.makeText(ToolBarActivity.this, "Settings Clicked", Toast.LENGTH_SHORT).show();
-                                return true;
                             case R.id.item_profile:
                                     intent = new Intent(ToolBarActivity.this, PrivateUserActivity.class);
                                     startActivity(intent);
                                 return true;
                             case R.id.item_host:
-                                Intent intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
+                                intent = new Intent(ToolBarActivity.this, PublicHosterProfileActivity.class);
                                 intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), FinderHomeActivity.userId);
                                 startActivity(intent);
                                 return true;
