@@ -54,7 +54,7 @@ public class PrivateUserActivity extends ToolBarActivity {
     private DatabaseReference drDatabaseRef;
     private String userId;
 
-
+    private ImageView ivProfilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +124,8 @@ public class PrivateUserActivity extends ToolBarActivity {
         this.ivContactPencil = findViewById(R.id.iv_contact_pencil);
         this.ivBioPencil = findViewById(R.id.iv_bio_pencil);
 
+        this.ivProfilePicture = findViewById(R.id.iv_space_hoster);
+
         ivFirstNamePencil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -186,6 +188,8 @@ public class PrivateUserActivity extends ToolBarActivity {
         this.lastName.setText(lastName);
         this.contactNumber.setText(snapshot.child("userPhone").getValue().toString().trim());
         this.emailAddress.setText(snapshot.child("userEmail").getValue().toString().trim());
+
+        this.ivProfilePicture.setImageResource(R.drawable.profile);
         this.publicBio.setText(snapshot.child("userDescription").getValue().toString().trim());
     }
 

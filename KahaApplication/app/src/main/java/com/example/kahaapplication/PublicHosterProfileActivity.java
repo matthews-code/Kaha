@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
     private TextView contactNumber;
     private TextView emailAddress;
     private TextView spacesHeader;
+    private ImageView hostPicture;
     private TextView publicBio;
 
     private FirebaseUser user;
@@ -58,6 +60,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         this.contactNumber = findViewById(R.id.tv_show_hoster_contact);
         this.emailAddress = findViewById(R.id.tv_profile_email);
         this.spacesHeader = findViewById(R.id.tv_show_hoster_spaces);
+        this.hostPicture = findViewById(R.id.iv_space_hoster);
         this.publicBio = findViewById(R.id.tv_hoster_bio_text);
 
         this.adapter = new FinderHomeAdapter(dataListSpaces,  this);
@@ -147,7 +150,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         this.emailAddress.setText(snapshot.child("userEmail").getValue().toString().trim());
         this.publicBio.setText(snapshot.child("userDescription").getValue().toString().trim());
         this.spacesHeader.setText(spaceHeader);
-
+        this.hostPicture.setImageResource(R.drawable.profile);
     }
 
     @Override
