@@ -93,7 +93,7 @@ public class ViewReservations extends ToolBarActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                    tempUserData.add(snapshot.getValue(User.class));
                     Log.d("PUTANGINA", "onDataChange: " + snapshot);
-                    
+
                     User userInfo = new User(
                                 String.valueOf(snapshot.child("userFirstName").getValue()),
                                 String.valueOf(snapshot.child("userLastName").getValue()),
@@ -107,9 +107,11 @@ public class ViewReservations extends ToolBarActivity {
 
                     tempUserData.add(userInfo);
 
-                    Log.d("MANIFEST 1", "onDataChange: " + tempUserData);
+//                    Log.d("MANIFEST 1", "onDataChange: " + tempUserData);
                     reservationAdapter = new ReservationAdapter(tempUserData);
                     reservationAdapter.notifyDataSetChanged();
+
+                    rvReserveList.setAdapter(reservationAdapter);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -140,7 +142,6 @@ public class ViewReservations extends ToolBarActivity {
         @Override
         public void onClick(View view) {
             Intent intent = new Intent(view.getContext(), PublicHosterProfileActivity.class);
-
             startActivity(intent);
         }
     }
