@@ -112,6 +112,7 @@ public class ViewReservations extends ToolBarActivity {
                     reservationAdapter.notifyDataSetChanged();
 
                     rvReserveList.setAdapter(reservationAdapter);
+                    data = tempUserData;
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -141,7 +142,13 @@ public class ViewReservations extends ToolBarActivity {
 
         @Override
         public void onClick(View view) {
-            Intent intent = new Intent(view.getContext(), PublicHosterProfileActivity.class);
+            Intent intent = new Intent(view.getContext(), PublicFinderProfileActivity.class);
+            intent.putExtra(Keys.KEY_FINDER_FIRST.name(), data.get(getAdapterPosition()).getUserFirstName());
+            intent.putExtra(Keys.KEY_FINDER_LAST.name(), data.get(getAdapterPosition()).getUserLastName());
+            intent.putExtra(Keys.KEY_FINDER_BIRTH.name(), data.get(getAdapterPosition()).getUserBirthDate());
+            intent.putExtra(Keys.KEY_FINDER_DESC.name(), data.get(getAdapterPosition()).getUserDescription());
+            intent.putExtra(Keys.KEY_FINDER_EMAIL.name(), data.get(getAdapterPosition()).getUserEmail());
+            intent.putExtra(Keys.KEY_FINDER_PHONE.name(), data.get(getAdapterPosition()).getUserPhone());
             startActivity(intent);
         }
     }
