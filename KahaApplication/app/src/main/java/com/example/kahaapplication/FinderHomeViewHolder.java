@@ -1,5 +1,6 @@
 package com.example.kahaapplication;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -84,8 +85,8 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
     }
 
     public void BindData(SpaceUpload space) {
-        String size = new String(space.getSpaceLength() + " x " + space.getSpaceWidth() + " x " + space.getSpaceHeight());
-        String price = new String("₱" + String.valueOf(space.getSpaceMonthly()) + " / month");
+        String size = space.getSpaceLength() + " x " + space.getSpaceWidth() + " x " + space.getSpaceHeight();
+        String price = "₱" + space.getSpaceMonthly() + " / month";
 
         this.ivSpace.setImageResource(R.drawable.loading);
         this.tvSize.setText(size);
@@ -93,6 +94,8 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
         this.tvLocation.setText(space.getSpaceLocation());
         this.tvHost.setText(space.getSpaceHost());
         this.tvPrice.setText(price);
+
+        Log.d("TAG", "BindData: Price: " + price);
 
         //Visibility Status
         if(space.getSpaceVisibility().equals("public")) {

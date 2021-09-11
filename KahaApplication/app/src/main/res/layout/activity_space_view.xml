@@ -49,48 +49,6 @@
                 android:paddingRight="20dp"
                 android:paddingBottom="20dp">
 
-                <RadioGroup
-                    android:id="@+id/rg_visibility"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
-
-                    <View
-                        android:id="@+id/divider9"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <TextView
-                        android:id="@+id/tv_visibility_intro"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Visibility"
-                        android:textStyle="bold" />
-
-                    <RadioButton
-                        android:id="@+id/rb_visibility_public"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Public" />
-
-                    <RadioButton
-                        android:id="@+id/rb_visibility_private"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Private" />
-
-                    <View
-                        android:id="@+id/divider8"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="?android:attr/listDivider" />
-                </RadioGroup>
-
                 <TextView
                     android:id="@+id/tv_title"
                     android:layout_width="match_parent"
@@ -98,7 +56,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="Space in Muntinlupa"
                     android:textColor="@color/black"
-                    android:textSize="34sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <androidx.cardview.widget.CardView
@@ -147,7 +105,7 @@
                         android:layout_weight="0"
                         android:text="Price "
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -157,7 +115,7 @@
                         android:layout_weight="0.25"
                         android:text="/ month"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -192,7 +150,7 @@
                         android:layout_weight="0.5"
                         android:text="Type"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -227,7 +185,7 @@
                         android:layout_weight="0.5"
                         android:text="Size"
                         android:textColor="@color/black"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -257,17 +215,60 @@
                     android:layout_height="wrap_content"
                     android:text="Description"
                     android:textColor="@color/black"
-                    android:textSize="34sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_show_desc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
                     android:lineSpacingExtra="4sp"
                     android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s"
                     android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_visibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <View
+                        android:id="@+id/divider9"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/listDivider" />
+
+                    <TextView
+                        android:id="@+id/tv_visibility_intro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Visibility"
+                        android:textColor="@color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_visibility_public"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="-10dp"
+                        android:text="Public" />
+
+                    <RadioButton
+                        android:id="@+id/rb_visibility_private"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Private" />
+
+                    <View
+                        android:id="@+id/divider8"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginBottom="10dp"
+                        android:background="?android:attr/listDivider" />
+                </RadioGroup>
 
                 <TextView
                     android:id="@+id/tv_show_location_intro"
@@ -275,7 +276,7 @@
                     android:layout_height="wrap_content"
                     android:text="Location"
                     android:textColor="@color/black"
-                    android:textSize="34sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <com.google.android.gms.maps.MapView
@@ -291,7 +292,7 @@
                     android:layout_marginBottom="10sp"
                     android:text="Hoster"
                     android:textColor="@color/black"
-                    android:textSize="34sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout

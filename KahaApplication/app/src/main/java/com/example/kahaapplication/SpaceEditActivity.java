@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class SpaceEditActivity extends AppCompatActivity {
 
     //Misc
     private TextView tvCreateIntro;
+    private TextView tvLocationIntro;
 
     //Fields
     private Spinner spnType;
@@ -70,6 +72,8 @@ public class SpaceEditActivity extends AppCompatActivity {
 
     private ProgressBar pbUploadStatus;
     private ImageButton ibBack;
+
+    private LinearLayout mapsView;
 
     //Image URI
     private String sImageUri;
@@ -131,6 +135,10 @@ public class SpaceEditActivity extends AppCompatActivity {
         this.ibBack = findViewById(R.id.ib_navbar_back);
         this.pbUploadStatus = findViewById(R.id.pb_upload_status);
 
+        //Location
+        this.tvLocationIntro = findViewById(R.id.tv_selected_loc_header);
+        this.mapsView = findViewById(R.id.ll_maps_view);
+
         //Account
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
@@ -177,6 +185,10 @@ public class SpaceEditActivity extends AppCompatActivity {
         this.etMonthly.setText(sPrice);
 
         this.etDescription.setText(sDescription);
+
+        //Hide location
+        this.mapsView.setVisibility(View.GONE);
+        this.tvLocationIntro.setVisibility(View.GONE);
 
         //Swap Buttons
         this.btnCreateSpace.setVisibility(View.GONE);
