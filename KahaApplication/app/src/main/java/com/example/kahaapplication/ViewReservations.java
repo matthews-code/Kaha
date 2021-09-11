@@ -27,7 +27,9 @@ import java.util.ArrayList;
 public class ViewReservations extends ToolBarActivity {
     private RecyclerView rvReserveList;
     private ReservationAdapter reservationAdapter;
-    private ArrayList<String> data;
+    private ArrayList<User> data;
+
+    private ArrayList<String> tempReserveeList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +37,12 @@ public class ViewReservations extends ToolBarActivity {
         setContentView(R.layout.activity_view_reservations);
         initToolbar();
         
-        DataHelper dh = new DataHelper();
-        this.data = dh.initData2();
+        //DataHelper dh = new DataHelper();
+        //this.data = dh.initData2();
 
         //Init RV
         this.rvReserveList = findViewById(R.id.rv_reservation_list);
-        this.reservationAdapter = new ReservationAdapter(data);
+//        this.reservationAdapter = new ReservationAdapter(data);
         this.rvReserveList.setLayoutManager(new LinearLayoutManager(this));
         this.rvReserveList.setAdapter(this.reservationAdapter);
 
@@ -49,33 +51,29 @@ public class ViewReservations extends ToolBarActivity {
 
         TextView tvRSpace;
         tvRSpace = findViewById(R.id.tv_reservee_space);
-
         tvRSpace.setText(i.getStringExtra(Keys.KEY_SPACE_TYPE.name()) + " in " + i.getStringExtra(Keys.KEY_SPACE_LOCATION.name()));
 
-        Log.d("Debugger", "Fetching reservee list: " +  initReserveeList(i));
-
-        ArrayList<String> test = initReserveeList(i);
-
-        Log.d("RESERVEE_TAG", "onCreate: " + test.size());
-
+        //Load Reservees
+        initReserveeList(i);
     }
 
-    private ArrayList<String> initReserveeList(Intent intent) {
-        String spaceId = intent.getStringExtra(Keys.KEY_USER_ID.name());
+    private void initReserveeList(Intent intent) {
+        String spaceId = intent.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
+        Log.d("CHANGE", "initReserveeList: " + spaceId);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name() + "/" + spaceId);
-
-        ArrayList<String> tempReserveeList = new ArrayList<>();
 
         reference.child(Keys.COLLECTIONS_RESERVEES.name()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 for(DataSnapshot indivReservee : snapshot.getChildren()) {
-
-                    //String id = String.valueOf(indivReservee.child("id").getValue());
-                    String id = "test";
-
+                    String id = String.valueOf(indivReservee.child("id").getValue());
+                    //Log.d("ID_DEBUG", "the MOTHAFUCKING ID IS: " + id);
                     tempReserveeList.add(id);
                 }
+                //Log.d("PETRONAS", "BOTTAS: " + tempReserveeList);
+                //Log.d("ID_DEBUG", "THE MOTHAFUCKING SIZE IS " + tempReserveeList.size());
+                initProfilesList(tempReserveeList);
             }
 
             @Override
@@ -83,7 +81,43 @@ public class ViewReservations extends ToolBarActivity {
 
             }
         });
-        return tempReserveeList;
+    }
+
+    private void initProfilesList(ArrayList<String> aReserveeList) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
+        ArrayList<User> tempUserData = new ArrayList<>();
+
+        for(String member: aReserveeList) {
+            reference.child(member).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    tempUserData.add(snapshot.getValue(User.class));
+                    Log.d("PUTANGINA", "onDataChange: " + snapshot);
+//                    for(DataSnapshot indivProfile : snapshot.getChildren()) {
+//                        User userInfo = new User(
+//                                String.valueOf(indivProfile.child("userFirstName").getValue()),
+//                                String.valueOf(indivProfile.child("userLastName").getValue()),
+//                                String.valueOf(indivProfile.child("userEmail").getValue()),
+//                                String.valueOf(indivProfile.child("userPassword").getValue()),
+//                                String.valueOf(indivProfile.child("userPhone").getValue()),
+//                                String.valueOf(indivProfile.child("userBirthDate").getValue()),
+//                                String.valueOf(indivProfile.child("userDescription").getValue()),
+//                                true
+//                        );
+//                        indivProfile.getValue();
+//                        tempUserData.add(userInfo);
+//                    }
+                    tempUserData.add(User.class.cast(snapshot));
+                    Log.d("MANIFEST 1", "onDataChange: " + tempUserData);
+                    reservationAdapter = new ReservationAdapter(tempUserData);
+                    reservationAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
     }
 
     public class ReservationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -99,8 +133,8 @@ public class ViewReservations extends ToolBarActivity {
             itemView.setOnClickListener(this);
         }
 
-        public void BindData(String name){
-            this.tvReservee.setText(name);
+        public void BindData(User user){
+            this.tvReservee.setText(user.getUserFirstName());
             this.ivReservee.setImageResource(R.drawable.profile);
         }
 
@@ -113,9 +147,9 @@ public class ViewReservations extends ToolBarActivity {
     }
 
     public class ReservationAdapter extends RecyclerView.Adapter<ReservationViewHolder>{
-        private ArrayList<String> data;
+        private ArrayList<User> data;
 
-        public ReservationAdapter(ArrayList<String> data) {
+        public ReservationAdapter(ArrayList<User> data) {
             this.data = data;
         }
 
