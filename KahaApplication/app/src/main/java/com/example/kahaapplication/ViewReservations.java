@@ -93,21 +93,20 @@ public class ViewReservations extends ToolBarActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                    tempUserData.add(snapshot.getValue(User.class));
                     Log.d("PUTANGINA", "onDataChange: " + snapshot);
-//                    for(DataSnapshot indivProfile : snapshot.getChildren()) {
-//                        User userInfo = new User(
-//                                String.valueOf(indivProfile.child("userFirstName").getValue()),
-//                                String.valueOf(indivProfile.child("userLastName").getValue()),
-//                                String.valueOf(indivProfile.child("userEmail").getValue()),
-//                                String.valueOf(indivProfile.child("userPassword").getValue()),
-//                                String.valueOf(indivProfile.child("userPhone").getValue()),
-//                                String.valueOf(indivProfile.child("userBirthDate").getValue()),
-//                                String.valueOf(indivProfile.child("userDescription").getValue()),
-//                                true
-//                        );
-//                        indivProfile.getValue();
-//                        tempUserData.add(userInfo);
-//                    }
-                    tempUserData.add(User.class.cast(snapshot));
+                    
+                    User userInfo = new User(
+                                String.valueOf(snapshot.child("userFirstName").getValue()),
+                                String.valueOf(snapshot.child("userLastName").getValue()),
+                                String.valueOf(snapshot.child("userEmail").getValue()),
+                                String.valueOf(snapshot.child("userPassword").getValue()),
+                                String.valueOf(snapshot.child("userPhone").getValue()),
+                                String.valueOf(snapshot.child("userBirthDate").getValue()),
+                                String.valueOf(snapshot.child("userDescription").getValue()),
+                                true
+                        );
+
+                    tempUserData.add(userInfo);
+
                     Log.d("MANIFEST 1", "onDataChange: " + tempUserData);
                     reservationAdapter = new ReservationAdapter(tempUserData);
                     reservationAdapter.notifyDataSetChanged();
