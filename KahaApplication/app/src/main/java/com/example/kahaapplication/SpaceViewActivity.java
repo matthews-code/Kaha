@@ -165,7 +165,10 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                             public void onClick(DialogInterface dialog, int which) {
                                 //TODO: Add record of this to db
                                 Toast.makeText(SpaceViewActivity.this, "SpaceReserved", Toast.LENGTH_SHORT).show();
-
+                                drDatabaseRef.child(i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name()))
+                                        .child(Keys.COLLECTIONS_RESERVEES.name())
+                                        .child(String.valueOf(System.currentTimeMillis()))
+                                        .child("id").setValue(userId);
                                 finish();
                             }
                         })
@@ -267,6 +270,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SpaceViewActivity.this, ViewReservations.class);
+                intent.putExtra(Keys.KEY_SPACE_LOCATION.name(), location);
+                intent.putExtra(Keys.KEY_SPACE_TYPE.name(), tvType.getText().toString().trim());
+                intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), spaceID);
                 startActivity(intent);
             }
         });
@@ -294,6 +300,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
                     //Get visibility status
                     String visibility = snapshot.child("spaceVisibility").getValue().toString();
+
+
 
                     setTextViews(type, location, price, length, width, height, description, host, url, visibility);
                 }

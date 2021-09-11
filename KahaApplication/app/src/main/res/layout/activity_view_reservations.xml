@@ -40,7 +40,7 @@
             android:layout_height="79dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_reservee_space"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -57,28 +57,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_regular"
-                android:text="Reservations for"
+                android:text="Reservations for your"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintStart_toStartOf="@+id/textView2" />
+                app:layout_constraintBottom_toTopOf="@+id/tv_reservee_space"
+                app:layout_constraintStart_toStartOf="@+id/tv_reservee_space" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="@color/secondary_gray" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_reservation_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 
