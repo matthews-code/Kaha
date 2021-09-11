@@ -1,7 +1,6 @@
 package com.example.kahaapplication;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,12 +12,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class ViewReservations extends ToolBarActivity {
     private RecyclerView rvReserveList;
     private ReservationAdapter reservationAdapter;
     private ArrayList<String> data;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,23 +35,32 @@ public class ViewReservations extends ToolBarActivity {
         this.reservationAdapter = new ReservationAdapter(data);
         this.rvReserveList.setLayoutManager(new LinearLayoutManager(this));
         this.rvReserveList.setAdapter(this.reservationAdapter);
+
+        //Misc
+        Intent i = getIntent();
+
+        TextView tvRSpace;
+        tvRSpace = findViewById(R.id.tv_reservee_space);
+
+        tvRSpace.setText(i.getStringExtra(Keys.KEY_SPACE_TYPE.name()) + " in " + i.getStringExtra(Keys.KEY_SPACE_LOCATION.name()));
     }
 
     public class ReservationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private String sNameHolder;
 
-        private TextView reserveeName;
-        private ImageView reserveeImg;
+        private TextView tvReservee;
+        private ImageView ivReservee;
 
         public ReservationViewHolder(@NonNull View itemView) {
-
-
             super(itemView);
-            this.reserveeName = itemView.findViewById(R.id.tv_reservation_name);
+            this.tvReservee = itemView.findViewById(R.id.tv_reservee);
+            this.ivReservee = itemView.findViewById(R.id.iv_reservee);
             itemView.setOnClickListener(this);
         }
 
         public void BindData(String name){
-            this.reserveeName.setText(name);
+            this.tvReservee.setText(name);
+            this.ivReservee.setImageResource(R.drawable.profile);
         }
 
         @Override
