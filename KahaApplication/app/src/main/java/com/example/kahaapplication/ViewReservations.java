@@ -6,14 +6,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.w3c.dom.Text;
 
+import java.security.Key;
 import java.util.ArrayList;
 
 public class ViewReservations extends ToolBarActivity {
@@ -43,6 +51,39 @@ public class ViewReservations extends ToolBarActivity {
         tvRSpace = findViewById(R.id.tv_reservee_space);
 
         tvRSpace.setText(i.getStringExtra(Keys.KEY_SPACE_TYPE.name()) + " in " + i.getStringExtra(Keys.KEY_SPACE_LOCATION.name()));
+
+        Log.d("Debugger", "Fetching reservee list: " +  initReserveeList(i));
+
+        ArrayList<String> test = initReserveeList(i);
+
+        Log.d("RESERVEE_TAG", "onCreate: " + test.size());
+
+    }
+
+    private ArrayList<String> initReserveeList(Intent intent) {
+        String spaceId = intent.getStringExtra(Keys.KEY_USER_ID.name());
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name() + "/" + spaceId);
+
+        ArrayList<String> tempReserveeList = new ArrayList<>();
+
+        reference.child(Keys.COLLECTIONS_RESERVEES.name()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot indivReservee : snapshot.getChildren()) {
+
+                    //String id = String.valueOf(indivReservee.child("id").getValue());
+                    String id = "test";
+
+                    tempReserveeList.add(id);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return tempReserveeList;
     }
 
     public class ReservationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

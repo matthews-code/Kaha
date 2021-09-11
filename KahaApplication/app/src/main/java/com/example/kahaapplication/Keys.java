@@ -3,6 +3,7 @@ package com.example.kahaapplication;
 public enum Keys {
     COLLECTIONS_PROFILES,
     COLLECTIONS_SPACES,
+    COLLECTIONS_RESERVEES,
     SPACES,
 
     //SPACE DETAILS
