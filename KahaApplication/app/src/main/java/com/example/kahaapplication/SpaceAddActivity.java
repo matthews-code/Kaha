@@ -2,10 +2,15 @@ package com.example.kahaapplication;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -46,6 +52,7 @@ public class SpaceAddActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     //Fields
+    private TextView selectedLoc;
     private Spinner spnType;
     private EditText etLength;
     private EditText etWidth;
@@ -60,6 +67,9 @@ public class SpaceAddActivity extends AppCompatActivity {
 
     //Create / Edit
     private Button btnCreateSpace;
+
+    //Map
+    private Button locSelect;
 
     private ProgressBar pbUploadStatus;
     private ImageButton ibBack;
@@ -76,6 +86,8 @@ public class SpaceAddActivity extends AppCompatActivity {
     //Account
     private String userId;
     private String currUser;
+    private String lat, lng;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +105,6 @@ public class SpaceAddActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        Intent i = getIntent();
-
         //Fields
         this.spnType = findViewById(R.id.spn_space_add_type);
         this.etLength = findViewById(R.id.et_space_add_length);
@@ -103,6 +113,8 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.etLocation = findViewById(R.id.et_space_add_location);
         this.etMonthly = findViewById(R.id.et_space_add_monthly);
         this.etDescription = findViewById(R.id.et_space_add_description);
+        this.locSelect = findViewById(R.id.btn_map_select);
+        this.selectedLoc = findViewById(R.id.tv_selected_location);
 
         //Uploading
         this.btnChooseImage = findViewById(R.id.btn_upload);
@@ -169,8 +181,40 @@ public class SpaceAddActivity extends AppCompatActivity {
             }
         });
 
+        locSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SpaceAddActivity.this, MapActivity.class);
+                myActivityResultLauncher.launch(i);
+            }
+        });
+
         ivThumb.setImageResource(R.drawable.no_image);
     }
+
+    private ActivityResultLauncher myActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if(result.getResultCode() == Activity.RESULT_OK) {
+                        Intent i = result.getData();
+
+                        double tempLng = i.getDoubleExtra("KEY_LNG", 0);
+                        double tempLat = i.getDoubleExtra("KEY_LAT" , 0);
+                        String title = i.getStringExtra("KEY_TITLE");
+
+                        selectedLoc.setText(title);
+                        lng = String.valueOf(tempLng);
+                        lat = String.valueOf(tempLat);
+                        //Toast.makeText(SpaceAddActivity.this, "Lng: "+ lng + " Lang: " + lat, Toast.LENGTH_SHORT).show();
+
+                    } else if(result.getResultCode() == Activity.RESULT_CANCELED) {
+
+                    }
+                }
+            }
+    );
 
     private int getSpaceTypeInt(String sType) {
         switch (sType) {
@@ -302,7 +346,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                                     etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
                                     etDescription.getText().toString().trim(),
                                     downloadUri.toString(),
-                                    currUser, userId, uploadId, "public");
+                                    currUser, userId, uploadId, "public", lat, lng);
 
                         drDatabaseRef.child(uploadId).setValue(upload);
                         finish();

@@ -18,7 +18,10 @@ public class DataHelper {
                 "Matt",
                 "SAMPLE ID",
                 "SAMPLE UPLOAD ID",
-                "public"
+                "public",
+                "0",
+                "0"
+
         ));
         data.add(new SpaceUpload(
                 "Shed",
@@ -32,7 +35,9 @@ public class DataHelper {
                 "Matt",
                 "SAMPLE ID",
                 "SAMPLE UPLOAD ID",
-                "public"
+                "public",
+                "0",
+                "0"
         ));
         return data;
     }

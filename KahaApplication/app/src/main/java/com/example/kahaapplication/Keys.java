@@ -17,6 +17,8 @@ public enum Keys {
     KEY_SPACE_DESCRIPTION,
     KEY_SPACE_HOST_ID,
     KEY_SPACE_UPLOAD_ID,
+    KEY_LAT,
+    KEY_LNG,
 
     //SESSION DETAILS
     KEY_USER_ID

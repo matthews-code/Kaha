@@ -104,7 +104,9 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                             String.valueOf(indivSpace.child("spaceHost").getValue()),
                             String.valueOf(indivSpace.child("spaceHostId").getValue()),
                             String.valueOf(indivSpace.child("spaceUploadId").getValue()),
-                            String.valueOf(indivSpace.child("spaceVisibility").getValue())
+                            String.valueOf(indivSpace.child("spaceVisibility").getValue()),
+                            String.valueOf(indivSpace.child("spaceLat").getValue()),
+                            String.valueOf(indivSpace.child("spaceLng").getValue())
                     );
 
                     if(isFinder.equalsIgnoreCase("false")) {
@@ -323,6 +325,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), dataList.get(position).getSpaceImageUrl());
         intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), dataList.get(position).getSpaceUploadId());
         intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
+        intent.putExtra(Keys.KEY_LAT.name(), dataList.get(position).getSpaceLat());
+        intent.putExtra(Keys.KEY_LNG.name(), dataList.get(position).getSpaceLng());
 
         startActivity(intent);
     }

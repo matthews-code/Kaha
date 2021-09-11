@@ -24,9 +24,12 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +48,9 @@ import java.security.Key;
 public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCallback{
     //Carousel
     private ImageView ivThumbnail;
+
+    //Map
+    private GoogleMap mMap;
 
     private TextView tvSize;
     private TextView tvValue;
@@ -85,7 +91,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
     private CardView cvNotification;
 
-    private String spaceID, length, width, height, price, location, imgUrl, visibility;
+    private String spaceID, length, width,
+                   height, price, location, imgUrl,
+                   visibility, spaceLat, spaceLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,21 +117,15 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.tvTitle = findViewById(R.id.tv_title);
         this.tvPerMonth = findViewById(R.id.tv_show_price_month);
         this.tvProfileHeader = findViewById(R.id.tv_profile_header);
-
         this.ivHostImage = findViewById(R.id.iv_space_hoster);
-
         this.llPrice = findViewById(R.id.ll_price);
-
         this.vPriceDivider = findViewById(R.id.divider_price);
-
         this.mapView = findViewById(R.id.mv_show_location);
-
         this.btnContact = findViewById(R.id.btn_space_contact);
         this.tvPrice = findViewById(R.id.tv_show_price);
         this.btnReserve = findViewById(R.id.btn_reserve);
         this.btnEdit = findViewById(R.id.btn_edit);
         this.btnDelete = findViewById(R.id.btn_delete);
-
         this.cvNotification = findViewById(R.id.cv_reservees_space);
 
         //Firebase
@@ -138,6 +140,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
         Intent i = getIntent();
         this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
+        this.spaceLat = i.getStringExtra(Keys.KEY_LAT.name());
+        this.spaceLng = i.getStringExtra(Keys.KEY_LNG.name());
+
 
         //FINDER BUTTONS
         btnContact.setOnClickListener(new View.OnClickListener() {
@@ -276,7 +281,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child("spaceType").getValue() != null) {
+                if(snapshot.exists()) {
                     String type = snapshot.child("spaceType").getValue().toString();
                     String location = snapshot.child("spaceLocation").getValue().toString();
                     String price = snapshot.child("spaceMonthly").getValue().toString();
@@ -356,7 +361,14 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady: map is ready");
+        mMap = googleMap;
 
+        LatLng latLng = new LatLng(Double.parseDouble(spaceLat), Double.parseDouble(spaceLng));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+        MarkerOptions options = new MarkerOptions().position(latLng);
+        mMap.addMarker(options);
     }
 
     @Override

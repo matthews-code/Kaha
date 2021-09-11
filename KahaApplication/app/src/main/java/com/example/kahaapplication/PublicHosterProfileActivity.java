@@ -91,7 +91,9 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
                             String.valueOf(indivSpace.child("spaceHost").getValue()),
                             String.valueOf(indivSpace.child("spaceHostId").getValue()),
                             String.valueOf(indivSpace.child("spaceUploadId").getValue()),
-                            String.valueOf(indivSpace.child("spaceVisibility").getValue())
+                            String.valueOf(indivSpace.child("spaceVisibility").getValue()),
+                            String.valueOf(indivSpace.child("spaceLat").getValue()),
+                            String.valueOf(indivSpace.child("spaceLng").getValue())
                     );
 
                     Log.d("HOST ID", i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()) + "\n" + spaceInfo.getSpaceHostId());
