@@ -40,6 +40,10 @@ public class ToolBarActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 finish();
                                 break;
+                            case R.id.item_maps:
+                                intent = new Intent(ToolBarActivity.this, MapActivity.class);
+                                startActivity(intent);
+                                return true;
                             case R.id.item_profile:
                                     intent = new Intent(ToolBarActivity.this, PrivateUserActivity.class);
                                     startActivity(intent);
