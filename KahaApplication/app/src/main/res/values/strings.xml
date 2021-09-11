@@ -10,4 +10,14 @@
         <item>Unit</item>
         <item>Warehouse</item>
     </string-array>
+
+    <string-array name="spaces_array_filter">
+        <item>Any</item>
+        <item>Garage</item>
+        <item>Shed</item>
+        <item>Safe</item>
+        <item>Room</item>
+        <item>Unit</item>
+        <item>Warehouse</item>
+    </string-array>
 </resources>
