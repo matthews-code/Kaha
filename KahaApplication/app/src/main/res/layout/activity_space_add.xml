@@ -131,13 +131,14 @@
 
                 <EditText
                     android:id="@+id/et_space_add_location"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="0.6"
                     android:ems="10"
                     android:hint="Manila"
                     android:inputType="textPersonName"
-                    android:minHeight="48dp"
-                    android:layout_width="wrap_content" />
+                    android:maxLength="50"
+                    android:minHeight="48dp" />
 
             </LinearLayout>
 
@@ -235,6 +236,7 @@
                 android:ems="10"
                 android:hint="A modest affordable garage for your cars."
                 android:inputType="text"
+                android:maxLength="150"
                 android:minHeight="48dp" />
 
             <ImageView

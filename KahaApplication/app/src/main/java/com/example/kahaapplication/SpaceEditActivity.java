@@ -210,41 +210,45 @@ public class SpaceEditActivity extends AppCompatActivity {
         btnEditSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(stUploadTask != null && stUploadTask.isInProgress()) {
-                    Toast.makeText(SpaceEditActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-                } else {
+                if(!checkEmpty()) {
+                    if (stUploadTask != null && stUploadTask.isInProgress()) {
+                        Toast.makeText(SpaceEditActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                    } else {
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
-                    reference.child(userId).addValueEventListener(new ValueEventListener() {
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
+                        reference.child(userId).addValueEventListener(new ValueEventListener() {
 
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.exists()) {
-                                currUser = snapshot.child("userFirstName").getValue().toString() + " " +
-                                        snapshot.child("userLastName").getValue().toString();
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.exists()) {
+                                    currUser = snapshot.child("userFirstName").getValue().toString() + " " +
+                                            snapshot.child("userLastName").getValue().toString();
+                                }
                             }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                        if (boolDetectImage) {
+                            uploadFile();
+                        } else {
+                            drDatabaseRef.child(sUploadId).child("spaceType").setValue(spnType.getSelectedItem().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceLength").setValue(etLength.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceWidth").setValue(etWidth.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceHeight").setValue(etHeight.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceLocation").setValue(etLocation.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceMonthly").setValue(etMonthly.getText().toString().trim());
+                            drDatabaseRef.child(sUploadId).child("spaceDescription").setValue(etDescription.getText().toString().trim());
+
+                            finish();
                         }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-
-                    if(boolDetectImage) {
-                        uploadFile();
                     }
-                    else {
-                        drDatabaseRef.child(sUploadId).child("spaceType").setValue(spnType.getSelectedItem().toString().trim());
-                        drDatabaseRef.child(sUploadId).child("spaceLength").setValue(etLength.getText().toString().trim());
-                        drDatabaseRef.child(sUploadId).child("spaceWidth").setValue(etWidth.getText().toString().trim());
-                        drDatabaseRef.child(sUploadId).child("spaceHeight").setValue(etHeight.getText().toString().trim());
-                        drDatabaseRef.child(sUploadId).child("spaceLocation").setValue(etLocation.getText().toString().trim());
-                        drDatabaseRef.child(sUploadId).child("spaceMonthly").setValue(etMonthly.getText().toString().trim());
-                        drDatabaseRef.child(sUploadId).child("spaceDescription").setValue(etDescription.getText().toString().trim());
-
-                        finish();
-                    }
+                }
+                else{
+                    Toast.makeText(SpaceEditActivity.this, "Please fill up all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -269,6 +273,17 @@ public class SpaceEditActivity extends AppCompatActivity {
             default:
                 return 6;
         }
+    }
+
+    private boolean checkEmpty(){
+        boolean hasEmpty = false;
+        if(etLength.getText().toString().trim().isEmpty() || etWidth.getText().toString().trim().isEmpty() ||
+                etHeight.getText().toString().trim().isEmpty() || etLocation.getText().toString().trim().isEmpty() ||
+                etMonthly.getText().toString().trim().isEmpty() || etDescription.getText().toString().trim().isEmpty() ||
+                spnType.getSelectedItem().toString().trim().isEmpty()) {
+            hasEmpty = true;
+        }
+        return hasEmpty;
     }
 
     private void openFileChooser() {

@@ -71,11 +71,16 @@ public class PrivateUserActivity extends ToolBarActivity {
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drDatabaseRef.child("userFirstName").setValue(firstName.getText().toString().trim());
-                drDatabaseRef.child("userLastName").setValue(lastName.getText().toString().trim());
-                drDatabaseRef.child("userPhone").setValue(contactNumber.getText().toString().trim());
-                drDatabaseRef.child("userDescription").setValue(publicBio.getText().toString().trim());
-                Toast.makeText(PrivateUserActivity.this, "Edited Profile", Toast.LENGTH_SHORT).show();
+                if(!checkEmpty()){
+                    drDatabaseRef.child("userFirstName").setValue(firstName.getText().toString().trim());
+                    drDatabaseRef.child("userLastName").setValue(lastName.getText().toString().trim());
+                    drDatabaseRef.child("userPhone").setValue(contactNumber.getText().toString().trim());
+                    drDatabaseRef.child("userDescription").setValue(publicBio.getText().toString().trim());
+                    Toast.makeText(PrivateUserActivity.this, "Edited Profile", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(PrivateUserActivity.this, "Please fill up required fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -101,6 +106,16 @@ public class PrivateUserActivity extends ToolBarActivity {
             }
         });
     }
+
+    private boolean checkEmpty(){
+        boolean hasEmpty = false;
+        if(firstName.getText().toString().trim().isEmpty() || lastName.getText().toString().trim().isEmpty() || contactNumber.getText().toString().trim().isEmpty()) {
+            hasEmpty = true;
+        }
+        return hasEmpty;
+    }
+
+
 
     private void initComponents() {
         this.mAuth = FirebaseAuth.getInstance();
@@ -197,5 +212,7 @@ public class PrivateUserActivity extends ToolBarActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
+
+
 
 }
