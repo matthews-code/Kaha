@@ -35,7 +35,7 @@ public class FinderHomeViewHolder extends RecyclerView.ViewHolder implements Vie
 
     private void setViews(String isFinder) {
         if(isFinder.equalsIgnoreCase("false")) {
-            this.cvReservee.setVisibility(View.VISIBLE);
+            //sthis.cvReservee.setVisibility(View.VISIBLE);
             this.cvVisibility.setVisibility(View.VISIBLE);
         }
     }

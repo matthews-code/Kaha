@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:visibility="gone"
-                    app:cardBackgroundColor="#FA3E3E"
+                    app:cardBackgroundColor="@color/kahablue"
                     app:cardCornerRadius="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -79,7 +79,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginBottom="4dp"
-                        android:text="8 Pending Reservees"
+                        android:text="Click to view Reservees"
                         android:textColor="#FFFFFF"
                         android:textStyle="bold" />
                 </androidx.cardview.widget.CardView>

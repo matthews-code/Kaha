@@ -88,17 +88,14 @@
 
         </androidx.cardview.widget.CardView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_space_price_holder"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/space_widget_price"
-            android:elevation="2dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:visibility="visible"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/cardView"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -106,6 +103,7 @@
                 android:id="@+id/tv_space_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:text="P15,000 / month"
                 android:textAlignment="center"
@@ -113,7 +111,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:visibility="visible" />
-        </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/tv_space_size"
