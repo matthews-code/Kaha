@@ -411,6 +411,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.vPriceDivider.setVisibility(View.GONE);
 
         if(isFinder.equalsIgnoreCase("false")) {
+            this.ibBookMark.setVisibility(View.GONE);
             this.tvPerMonth.setVisibility(View.GONE);
             this.tvPrice.setVisibility(View.GONE);
             this.tvHost.setVisibility(View.GONE);
