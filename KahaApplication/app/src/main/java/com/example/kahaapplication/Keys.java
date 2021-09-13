@@ -29,6 +29,7 @@ public enum Keys {
     KEY_FINDER_DESC,
     KEY_FINDER_EMAIL,
     KEY_FINDER_PHONE,
+    KEY_BOOK_MARKS,
 
     //SESSION DETAILS
     KEY_USER_ID

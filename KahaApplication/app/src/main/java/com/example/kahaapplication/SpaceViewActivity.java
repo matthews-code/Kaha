@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.FallbackServiceBroker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -32,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +47,8 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.security.Key;
+
+import okhttp3.internal.cache.DiskLruCache;
 
 public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCallback{
     //Carousel
@@ -63,6 +68,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private AppCompatButton btnReserve;
     private AppCompatButton btnEdit;
     private AppCompatButton btnDelete;
+    private ImageButton ibBookMark;
     private TextView tvPrice;
 
     private TextView tvPerMonth;
@@ -108,7 +114,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         vpCarousel.setAdapter(siAdapter);
 
         this.ivThumbnail = findViewById(R.id.iv_space_view_image);
-
+        this.ibBookMark = findViewById(R.id.ib_bookmark);
         this.tvSize = findViewById(R.id.tv_show_size);
         this.tvDescription = findViewById(R.id.tv_show_desc);
         this.tvHost = findViewById(R.id.tv_show_hoster_name);
@@ -396,7 +402,9 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         mapView.onSaveInstanceState(mapViewBundle);
     }
 
-    private void setViews(String isFinder) {
+    private void setViews(DataSnapshot snapshot) {
+        String isFinder = snapshot.child("userIsFinder").getValue().toString();
+
         this.btnDelete.setVisibility(View.GONE);
         this.btnEdit.setVisibility(View.GONE);
         this.llPrice.setVisibility(View.GONE);
@@ -421,6 +429,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
             //SPACE VISIBILITY VISIBILITY
             this.rgVisibility.setVisibility(View.VISIBLE);
+
 
             //Save VISIBILITY Back behavior on HOSTER
             ibNavBack.setOnClickListener(new View.OnClickListener() {
@@ -456,6 +465,51 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                     }
                 }
             });
+        } else {
+            //Book Mark VISIBILITY
+            // If current space is bookmarked by user
+
+            DatabaseReference bmDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name() + "/" + userId);
+            boolean tempIsMarked = false;
+
+            ibBookMark.setImageResource(R.drawable.bookmark_off);
+
+            if(snapshot.hasChild(Keys.KEY_BOOK_MARKS.name())) {
+                for(DataSnapshot indivSpace : snapshot.child(Keys.KEY_BOOK_MARKS.name()).getChildren()) {
+                    if(spaceID.equals(indivSpace.child("id").getValue().toString().trim())) {
+                        tempIsMarked = true;
+                        ibBookMark.setImageResource(R.drawable.bookmark_on);
+                        Log.d(TAG, "setViews: Reached!");
+                    }
+                }
+            }
+
+            final boolean[] isMarked = {tempIsMarked};
+            ibBookMark.setVisibility(View.VISIBLE);
+            ibBookMark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(isMarked[0]) {
+                        isMarked[0] = false;
+                        ibBookMark.setImageResource(R.drawable.bookmark_on);
+                        for(DataSnapshot indivSpace : snapshot.child(Keys.KEY_BOOK_MARKS.name()).getChildren()) {
+                            if(spaceID.equals(indivSpace.child("id").getValue().toString().trim())) {
+                                String key = indivSpace.getKey();
+                                bmDatabaseRef.child(Keys.KEY_BOOK_MARKS.name()).child(key).removeValue();
+                                Log.d(TAG, "onClick: " + indivSpace.getKey());
+                            }
+                        }
+                        ibBookMark.setImageResource(R.drawable.bookmark_off);
+                    } else {
+                        isMarked[0] = true;
+                        ibBookMark.setImageResource(R.drawable.bookmark_off);
+                        bmDatabaseRef.child(Keys.KEY_BOOK_MARKS.name())
+                                .child(String.valueOf(System.currentTimeMillis()))
+                                .child("id").setValue(spaceID);
+                        ibBookMark.setImageResource(R.drawable.bookmark_on);
+                    }
+                }
+            });
         }
     }
 
@@ -471,7 +525,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
-                    setViews(snapshot.child("userIsFinder").getValue().toString());
+                    setViews(snapshot);
                 }
             }
 
@@ -485,6 +539,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     @Override
     public void onResume() {
         super.onResume();
+        initFirebase();
         mapView.onResume();
     }
 
