@@ -288,7 +288,7 @@ public class SpaceEditActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
                 && data != null && data.getData() != null) {
             mImageUri = data.getData();
-            Toast.makeText(this, "" + mImageUri, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "" + mImageUri, Toast.LENGTH_SHORT).show();
             Picasso.get().load(mImageUri).into(ivThumb);
 
             this.boolDetectImage = true;
@@ -306,7 +306,13 @@ public class SpaceEditActivity extends AppCompatActivity {
             StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
-            fileReference.putFile(mImageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            fileReference.putFile(mImageUri).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+                    double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
+                    pbUploadStatus.setProgress((int) progress);
+                }
+            }).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
                 public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                     if (!task.isSuccessful()) {
