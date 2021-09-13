@@ -156,28 +156,32 @@ public class SpaceAddActivity extends AppCompatActivity {
         btnCreateSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(stUploadTask != null && stUploadTask.isInProgress()) {
-                    Toast.makeText(SpaceAddActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-                } else {
 
-                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
-                    reference.child(userId).addValueEventListener(new ValueEventListener() {
+                if(!checkEmpty()){
+                    if(stUploadTask != null && stUploadTask.isInProgress()) {
+                        Toast.makeText(SpaceAddActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                    } else {
 
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.exists()) {
-                                currUser = snapshot.child("userFirstName").getValue().toString() + " " +
-                                        snapshot.child("userLastName").getValue().toString();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
+                        reference.child(userId).addValueEventListener(new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()) {
+                                    currUser = snapshot.child("userFirstName").getValue().toString() + " " +
+                                            snapshot.child("userLastName").getValue().toString();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                    uploadFile();
+                            }
+                        });
+                        uploadFile();
+                    }
                 }
+                Toast.makeText(SpaceAddActivity.this, "Please fill up all fields", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -190,6 +194,18 @@ public class SpaceAddActivity extends AppCompatActivity {
         });
 
         ivThumb.setImageResource(R.drawable.no_image);
+    }
+
+    private boolean checkEmpty(){
+        boolean hasEmpty = false;
+        if(etLength.getText().toString().trim().isEmpty() || etWidth.getText().toString().trim().isEmpty() ||
+            etHeight.getText().toString().trim().isEmpty() || etLocation.getText().toString().trim().isEmpty() ||
+            etMonthly.getText().toString().trim().isEmpty() || etDescription.getText().toString().trim().isEmpty() ||
+            spnType.getSelectedItem().toString().trim().isEmpty() || selectedLoc.getText().toString().trim().equals("Enter location") ||
+            mImageUri == null) {
+            hasEmpty = true;
+        }
+        return hasEmpty;
     }
 
     private ActivityResultLauncher myActivityResultLauncher = registerForActivityResult(

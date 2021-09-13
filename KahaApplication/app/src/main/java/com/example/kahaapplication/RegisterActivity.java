@@ -28,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -188,6 +190,14 @@ public class RegisterActivity extends AppCompatActivity {
 //            this.etEmail.setError("");
 //            this.etEmail.requestFocus();
             Toast.makeText(this, "Accomplish all fields", Toast.LENGTH_SHORT).show();
+        }
+        //Email Validation
+        Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
+        Matcher matcher = pattern.matcher(email);
+
+        if(!matcher.matches()){
+            hasEmpty = true;
+            Toast.makeText(this, "Invalid Email Address", Toast.LENGTH_SHORT).show();
         }
 
         if(!password.equals(confpassword)) {

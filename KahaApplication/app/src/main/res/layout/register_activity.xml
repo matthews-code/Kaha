@@ -156,6 +156,7 @@
                 android:ems="10"
                 android:hint="Juan"
                 android:inputType="textPersonName"
+                android:maxLength="50"
                 tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
@@ -171,7 +172,8 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="Dela Cruz"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:maxLength="50" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -216,6 +218,7 @@
                 android:ems="10"
                 android:hint="email@example.com"
                 android:inputType="textEmailAddress"
+                android:maxLength="100"
                 android:minHeight="48dp" />
 
             <TextView
@@ -232,6 +235,7 @@
                 android:ems="10"
                 android:hint="Phone (+63)"
                 android:inputType="phone"
+                android:maxLength="12"
                 android:minHeight="48dp" />
 
             <LinearLayout
