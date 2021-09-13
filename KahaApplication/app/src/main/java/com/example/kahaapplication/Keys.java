@@ -20,6 +20,7 @@ public enum Keys {
     KEY_SPACE_UPLOAD_ID,
     KEY_LAT,
     KEY_LNG,
+    KEY_SPACE_VIEW_FROM_PROFILE,
 
     //FINDER DETAILS
     KEY_FINDER_FIRST,

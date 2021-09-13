@@ -148,10 +148,14 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         btnContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SpaceViewActivity.this, PublicHosterProfileActivity.class);
-                intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()));
+                if(i.getBooleanExtra(Keys.KEY_SPACE_VIEW_FROM_PROFILE.name(), false)) {
+                    finish();
+                } else {
+                    Intent intent = new Intent(SpaceViewActivity.this, PublicHosterProfileActivity.class);
+                    intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()));
 
-                startActivity(intent);
+                    startActivity(intent);
+                }
             }
         });
 

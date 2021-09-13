@@ -162,6 +162,10 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         intent.putExtra(Keys.KEY_SPACE_THUMBNAIL.name(), dataListSpaces.get(position).getSpaceImageUrl());
         intent.putExtra(Keys.KEY_SPACE_UPLOAD_ID.name(), dataListSpaces.get(position).getSpaceUploadId());
         intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataListSpaces.get(position).getSpaceHostId());
+        intent.putExtra(Keys.KEY_LAT.name(), dataListSpaces.get(position).getSpaceLat());
+        intent.putExtra(Keys.KEY_LNG.name(), dataListSpaces.get(position).getSpaceLng());
+
+        intent.putExtra(Keys.KEY_SPACE_VIEW_FROM_PROFILE.name(), true);
 
         startActivity(intent);
         //finish();

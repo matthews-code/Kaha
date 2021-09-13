@@ -330,6 +330,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         intent.putExtra(Keys.KEY_LAT.name(), dataList.get(position).getSpaceLat());
         intent.putExtra(Keys.KEY_LNG.name(), dataList.get(position).getSpaceLng());
 
+        intent.putExtra(Keys.KEY_SPACE_VIEW_FROM_PROFILE.name(), false);
+
         startActivity(intent);
     }
 
