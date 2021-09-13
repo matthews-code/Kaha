@@ -146,12 +146,11 @@
         android:id="@+id/tv_register_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="4dp"
         android:text="here!"
         android:textColor="@color/tealgreen"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_register_prompt"
-        app:layout_constraintEnd_toStartOf="@+id/gd_right"
         app:layout_constraintStart_toEndOf="@+id/tv_register_prompt" />
 
     <ProgressBar
