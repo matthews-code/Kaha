@@ -7,18 +7,16 @@ public class User {
     private String userFirstName;
     private String userLastName;
     private String userEmail;
-    private String userPassword;
     private String userPhone;
     private String userBirthDate;
     private String userDescription;
     private Boolean userIsFinder;
 
-    public User(String userFirstName, String userLastName, String userEmail, String userPassword,
+    public User(String userFirstName, String userLastName, String userEmail,
                 String userPhone, String userBirthDate, String userDescription, boolean userIsFinder) {
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
         this.userEmail = userEmail;
-        this.userPassword = userPassword;
         this.userPhone = userPhone;
         this.userBirthDate = userBirthDate;
         this.userDescription = userDescription;
@@ -31,10 +29,6 @@ public class User {
 
     public String getUserEmail() {
         return this.userEmail;
-    }
-
-    public String getUserPassword() {
-        return this.userPassword;
     }
 
     public String getUserPhone() { return userPhone; }

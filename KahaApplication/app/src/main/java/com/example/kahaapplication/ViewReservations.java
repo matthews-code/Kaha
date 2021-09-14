@@ -68,11 +68,8 @@ public class ViewReservations extends ToolBarActivity {
 
                 for(DataSnapshot indivReservee : snapshot.getChildren()) {
                     String id = String.valueOf(indivReservee.child("id").getValue());
-                    //Log.d("ID_DEBUG", "the MOTHAFUCKING ID IS: " + id);
                     tempReserveeList.add(id);
                 }
-                //Log.d("PETRONAS", "BOTTAS: " + tempReserveeList);
-                //Log.d("ID_DEBUG", "THE MOTHAFUCKING SIZE IS " + tempReserveeList.size());
                 initProfilesList(tempReserveeList);
             }
 
@@ -92,13 +89,12 @@ public class ViewReservations extends ToolBarActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                    tempUserData.add(snapshot.getValue(User.class));
-                    Log.d("PUTANGINA", "onDataChange: " + snapshot);
+
 
                     User userInfo = new User(
                                 String.valueOf(snapshot.child("userFirstName").getValue()),
                                 String.valueOf(snapshot.child("userLastName").getValue()),
                                 String.valueOf(snapshot.child("userEmail").getValue()),
-                                String.valueOf(snapshot.child("userPassword").getValue()),
                                 String.valueOf(snapshot.child("userPhone").getValue()),
                                 String.valueOf(snapshot.child("userBirthDate").getValue()),
                                 String.valueOf(snapshot.child("userDescription").getValue()),

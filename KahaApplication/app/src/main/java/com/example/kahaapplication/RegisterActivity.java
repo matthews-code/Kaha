@@ -18,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -136,11 +134,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 if(!checkEmpty(firstName, lastName, password, confpassword, email, phone, bday)) {
-                    User user = new User(firstName, lastName, email, password, phone, bday, "No description", isFinder);
-
-                    storeUser(user);
-                } else {
-
+                    User user = new User(firstName, lastName, email, phone, bday, "No description", isFinder);
+                    storeUser(user, password);
                 }
             }
         });
@@ -187,8 +182,6 @@ public class RegisterActivity extends AppCompatActivity {
         if(firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() ||
                 confpassword.isEmpty() || email.isEmpty() || phone.isEmpty() || bday.isEmpty()) {
             hasEmpty = true;
-//            this.etEmail.setError("");
-//            this.etEmail.requestFocus();
             Toast.makeText(this, "Accomplish all fields", Toast.LENGTH_SHORT).show();
         }
         //Email Validation
@@ -202,7 +195,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if(!password.equals(confpassword)) {
             hasEmpty = true;
-            Toast.makeText(this, "Confirm password incorrect", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Confirm password does not match", Toast.LENGTH_SHORT).show();
         }
 
         // Other validation
@@ -210,11 +203,11 @@ public class RegisterActivity extends AppCompatActivity {
         return hasEmpty;
     }
 
-    private void storeUser(User user) {
+    private void storeUser(User user, String pass) {
         this.pbRegister.setVisibility(View.VISIBLE);
 
         // Access firebase here
-        mAuth.createUserWithEmailAndPassword(user.getUserEmail(), user.getUserPassword())
+        mAuth.createUserWithEmailAndPassword(user.getUserEmail(), pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

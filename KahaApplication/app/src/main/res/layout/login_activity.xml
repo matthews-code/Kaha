@@ -22,7 +22,7 @@
         android:id="@+id/iv_logo_login"
         android:layout_width="222dp"
         android:layout_height="99dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintStart_toStartOf="@+id/gd_left"
         app:layout_constraintTop_toTopOf="@+id/gd_top"
         app:srcCompat="@drawable/branding_logo" />
@@ -133,13 +133,14 @@
         android:id="@+id/tv_register_prompt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="46dp"
         android:layout_marginBottom="24dp"
         android:fontFamily="sans-serif-light"
         android:text="Don't have an account? Register"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gd_right"
         app:layout_constraintStart_toStartOf="@+id/gd_left" />
 
     <TextView
@@ -149,7 +150,7 @@
         android:layout_marginStart="4dp"
         android:text="here!"
         android:textColor="@color/tealgreen"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_register_prompt"
         app:layout_constraintStart_toEndOf="@+id/tv_register_prompt" />
 
@@ -163,5 +164,15 @@
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/tv_intro2"
         app:layout_constraintTop_toBottomOf="@+id/tv_intro" />
+
+    <TextView
+        android:id="@+id/tv_forgot_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Forgot password?"
+        app:layout_constraintEnd_toStartOf="@+id/gd_right"
+        app:layout_constraintStart_toStartOf="@+id/gd_left"
+        app:layout_constraintTop_toBottomOf="@+id/btn_register" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

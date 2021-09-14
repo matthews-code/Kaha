@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NavBarTrue">
         <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="true" />
+        <activity
             android:name=".BookMarkActivity"
             android:exported="true" />
         <activity

@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
 
-    private TextView registerText;
+    private TextView registerText, forgotPass;
     private Button loginButton;
 
     private ProgressBar pbLogin;
@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         this.etPassword = findViewById(R.id.et_login_password);
         this.loginButton = findViewById(R.id.btn_register);
         this.registerText = findViewById(R.id.tv_register_link);
+        this.forgotPass = findViewById(R.id.tv_forgot_pass);
 
         this.pbLogin = findViewById(R.id.pb_login);
 
@@ -56,6 +57,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        forgotPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
                 startActivity(intent);
             }
         });
