@@ -22,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class PublicHosterProfileActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener{
-    private ArrayList<SpaceUpload> dataListProfile;
     private ArrayList<SpaceUpload> dataListSpaces;
 
     private RecyclerView recyclerView;
@@ -34,10 +33,6 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
     private TextView spacesHeader;
     private ImageView hostPicture;
     private TextView publicBio;
-
-    private FirebaseUser user;
-    private FirebaseAuth mAuth;
-    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +48,6 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
     }
 
     private void initComponents () {
-        this.dataListProfile = new DataHelper().initData();
         this.recyclerView = findViewById(R.id.rv_user_spaces);
 
         this.fullName = findViewById(R.id.tv_show_hoster_name);
@@ -69,7 +63,6 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
     }
 
     private ArrayList<SpaceUpload> initData(Intent i) {
-        this.mAuth = FirebaseAuth.getInstance();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name());
 
         ArrayList<SpaceUpload> tempData = new ArrayList<>();
@@ -115,9 +108,6 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
     }
 
     private void initFirebase(Intent i) {
-        this.mAuth = FirebaseAuth.getInstance();
-        this.user = FirebaseAuth.getInstance().getCurrentUser();
-        this.userId = this.user.getUid();
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
 
@@ -144,8 +134,6 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         } else {
             spaceHeader = firstName + "'s spaces";
         }
-
-        Log.d("DESCRIPTION", snapshot.child("userDescription").getValue().toString().trim());
 
         this.fullName.setText(fullName);
         this.contactNumber.setText(snapshot.child("userPhone").getValue().toString().trim());

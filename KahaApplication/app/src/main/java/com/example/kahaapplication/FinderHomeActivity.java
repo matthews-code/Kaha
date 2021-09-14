@@ -1,31 +1,18 @@
 package com.example.kahaapplication;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Space;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,9 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAdapter.OnSpaceListener, FilterBottomSheetDialog.BottomSheetListener{
     private ArrayList<SpaceUpload> dataList;
@@ -57,7 +42,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
     private FirebaseUser user;
     public static String userId;
 
-    private String isFinder;
+    public static String isFinder;
 
     private ImageButton btnFilter;
     private ImageButton btnSearch;
@@ -71,9 +56,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finder_home);
         initToolbar();
-
         this.initFirebase();
-        //this.dataList = initData();
         this.initComponents();
     }
 
@@ -381,8 +364,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         }
 
         adapter.setData(tempData);
-        if(tempData.size() == 0)
-        {
+        if(tempData.size() == 0) {
             adapter.setDataFromHolder();
             recyclerView.setVisibility(View.GONE);
             tvNoSpaceMessage.setVisibility(View.VISIBLE);
