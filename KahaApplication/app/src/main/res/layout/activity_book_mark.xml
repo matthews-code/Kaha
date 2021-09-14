@@ -11,19 +11,6 @@
         layout="@layout/toolbar"
         android:elevation="10dp" />
 
-    <TextView
-        android:id="@+id/tv_book_not_found"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/guideline9"
-        app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/nsv_finder_bm"
-        tools:text="You do not have any bookmarked spaces..." />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline9"
         android:layout_width="wrap_content"
@@ -80,6 +67,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nsv_finder_bm" />
+
+    <TextView
+        android:id="@+id/tv_book_not_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="You do not have any \n Bookmarked Spaces..."
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/nsv_finder_bm" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
