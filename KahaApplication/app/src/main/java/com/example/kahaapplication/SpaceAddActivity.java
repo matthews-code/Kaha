@@ -127,13 +127,8 @@ public class SpaceAddActivity extends AppCompatActivity {
         this.ibBack = findViewById(R.id.ib_navbar_back);
         this.pbUploadStatus = findViewById(R.id.pb_upload_status);
 
-        //Account
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
-
-        //Firebase
-//        this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.SPACES.name());
-//        this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.SPACES.name());
 
         this.srStorageRef = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
         this.drDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
@@ -180,8 +175,9 @@ public class SpaceAddActivity extends AppCompatActivity {
                         });
                         uploadFile();
                     }
+                } else {
+                    Toast.makeText(SpaceAddActivity.this, "Please fill up all fields", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(SpaceAddActivity.this, "Please fill up all fields", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -231,25 +227,6 @@ public class SpaceAddActivity extends AppCompatActivity {
                 }
             }
     );
-
-    private int getSpaceTypeInt(String sType) {
-        switch (sType) {
-            case "Garage":
-                return 0;
-            case "Shed":
-                return 1;
-            case "Safe":
-                return 2;
-            case "Room":
-                return 3;
-            case "Unit":
-                return 4;
-            case "Warehouse":
-                return 5;
-            default:
-                return 6;
-        }
-    }
 
     private void openFileChooser() {
         Intent intent = new Intent();

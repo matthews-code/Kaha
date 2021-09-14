@@ -179,25 +179,24 @@ public class RegisterActivity extends AppCompatActivity {
                                String email, String phone, String bday) {
         boolean hasEmpty = false;
 
-        if(firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() ||
-                confpassword.isEmpty() || email.isEmpty() || phone.isEmpty() || bday.isEmpty()) {
-            hasEmpty = true;
-            Toast.makeText(this, "Accomplish all fields", Toast.LENGTH_SHORT).show();
-        }
         //Email Validation
         Pattern pattern = Pattern.compile("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}");
         Matcher matcher = pattern.matcher(email);
 
-        if(!matcher.matches()){
+        if(firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() ||
+                confpassword.isEmpty() || email.isEmpty() || phone.isEmpty() || bday.isEmpty()) {
+            hasEmpty = true;
+            Toast.makeText(this, "Accomplish all fields", Toast.LENGTH_SHORT).show();
+        } else if(!matcher.matches()){
             hasEmpty = true;
             Toast.makeText(this, "Invalid Email Address", Toast.LENGTH_SHORT).show();
-        }
-
-        if(!password.equals(confpassword)) {
+        } else if(!password.equals(confpassword)) {
             hasEmpty = true;
             Toast.makeText(this, "Confirm password does not match", Toast.LENGTH_SHORT).show();
+        } else if(password.length() < 6) {
+            hasEmpty = true;
+            Toast.makeText(this, "Password is too short", Toast.LENGTH_SHORT).show();
         }
-
         // Other validation
 
         return hasEmpty;
