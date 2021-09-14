@@ -32,11 +32,12 @@ public class ToolBarActivity extends AppCompatActivity {
     public void initToolbar(){
         this.ibBack = findViewById(R.id.ib_navbar_back);
         this.ibMenu = findViewById(R.id.ib_navbar_menu);
-        this.miHost = findViewById(R.id.item_host);
-        this.miBookmarks = findViewById(R.id.item_bookmarks);
+
 
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         this.userId = this.user.getUid();
+
+
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
 
@@ -56,11 +57,12 @@ public class ToolBarActivity extends AppCompatActivity {
     }
 
     private void setViews (String isFinder) {
-//        if(isFinder.equals("false")) {
-//            this.miBookmarks.setVisible(false);
-//        } else {
-//            this.miHost.setVisible(false);
-//        }
+
+        if(Boolean.parseBoolean(isFinder)){
+            this.miBookmarks = findViewById(R.id.item_bookmarks);
+        } else {
+            this.miHost = findViewById(R.id.item_host);
+        }
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +106,13 @@ public class ToolBarActivity extends AppCompatActivity {
                         return false;
                     }
                 });
-                popupMenu.inflate(R.menu.navbar);
+
+                if(Boolean.parseBoolean(isFinder)){
+                    popupMenu.inflate(R.menu.menufinder);
+                } else {
+                    popupMenu.inflate(R.menu.navbar);
+                }
+
                 popupMenu.show();
             }
         });
