@@ -5,17 +5,23 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,6 +63,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     //Map
     private GoogleMap mMap;
 
+    private EditText smsMessage;
     private TextView tvSize;
     private TextView tvValue;
     private TextView tvHost;
@@ -65,6 +72,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private TextView tvDescription;
     private MapView mapView;
 
+    private AppCompatButton btnSendSms;
     private AppCompatButton btnReserve;
     private AppCompatButton btnEdit;
     private AppCompatButton btnDelete;
@@ -74,7 +82,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
     private TextView tvPerMonth;
     private TextView tvProfileHeader;
     private ImageView ivHostImage;
-    private LinearLayout llPrice;
+    private LinearLayout llPrice, llSMS;
     private View vPriceDivider;
 
     private AppCompatButton btnContact;
@@ -99,7 +107,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
     private String spaceID, length, width,
                    height, price, location, imgUrl,
-                   visibility, spaceLat, spaceLng;
+                   visibility, spaceLat, spaceLng, hostContact, type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +121,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         SpaceImageAdapter siAdapter = new SpaceImageAdapter(this);
         vpCarousel.setAdapter(siAdapter);
 
+        this.smsMessage = findViewById(R.id.et_SMS);
+        this.btnSendSms = findViewById(R.id.btn_send_sms);
         this.ivThumbnail = findViewById(R.id.iv_space_view_image);
         this.ibBookMark = findViewById(R.id.ib_bookmark);
         this.tvSize = findViewById(R.id.tv_show_size);
@@ -125,6 +135,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.tvProfileHeader = findViewById(R.id.tv_profile_header);
         this.ivHostImage = findViewById(R.id.iv_space_hoster);
         this.llPrice = findViewById(R.id.ll_price);
+        this.llSMS = findViewById(R.id.ll_send_sms);
         this.vPriceDivider = findViewById(R.id.divider_price);
         this.mapView = findViewById(R.id.mv_show_location);
         this.btnContact = findViewById(R.id.btn_space_contact);
@@ -148,6 +159,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
         this.spaceLat = i.getStringExtra(Keys.KEY_LAT.name());
         this.spaceLng = i.getStringExtra(Keys.KEY_LNG.name());
+        this.hostContact = i.getStringExtra(Keys.KEY_SPACE_CONTACT_NUMBER.name());
 
 
         //FINDER BUTTONS
@@ -191,6 +203,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
         initMap(savedInstanceState);
         retrieveData();
+        permissionSMS();
 
         //HOSTER BUTTONS
         //EDIT BUTTON
@@ -288,6 +301,59 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         });
     }
 
+    private void permissionSMS() {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
+                Log.d(TAG, "permissionSMS: inner if");
+                btnSendSms.setText("SMS sending disabled");
+                btnSendSms.setAlpha(.5f);
+                btnSendSms.setClickable(false);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.SEND_SMS}, 0);
+            }
+        } else {
+            Log.d(TAG, "permissionSMS: outer if");
+            sendText();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 0: {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "onRequestPermissionsResult: granted");
+                    sendText();
+                } else {
+                    Log.d("TAG", "onRequestPermissionsResult: denied");
+                    btnSendSms.setText("SMS sending disabled");
+                    btnSendSms.setAlpha(.5f);
+                    btnSendSms.setClickable(false);
+                }
+            }
+        }
+    }
+
+    private void sendText() {
+        btnSendSms.setText("Send SMS");
+        btnSendSms.setAlpha(1);
+        btnSendSms.setClickable(true);
+
+        Log.d(TAG, "sendText: Reached");
+        Log.d(TAG, "sendText: " + hostContact);
+        btnSendSms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String number = hostContact;
+                SmsManager manager = SmsManager.getDefault();
+                manager.sendTextMessage(number, null, smsMessage.getText().toString(), null, null);
+                Toast.makeText(SpaceViewActivity.this, "Sent", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void retrieveData () {
         this.mAuth = FirebaseAuth.getInstance();
 
@@ -331,16 +397,18 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.height = height;
         this.price = price;
         this.location = location;
+        this.type = type;
         this.imgUrl = url;
 
         String dimensions = length + " x " + width + " x " + height;
+        String smsText = "Hello fellow Kaha user! I would like to inquire about your " + type + " in " + location + ".";
         this.tvSize.setText(dimensions);
-
+        this.smsMessage.setText(smsText);
         this.tvPrice.setText("₱" + price);
         this.tvValue.setText("₱" + price);
 
         this.tvHost.setText(host);
-        this.btnContact.setText("Contact " + host);
+        this.btnContact.setText("Profile");
 
         this.tvType.setText(type);
 
@@ -419,6 +487,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             this.ivHostImage.setVisibility(View.GONE);
             this.btnContact.setVisibility(View.GONE);
             this.btnReserve.setVisibility(View.GONE);
+            this.llSMS.setVisibility(View.GONE);
 
             this.btnDelete.setVisibility(View.VISIBLE);
             this.btnEdit.setVisibility(View.VISIBLE);
@@ -467,6 +536,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                 }
             });
         } else {
+            this.llSMS.setVisibility(View.VISIBLE);
             //Book Mark VISIBILITY
             // If current space is bookmarked by user
 

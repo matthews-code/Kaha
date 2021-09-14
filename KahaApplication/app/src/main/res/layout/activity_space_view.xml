@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:layout_weight="1"
-                android:visibility="gone" >
+                android:visibility="gone">
 
             </androidx.viewpager.widget.ViewPager>
 
@@ -291,6 +291,7 @@
                     android:id="@+id/tv_show_location_intro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="Location"
                     android:textColor="@color/black"
                     android:textSize="26sp"
@@ -307,7 +308,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10sp"
                     android:layout_marginBottom="10sp"
-                    android:text="Hoster"
+                    android:text="View Hoster"
                     android:textColor="@color/black"
                     android:textSize="26sp"
                     android:textStyle="bold" />
@@ -321,6 +322,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:cardCornerRadius="20dp"
+                        app:cardElevation="0dp"
+                        app:cardMaxElevation="0dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -356,8 +359,84 @@
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="normal" />
-            </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/ll_send_sms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:id="@+id/divider19"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginRight="15dp"
+                            android:layout_weight="1"
+                            android:background="?android:attr/listDivider"
+                            android:backgroundTint="#000000" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="or"
+                            android:textAlignment="center"
+                            android:textSize="20sp" />
+
+                        <View
+                            android:id="@+id/divider17"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_weight="1"
+                            android:background="?android:attr/listDivider"
+                            android:backgroundTint="#000000" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/textView23"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="Contact Directly"
+                        android:textColor="#000000"
+                        android:textSize="26sp" />
+
+                    <EditText
+                        android:id="@+id/et_SMS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:inputType="textMultiLine|textPersonName"
+                        android:scrollHorizontally="false"
+                        android:singleLine="false"
+                        android:text="Input text here!" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_send_sms"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="10sp"
+                        android:background="@drawable/gradient_green"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Send SMS"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

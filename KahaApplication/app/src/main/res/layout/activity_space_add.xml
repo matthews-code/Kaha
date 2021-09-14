@@ -235,9 +235,10 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="A modest affordable garage for your cars."
-                android:inputType="text"
                 android:maxLength="150"
-                android:minHeight="48dp" />
+                android:inputType="textMultiLine|textPersonName"
+                android:scrollHorizontally="false"
+                android:singleLine="false" />
 
             <ImageView
                 android:id="@+id/iv_thumb_create"

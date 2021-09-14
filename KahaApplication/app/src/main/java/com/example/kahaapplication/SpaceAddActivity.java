@@ -86,7 +86,7 @@ public class SpaceAddActivity extends AppCompatActivity {
     //Account
     private String userId;
     private String currUser;
-    private String lat, lng;
+    private String lat, lng, contactNumber;
 
 
     @Override
@@ -165,6 +165,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                                 if(snapshot.exists()) {
                                     currUser = snapshot.child("userFirstName").getValue().toString() + " " +
                                             snapshot.child("userLastName").getValue().toString();
+                                    contactNumber = snapshot.child("userPhone").getValue().toString();
                                 }
                             }
 
@@ -255,63 +256,6 @@ public class SpaceAddActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-////VIDEO CODE
-//    private void uploadFile() {
-//        if(mImageUri != null) {
-//            StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
-//            + "." + getFileExtension(mImageUri));
-//
-//            stUploadTask = fileReference.putFile(mImageUri)
-//                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                            //Delays reset of progress bar for 5 seconds
-//                            Handler handler = new Handler();
-//                            handler.postDelayed(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    pbUploadStatus.setProgress(0);
-//                                }
-//                            }, 5000);
-//
-//                            String uploadId = drDatabaseRef.push().getKey();
-//
-//                            Toast.makeText(SpaceAddActivity.this, "Upload Successful!", Toast.LENGTH_LONG).show();
-//                            SpaceUpload upload = new SpaceUpload(spnType.getSelectedItem().toString().trim(), etLength.getText().toString().trim(),
-//                                    etWidth.getText().toString().trim(), etHeight.getText().toString().trim(),
-//                                    etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
-//                                    etDescription.getText().toString().trim(),
-//                                    //IMAGE URL / Deprecated, might need to switch to none-deprecated alternative soon.
-//                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
-//                                    currUser, userId, uploadId
-//                                    );
-//
-//                            //Create new database entry
-//                            drDatabaseRef.child(uploadId).setValue(upload);
-//                            finish();
-//
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(SpaceAddActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    })
-//                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-//                        @Override
-//                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-//                            double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-//                            pbUploadStatus.setProgress((int) progress);
-//                        }
-//                    });
-//        } else {
-//            Toast.makeText(this,"No file selected", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//}
-
-//  NONE DEPRECATED UPLOAD ALTERNATIVE.
     private void uploadFile() {
         if (mImageUri != null) {
             StorageReference fileReference = srStorageRef.child(System.currentTimeMillis()
@@ -345,7 +289,7 @@ public class SpaceAddActivity extends AppCompatActivity {
                                     etLocation.getText().toString().trim(), etMonthly.getText().toString().trim(),
                                     etDescription.getText().toString().trim(),
                                     downloadUri.toString(),
-                                    currUser, userId, uploadId, "public", lat, lng);
+                                    currUser, userId, uploadId, "public", lat, lng, contactNumber);
 
                         drDatabaseRef.child(uploadId).setValue(upload);
                         finish();

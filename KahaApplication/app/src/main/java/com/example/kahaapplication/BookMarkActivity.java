@@ -110,7 +110,8 @@ public class BookMarkActivity extends ToolBarActivity implements FinderHomeAdapt
                                 String.valueOf(indivSpace.child("spaceUploadId").getValue()),
                                 String.valueOf(indivSpace.child("spaceVisibility").getValue()),
                                 String.valueOf(indivSpace.child("spaceLat").getValue()),
-                                String.valueOf(indivSpace.child("spaceLng").getValue())
+                                String.valueOf(indivSpace.child("spaceLng").getValue()),
+                                String.valueOf(indivSpace.child("spaceHostNumber").getValue())
                         );
                         tempData.add(spaceInfo);
                     }

@@ -1,5 +1,7 @@
 package com.example.kahaapplication;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -200,8 +202,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
             mMap.setMyLocationEnabled(true);
             //mMap.getUiSettings().setMyLocationButtonEnabled(false);
-            init();
         }
+        init();
     }
 
     private void initMap() {
@@ -226,8 +228,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 ActivityCompat.requestPermissions(this, permissions, 1234);
             }
         } else {
-            Log.d(TAG, "getLocationPermission: first else");
-            ActivityCompat.requestPermissions(this, permissions, 1234);
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this, FINE_LOCATION)) {
+                Log.d(TAG, "permissionSMS: inner if");
+            } else {
+                Log.d(TAG, "getLocationPermission: first else");
+                ActivityCompat.requestPermissions(this, permissions, 1234);
+            }
         }
     }
 

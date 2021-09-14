@@ -1,15 +1,23 @@
 package com.example.kahaapplication;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -86,7 +94,8 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
                             String.valueOf(indivSpace.child("spaceUploadId").getValue()),
                             String.valueOf(indivSpace.child("spaceVisibility").getValue()),
                             String.valueOf(indivSpace.child("spaceLat").getValue()),
-                            String.valueOf(indivSpace.child("spaceLng").getValue())
+                            String.valueOf(indivSpace.child("spaceLng").getValue()),
+                            String.valueOf(indivSpace.child("spaceHostNumber").getValue())
                     );
 
                     Log.d("HOST ID", i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name()) + "\n" + spaceInfo.getSpaceHostId());
@@ -152,7 +161,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataListSpaces.get(position).getSpaceHostId());
         intent.putExtra(Keys.KEY_LAT.name(), dataListSpaces.get(position).getSpaceLat());
         intent.putExtra(Keys.KEY_LNG.name(), dataListSpaces.get(position).getSpaceLng());
-
+        intent.putExtra(Keys.KEY_SPACE_CONTACT_NUMBER.name(), dataListSpaces.get(position).getSpaceHostNumber());
         intent.putExtra(Keys.KEY_SPACE_VIEW_FROM_PROFILE.name(), true);
 
         startActivity(intent);

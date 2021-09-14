@@ -89,7 +89,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                             String.valueOf(indivSpace.child("spaceUploadId").getValue()),
                             String.valueOf(indivSpace.child("spaceVisibility").getValue()),
                             String.valueOf(indivSpace.child("spaceLat").getValue()),
-                            String.valueOf(indivSpace.child("spaceLng").getValue())
+                            String.valueOf(indivSpace.child("spaceLng").getValue()),
+                            String.valueOf(indivSpace.child("spaceHostNumber").getValue())
                     );
 
                     if(isFinder.equalsIgnoreCase("false")) {
@@ -204,7 +205,8 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                                 String.valueOf(indivSpace.child("spaceUploadId").getValue()),
                                 String.valueOf(indivSpace.child("spaceVisibility").getValue()),
                                 String.valueOf(indivSpace.child("spaceLat").getValue()),
-                                String.valueOf(indivSpace.child("spaceLng").getValue())
+                                String.valueOf(indivSpace.child("spaceLng").getValue()),
+                                String.valueOf(indivSpace.child("spaceHostNumber").getValue())
                         );
                         tempData.add(spaceInfo);
                     }
@@ -312,7 +314,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
         intent.putExtra(Keys.KEY_SPACE_HOST_ID.name(), dataList.get(position).getSpaceHostId());
         intent.putExtra(Keys.KEY_LAT.name(), dataList.get(position).getSpaceLat());
         intent.putExtra(Keys.KEY_LNG.name(), dataList.get(position).getSpaceLng());
-
+        intent.putExtra(Keys.KEY_SPACE_CONTACT_NUMBER.name(), dataList.get(position).getSpaceHostNumber());
         intent.putExtra(Keys.KEY_SPACE_VIEW_FROM_PROFILE.name(), false);
 
         startActivity(intent);
