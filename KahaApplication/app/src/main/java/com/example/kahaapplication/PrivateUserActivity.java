@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
@@ -92,17 +94,59 @@ public class PrivateUserActivity extends ToolBarActivity {
                         .setMessage("Are you sure you want to delete your account? You cannot undo this action.")
                         .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
-
-                                mAuth.getCurrentUser().delete();
-                                drDatabaseRef.removeValue();
-                                Intent i = new Intent(PrivateUserActivity.this, LoginActivity.class);
-                                startActivity(i);
+                                deleteUser();
                             }
                         })
 
                         .setNegativeButton(android.R.string.no, null)
                         .show();
+            }
+        });
+    }
+
+    private void deleteUser() {
+        //Delete Spaces associated to user
+        DatabaseReference drSpacesReference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+
+        drSpacesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    for(DataSnapshot indivSpace : snapshot.getChildren()) {
+                        if(userId.equals(indivSpace.child("spaceHostId").getValue().toString().trim())) {
+                            deleteImage(indivSpace.child("spaceImageUrl").getValue().toString());
+                            indivSpace.getRef().removeValue();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+//         Delete User
+        mAuth.getCurrentUser().delete();
+        drDatabaseRef.removeValue();
+        Intent i = new Intent(PrivateUserActivity.this, LoginActivity.class);
+        startActivity(i);
+    }
+
+    private void deleteImage(String imgUrl) {
+        StorageReference srSpaceReference = FirebaseStorage.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+        //Delete Picture
+        StorageReference photoRef = srSpaceReference.getStorage().getReferenceFromUrl(imgUrl);
+        photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.d(TAG, "Deleted Picture: " + photoRef);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "did not delete file!");
             }
         });
     }
