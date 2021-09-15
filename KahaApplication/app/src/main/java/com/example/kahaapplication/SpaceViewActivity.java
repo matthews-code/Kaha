@@ -186,7 +186,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                         .setPositiveButton("Reserve", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 //TODO: Add record of this to db
-                                Toast.makeText(SpaceViewActivity.this, "SpaceReserved", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SpaceViewActivity.this, "Reserved a " + type, Toast.LENGTH_SHORT).show();
                                 drDatabaseRef.child(i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name()))
                                         .child(Keys.COLLECTIONS_RESERVEES.name())
                                         .child(String.valueOf(System.currentTimeMillis()))
@@ -401,7 +401,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
         this.imgUrl = url;
 
         String dimensions = length + " x " + width + " x " + height;
-        String smsText = "Hello fellow Kaha user! I would like to inquire about your " + type + " in " + location + ".";
+        String smsText = "Hello " + host + "! I would like to inquire about your " + type + " in " + location + ".";
         this.tvSize.setText(dimensions);
         this.smsMessage.setText(smsText);
         this.tvPrice.setText("₱" + price);
@@ -535,7 +535,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                     }
                 }
             });
-        } else {
+        } else { //if finder
             this.llSMS.setVisibility(View.VISIBLE);
             //Book Mark VISIBILITY
             // If current space is bookmarked by user
@@ -579,6 +579,50 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                                 .child("id").setValue(spaceID);
                         ibBookMark.setImageResource(R.drawable.bookmark_on);
                     }
+                }
+            });
+
+            //RESERVE BUTTON LOGIC
+            DatabaseReference drReserveReference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name() + "/" + spaceID);
+
+            drReserveReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()) {
+                        if(snapshot.hasChild(Keys.COLLECTIONS_RESERVEES.name())) {
+                            for(DataSnapshot indivReservee : snapshot.child(Keys.COLLECTIONS_RESERVEES.name()).getChildren()) {
+
+                                if(userId.equals(indivReservee.child("id").getValue())) {
+                                    btnReserve.setText("Unreserve");
+                                    //Unreserve logic
+                                    btnReserve.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            new AlertDialog.Builder(SpaceViewActivity.this)
+                                                    .setTitle("Unreserve Space")
+                                                    .setMessage("Unreserve " + tvTitle.getText() + "?")
+                                                    .setPositiveButton("Unreserve", new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            indivReservee.getRef().removeValue();
+                                                            Toast.makeText(SpaceViewActivity.this, "Unreserved a " + type, Toast.LENGTH_SHORT).show();
+                                                            finish();
+
+                                                            //btnReserve.setText("Reserve");
+                                                        }
+                                                    })
+                                                    .setNegativeButton(android.R.string.no, null)
+                                                    .show();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d("ERRORS", "onCancelled: " + error.getMessage());
                 }
             });
         }
