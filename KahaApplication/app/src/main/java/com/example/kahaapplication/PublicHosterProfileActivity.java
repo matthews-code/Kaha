@@ -78,6 +78,7 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         reference.child(Keys.SPACES.name()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataListSpaces.clear();
                 for (DataSnapshot indivSpace : snapshot.getChildren()) {
 
                     SpaceUpload spaceInfo = new SpaceUpload(

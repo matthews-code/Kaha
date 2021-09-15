@@ -65,7 +65,7 @@ public class ViewReservations extends ToolBarActivity {
         reference.child(Keys.COLLECTIONS_RESERVEES.name()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                   data.clear();
                 for(DataSnapshot indivReservee : snapshot.getChildren()) {
                     String id = String.valueOf(indivReservee.child("id").getValue());
                     tempReserveeList.add(id);

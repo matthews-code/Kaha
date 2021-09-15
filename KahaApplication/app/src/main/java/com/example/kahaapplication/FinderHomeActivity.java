@@ -72,6 +72,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                dataList.clear();
                 Log.d("TRACE", "After referencing spaces. User type is " + isFinder);
                 for (DataSnapshot indivSpace : snapshot.getChildren()) {
 
@@ -103,6 +104,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                         }
                     }
                 }
+
                 adapter.clearDataHolder();
                 adapter.notifyDataSetChanged();
             }
@@ -184,6 +186,7 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    dataList.clear();
                 for (DataSnapshot indivSpace : snapshot.getChildren()) {
                     String location = String.valueOf(indivSpace.child("spaceLocation").getValue());
                     String hostName = String.valueOf(indivSpace.child("spaceHost").getValue());
