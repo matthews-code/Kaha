@@ -74,6 +74,7 @@ public class PrivateUserActivity extends ToolBarActivity {
             @Override
             public void onClick(View view) {
                 if(!checkEmpty()){
+                    editSpace();
                     drDatabaseRef.child("userFirstName").setValue(firstName.getText().toString().trim());
                     drDatabaseRef.child("userLastName").setValue(lastName.getText().toString().trim());
                     drDatabaseRef.child("userPhone").setValue(contactNumber.getText().toString().trim());
@@ -100,6 +101,29 @@ public class PrivateUserActivity extends ToolBarActivity {
 
                         .setNegativeButton(android.R.string.no, null)
                         .show();
+            }
+        });
+    }
+
+    private void editSpace() {
+        DatabaseReference drSpacesReference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+
+        drSpacesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()) {
+                    for(DataSnapshot indivSpace : snapshot.getChildren()) {
+                        if(userId.equals(indivSpace.child("spaceHostId").getValue().toString().trim())) {
+                            indivSpace.child("spaceHost").getRef().setValue(firstName.getText().toString().trim() + " " + lastName.getText().toString().trim());
+                            indivSpace.child("spaceHostNumber").getRef().setValue(contactNumber.getText().toString().trim());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
