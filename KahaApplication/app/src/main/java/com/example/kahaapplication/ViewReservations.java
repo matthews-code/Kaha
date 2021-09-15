@@ -36,7 +36,6 @@ public class ViewReservations extends ToolBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_reservations);
         initToolbar();
-        
         //DataHelper dh = new DataHelper();
         //this.data = dh.initData2();
 
@@ -65,7 +64,7 @@ public class ViewReservations extends ToolBarActivity {
         reference.child(Keys.COLLECTIONS_RESERVEES.name()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                   data.clear();
+
                 for(DataSnapshot indivReservee : snapshot.getChildren()) {
                     String id = String.valueOf(indivReservee.child("id").getValue());
                     tempReserveeList.add(id);
@@ -89,7 +88,7 @@ public class ViewReservations extends ToolBarActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                    tempUserData.add(snapshot.getValue(User.class));
-
+                   // data.clear();
 
                     User userInfo = new User(
                                 String.valueOf(snapshot.child("userFirstName").getValue()),
@@ -104,11 +103,13 @@ public class ViewReservations extends ToolBarActivity {
                     tempUserData.add(userInfo);
 
 //                    Log.d("MANIFEST 1", "onDataChange: " + tempUserData);
+                    data = tempUserData;
                     reservationAdapter = new ReservationAdapter(tempUserData);
                     reservationAdapter.notifyDataSetChanged();
 
                     rvReserveList.setAdapter(reservationAdapter);
-                    data = tempUserData;
+
+
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {

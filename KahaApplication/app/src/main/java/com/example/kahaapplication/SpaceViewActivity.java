@@ -177,6 +177,8 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
             }
         });
 
+        this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
+
         btnReserve.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,12 +187,18 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                         .setMessage("Reserve " + tvTitle.getText() + "?")
                         .setPositiveButton("Reserve", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                //TODO: Add record of this to db
+                                //Add userId to reservee list of space
                                 Toast.makeText(SpaceViewActivity.this, "Reserved a " + type, Toast.LENGTH_SHORT).show();
                                 drDatabaseRef.child(i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name()))
                                         .child(Keys.COLLECTIONS_RESERVEES.name())
                                         .child(String.valueOf(System.currentTimeMillis()))
                                         .child("id").setValue(userId);
+                                //Add spaceId to reserved list of user
+                                DatabaseReference rsDatabaseRef = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name() + "/" + userId);
+                                rsDatabaseRef.child(Keys.KEY_RESERVATIONS.name())
+                                        .child(String.valueOf(System.currentTimeMillis()))
+                                        .child("id").setValue(spaceID);
+
                                 finish();
                             }
                         })
@@ -199,7 +207,7 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                 }
         });
 
-        this.spaceID = i.getStringExtra(Keys.KEY_SPACE_UPLOAD_ID.name());
+
 
         initMap(savedInstanceState);
         retrieveData();
@@ -587,10 +595,10 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
 
             drReserveReference.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()) {
-                        if(snapshot.hasChild(Keys.COLLECTIONS_RESERVEES.name())) {
-                            for(DataSnapshot indivReservee : snapshot.child(Keys.COLLECTIONS_RESERVEES.name()).getChildren()) {
+                public void onDataChange(@NonNull DataSnapshot snapshotReserveRef) {
+                    if(snapshotReserveRef.exists()) {
+                        if(snapshotReserveRef.hasChild(Keys.COLLECTIONS_RESERVEES.name())) {
+                            for(DataSnapshot indivReservee : snapshotReserveRef.child(Keys.COLLECTIONS_RESERVEES.name()).getChildren()) {
 
                                 if(userId.equals(indivReservee.child("id").getValue())) {
                                     btnReserve.setText("Unreserve");
@@ -603,10 +611,18 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                                                     .setMessage("Unreserve " + tvTitle.getText() + "?")
                                                     .setPositiveButton("Unreserve", new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int which) {
+                                                            //Remove reservation from space
                                                             indivReservee.getRef().removeValue();
+
+                                                            //Remove reservation from user
+                                                            for(DataSnapshot indivSpace : snapshot.child(Keys.KEY_RESERVATIONS.name()).getChildren()) {
+                                                                if(spaceID.equals(indivSpace.child("id").getValue().toString().trim())) {
+                                                                    String key = indivSpace.getKey();
+                                                                    bmDatabaseRef.child(Keys.KEY_RESERVATIONS.name()).child(key).removeValue();
+                                                                }
+                                                            }
                                                             Toast.makeText(SpaceViewActivity.this, "Unreserved a " + type, Toast.LENGTH_SHORT).show();
                                                             finish();
-
                                                             //btnReserve.setText("Reserve");
                                                         }
                                                     })
@@ -643,7 +659,6 @@ public class SpaceViewActivity extends ToolBarActivity implements OnMapReadyCall
                     setViews(snapshot);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //pbProfile.setVisibility(View.GONE);

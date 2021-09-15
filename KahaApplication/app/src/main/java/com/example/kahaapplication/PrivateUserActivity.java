@@ -55,6 +55,7 @@ public class PrivateUserActivity extends ToolBarActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference drDatabaseRef;
     private String userId;
+    private boolean isFinder;
 
     private ImageView ivProfilePicture;
 
@@ -130,26 +131,50 @@ public class PrivateUserActivity extends ToolBarActivity {
 
     private void deleteUser() {
         //Delete Spaces associated to user
-        DatabaseReference drSpacesReference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
-
-        drSpacesReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                    for(DataSnapshot indivSpace : snapshot.getChildren()) {
-                        if(userId.equals(indivSpace.child("spaceHostId").getValue().toString().trim())) {
-                            deleteImage(indivSpace.child("spaceImageUrl").getValue().toString());
-                            indivSpace.getRef().removeValue();
+        if(!isFinder){
+            DatabaseReference drSpacesReference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name());
+            drSpacesReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()) {
+                        for(DataSnapshot indivSpace : snapshot.getChildren()) {
+                            if(userId.equals(indivSpace.child("spaceHostId").getValue().toString().trim())) {
+                                deleteImage(indivSpace.child("spaceImageUrl").getValue().toString());
+                                indivSpace.getRef().removeValue();
+                            }
                         }
                     }
                 }
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        } else {
+            //Delete Reservations
+            drDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.hasChild(Keys.KEY_RESERVATIONS.name())){
+                        Log.d("TRACE", "Entered Delete Reservations");
+                        for(DataSnapshot reservation: snapshot.child(Keys.KEY_RESERVATIONS.name()).getChildren()){
+                            Log.d("TRACE", "Entered Delete Reservations SpaceID : " + reservation.child("id").getValue().toString().trim());
+                            DatabaseReference spaceReference = FirebaseDatabase.getInstance().getReference(
+                                    Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name() + "/" + reservation.child("id").getValue().toString().trim() + "/" + Keys.COLLECTIONS_RESERVEES.name());
+                            spaceReference.orderByChild("id").equalTo(userId).getRef().removeValue();
+                        }
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+
+
 
 //         Delete User
         mAuth.getCurrentUser().delete();
@@ -266,7 +291,7 @@ public class PrivateUserActivity extends ToolBarActivity {
     private void setViews(DataSnapshot snapshot) {
         String firstName = snapshot.child("userFirstName").getValue().toString().trim();
         String lastName = snapshot.child("userLastName").getValue().toString().trim();
-
+        this.isFinder = Boolean.parseBoolean(snapshot.child("userIsFinder").getValue().toString());
         this.firstName.setText(firstName);
         this.lastName.setText(lastName);
         this.contactNumber.setText(snapshot.child("userPhone").getValue().toString().trim());
