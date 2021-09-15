@@ -96,6 +96,7 @@ public class BookMarkActivity extends ToolBarActivity implements FinderHomeAdapt
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot indivSpace : snapshot.getChildren()) {
                     if(dataListSpaceId.contains(String.valueOf(indivSpace.child("spaceUploadId").getValue()))) {
+                        dataListSpaceId.remove(String.valueOf(indivSpace.child("spaceUploadId").getValue()));
                         SpaceUpload spaceInfo = new SpaceUpload(
                                 String.valueOf(indivSpace.child("spaceType").getValue()),
                                 String.valueOf(indivSpace.child("spaceLength").getValue()),
@@ -116,6 +117,10 @@ public class BookMarkActivity extends ToolBarActivity implements FinderHomeAdapt
                         tempData.add(spaceInfo);
                     }
                 }
+                if(dataListSpaceId.size() > 0) {
+                    removeValues(dataListSpaceId);
+                }
+                Log.d("TAG", "onDataChange: " + dataListSpaceId);
                 adapter.notifyDataSetChanged();
             }
 
@@ -125,6 +130,25 @@ public class BookMarkActivity extends ToolBarActivity implements FinderHomeAdapt
             }
         });
         return tempData;
+    }
+
+    private void removeValues(ArrayList<String> dataListSpaceId) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_PROFILES.name());
+        reference.child(FinderHomeActivity.userId).child(Keys.KEY_BOOK_MARKS.name()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot indivBookmark : snapshot.getChildren()) {
+                    if(dataListSpaceId.contains(indivBookmark.child("id").getValue().toString().trim())) {
+                        indivBookmark.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void initComponents () {
