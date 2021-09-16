@@ -191,8 +191,8 @@ public class PrivateUserActivity extends ToolBarActivity {
 
 
 //         Delete User
-//        mAuth.getCurrentUser().delete();
-//        drDatabaseRef.removeValue();
+        mAuth.getCurrentUser().delete();
+        drDatabaseRef.removeValue();
         Intent i = new Intent(PrivateUserActivity.this, LoginActivity.class);
         startActivity(i);
     }
