@@ -37,8 +37,10 @@ public class PublicFinderProfileActivity extends ToolBarActivity{
         Intent i = getIntent();
 
         tvIntro.setText(i.getStringExtra(Keys.KEY_FINDER_FIRST.name()) + "'s" + " Profile");
+
         tvFirst.setText(i.getStringExtra(Keys.KEY_FINDER_FIRST.name()));
-        tvLast.setText(i.getStringExtra(" " + Keys.KEY_FINDER_LAST.name()));
+        tvLast.setText(" " + i.getStringExtra(Keys.KEY_FINDER_LAST.name()));
+
         tvBirth.setText(i.getStringExtra(Keys.KEY_FINDER_BIRTH.name()));
         tvDesc.setText(i.getStringExtra(Keys.KEY_FINDER_DESC.name()));
         tvEmail.setText(i.getStringExtra(Keys.KEY_FINDER_EMAIL.name()));
