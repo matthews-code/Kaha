@@ -251,14 +251,42 @@ public class FinderHomeActivity extends ToolBarActivity implements FinderHomeAda
                     setViews(snapshot.child("userIsFinder").getValue().toString());
 
                     Log.d("TRACE", "After referencing user. User type is " + isFinder);
+                    if(Boolean.parseBoolean(isFinder)){
+                        if(snapshot.hasChild(Keys.KEY_RESERVATIONS.name())){
+                            //DatabaseReference spReference = FirebaseDatabase.getInstance().getReference(Keys.COLLECTIONS_SPACES.name()+ "/" + Keys.SPACES.name());
+                            for(DataSnapshot reservation: snapshot.child(Keys.KEY_RESERVATIONS.name()).getChildren()){
+                                Log.d("TRACE", "Checking reservations: " + reservation );
+                                DatabaseReference spReference = FirebaseDatabase.getInstance().getReference(
+                                        Keys.COLLECTIONS_SPACES.name()+ "/" + Keys.SPACES.name() + "/" + reservation.child("id").getValue().toString().trim());
+                                Log.d("TRACE", "Checking reservations: " + spReference );
+                                spReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot spSnapshot) {
+                                        if(spSnapshot.exists()){
+                                            Log.d("TRACE", "Checking reservations: EXISTS" );
+                                        } else {
+                                            Log.d("TRACE", "Checking reservations: DOES NOT EXIST" );
+                                            reservation.getRef().removeValue();
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        }
+                    }
                     if(isFinder != null) {
                         dataList = initData();
                         adapter = new FinderHomeAdapter(dataList, FinderHomeActivity.this);
                         adapter.notifyDataSetChanged();
                         loadData();
-                        Log.d("TRACE", "Adapter data size: "+ Integer.toString(adapter.getItemCount()));
+
                     }
+
+
                     reference.removeEventListener(this);
                 }
             }

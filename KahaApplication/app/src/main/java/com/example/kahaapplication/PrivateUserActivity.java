@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.core.view.QuerySpec;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -158,10 +159,23 @@ public class PrivateUserActivity extends ToolBarActivity {
                     if(snapshot.hasChild(Keys.KEY_RESERVATIONS.name())){
                         Log.d("TRACE", "Entered Delete Reservations");
                         for(DataSnapshot reservation: snapshot.child(Keys.KEY_RESERVATIONS.name()).getChildren()){
-                            Log.d("TRACE", "Entered Delete Reservations SpaceID : " + reservation.child("id").getValue().toString().trim());
+
                             DatabaseReference spaceReference = FirebaseDatabase.getInstance().getReference(
                                     Keys.COLLECTIONS_SPACES.name() + "/" + Keys.SPACES.name() + "/" + reservation.child("id").getValue().toString().trim() + "/" + Keys.COLLECTIONS_RESERVEES.name());
-                            spaceReference.orderByChild("id").equalTo(userId).getRef().removeValue();
+                            spaceReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for(DataSnapshot space: snapshot.getChildren()){
+                                        Log.d("TRACE", "Entered Delete SpaceID: "+ reservation.child("id").getValue().toString().trim() + " SPACE: " + space);
+                                        if(userId.equals(space.child("id").getValue().toString().trim()))
+                                            spaceReference.child(space.getKey()).removeValue();
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
                     }
                 }
@@ -177,8 +191,8 @@ public class PrivateUserActivity extends ToolBarActivity {
 
 
 //         Delete User
-        mAuth.getCurrentUser().delete();
-        drDatabaseRef.removeValue();
+//        mAuth.getCurrentUser().delete();
+//        drDatabaseRef.removeValue();
         Intent i = new Intent(PrivateUserActivity.this, LoginActivity.class);
         startActivity(i);
     }
