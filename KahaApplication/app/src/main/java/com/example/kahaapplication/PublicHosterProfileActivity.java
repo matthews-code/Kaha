@@ -125,7 +125,8 @@ public class PublicHosterProfileActivity extends ToolBarActivity implements Find
         reference.child(i.getStringExtra(Keys.KEY_SPACE_HOST_ID.name())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                setViews(snapshot);
+                if(snapshot.exists())
+                    setViews(snapshot);
             }
 
             @Override
